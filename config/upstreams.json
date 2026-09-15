@@ -1,0 +1,66 @@
+{
+  "auditDate": "2026-09-15",
+  "note": "Four default-branch HEAD values were read through GitHub during the audit. Null revisions are intentionally not represented as audited pins. Fetching resolves and records them locally. A pin is not a security approval.",
+  "upstreams": [
+    {
+      "id": "astra",
+      "repo": "Astralune-ai/Astra-slide-impeccable",
+      "commit": "7425bb043d59bde2e84cf6d7d7685e451d31f3ac",
+      "mode": "reference; redistribution permission unresolved"
+    },
+    {
+      "id": "presentation-skill",
+      "repo": "siril9/presentation-skill",
+      "commit": "311e29920c7c7ab37a93c12676bab7baecc0f4a6",
+      "mode": "fork candidate; MIT"
+    },
+    {
+      "id": "impeccable",
+      "repo": "pbakaus/impeccable",
+      "commit": "0a4e72a254f3b175c95b36b82e5f2e60fa63f116",
+      "mode": "design adapter; Apache-2.0"
+    },
+    {
+      "id": "pptkit",
+      "repo": "openHacking/pptkit",
+      "commit": "72715ca460ce649f553848393de922c52f19cd34",
+      "mode": "experimental backend; MIT"
+    },
+    {
+      "id": "knowledge-cat",
+      "repo": "gnipbao/knowledge-cat-ppt-skill",
+      "commit": null,
+      "mode": "planning/checker donor; resolve at acquisition; MIT"
+    },
+    {
+      "id": "slides-ai",
+      "repo": "proyecto26/slides-ai-plugin",
+      "commit": null,
+      "mode": "helper donor; resolve at acquisition; MIT"
+    },
+    {
+      "id": "pptkit-presentation",
+      "repo": "openHacking/pptkit-presentation",
+      "commit": null,
+      "mode": "review workflow experiment; resolve at acquisition; MIT"
+    },
+    {
+      "id": "presenton",
+      "repo": "presenton/presenton",
+      "commit": null,
+      "mode": "service experiment; resolve at acquisition; Apache-2.0"
+    },
+    {
+      "id": "pptx-automizer",
+      "repo": "singerla/pptx-automizer",
+      "commit": null,
+      "mode": "template experiment; resolve at acquisition; MIT"
+    },
+    {
+      "id": "pptagent",
+      "repo": "icip-cas/PPTAgent",
+      "commit": null,
+      "mode": "research-only checkout; resolve and audit patches before execution; MIT"
+    }
+  ]
+}

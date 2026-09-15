@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "0.0.1-smoke",
+  "title": "Deckforge native-output acceptance fixture",
+  "slides": [
+    {
+      "id": "cover",
+      "type": "cover",
+      "title": "Design freedom. Editable output.",
+      "subtitle": "A synthetic acceptance fixture for a hybrid presentation system. This is not Ferroque branding.",
+      "notes": "Original smoke fixture. All content and chart values are illustrative. The prototype does not include Astra assets or company materials."
+    },
+    {
+      "id": "bridge",
+      "type": "bridge",
+      "title": "Turn a visual idea into an editable structure",
+      "left": [
+        "Approved source material",
+        "A clear audience outcome",
+        "A selected visual composition"
+      ],
+      "right": [
+        "Native PowerPoint text",
+        "Native shapes and tables",
+        "Reviewable output artifacts"
+      ],
+      "transition": "Layout compiler",
+      "notes": "Native editable objects, not screenshots. This straight-line bridge is an original smoke layout, not a port of Astra."
+    },
+    {
+      "id": "hub",
+      "type": "hub",
+      "title": "One content contract, several design inputs",
+      "center": "DeckSpec",
+      "nodes": [
+        "Brand rules",
+        "Evidence",
+        "Structures",
+        "Design intent"
+      ],
+      "notes": "The lines are native line shapes, not verified anchored connectors. Moving a node in PowerPoint will not necessarily move its lines."
+    },
+    {
+      "id": "layers",
+      "type": "layers",
+      "title": "Keep content, layout, and packaging separate",
+      "layers": [
+        "Semantic content and evidence",
+        "Approved structure and theme",
+        "Resolved positions and typography",
+        "One final PowerPoint writer"
+      ],
+      "notes": "This fixture illustrates the planned architecture. It does not implement the full compiler or renderer adapters."
+    },
+    {
+      "id": "chart",
+      "type": "chart",
+      "title": "Data must remain editable in PowerPoint",
+      "labels": [
+        "Fixture A",
+        "Fixture B",
+        "Fixture C",
+        "Fixture D"
+      ],
+      "values": [
+        28,
+        45,
+        62,
+        81
+      ],
+      "synthetic": true,
+      "notes": "Synthetic values only. Acceptance requires native chart XML plus an embedded workbook. Use PowerPoint Edit Data as an additional manual gate."
+    },
+    {
+      "id": "table",
+      "type": "table",
+      "title": "Editability must be checked, not assumed",
+      "headers": [
+        "Object",
+        "Required form",
+        "Acceptance probe"
+      ],
+      "rows": [
+        [
+          "Heading",
+          "Native text",
+          "Edit one word"
+        ],
+        [
+          "Diagram",
+          "Shapes and lines",
+          "Move one node"
+        ],
+        [
+          "Chart",
+          "Chart and workbook",
+          "Change one value"
+        ],
+        [
+          "Table",
+          "Native table",
+          "Edit one cell"
+        ]
+      ],
+      "notes": "Structural inspection is not visual approval. Open the final file in Microsoft PowerPoint, make the changes listed here, save, and reopen."
+    }
+  ]
+}

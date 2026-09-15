@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {validateSmokeDeck} from '../src/validate-smoke.mjs';
+const fixture=JSON.parse(fs.readFileSync(new URL('../examples/smoke-deck.json',import.meta.url),'utf8'));
+const copy=()=>structuredClone(fixture);
+test('valid synthetic fixture passes',()=>assert.deepEqual(validateSmokeDeck(copy()),[]));
+test('null is rejected',()=>assert.ok(validateSmokeDeck(null).length));
+test('schema drift is rejected',()=>{const d=copy();d.schemaVersion='1';assert.ok(validateSmokeDeck(d).length);});
+test('duplicate IDs are rejected',()=>{const d=copy();d.slides[1].id=d.slides[0].id;assert.match(validateSmokeDeck(d).join(' '),/duplicate/);});
+test('unknown structure cannot silently flatten',()=>{const d=copy();d.slides[0].type='screenshot';assert.match(validateSmokeDeck(d).join(' '),/unsupported/);});
+test('chart labels/data mismatch is rejected',()=>{const d=copy();d.slides[4].values.pop();assert.ok(validateSmokeDeck(d).length);});
+test('nonfinite chart data is rejected',()=>{const d=copy();d.slides[4].values[0]=NaN;assert.ok(validateSmokeDeck(d).length);});
+test('chart requires explicit synthetic provenance',()=>{const d=copy();d.slides[4].synthetic=false;assert.ok(validateSmokeDeck(d).length);});
+test('too-dense bridge is rejected',()=>{const d=copy();d.slides[1].left.push('Fourth item');assert.ok(validateSmokeDeck(d).length);});
+test('empty speaker notes are rejected',()=>{const d=copy();d.slides[0].notes='';assert.ok(validateSmokeDeck(d).length);});
+test('table dimensions are checked',()=>{const d=copy();d.slides[5].rows[0].pop();assert.ok(validateSmokeDeck(d).length);});
+
+test('fixed chart scale rejects values above 100',()=>{const d=copy();d.slides[4].values[0]=101;assert.ok(validateSmokeDeck(d).length);});
+test('fixed chart scale rejects negative values',()=>{const d=copy();d.slides[4].values[0]=-1;assert.ok(validateSmokeDeck(d).length);});

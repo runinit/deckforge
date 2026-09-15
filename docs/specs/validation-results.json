@@ -1,0 +1,95 @@
+{
+  "documentation": {
+    "status": "PASS",
+    "scope": "Documentation integrity only; no product or Office checks.",
+    "specCount": 31,
+    "markdownFileCount": 42,
+    "requirements": 183,
+    "tasks": 138,
+    "acceptanceScenarios": 186,
+    "localFileLinksChecked": 606,
+    "sourceSnapshotsVerified": 2,
+    "originalPrsCovered": [
+      "PR-00",
+      "PR-01",
+      "PR-02",
+      "PR-03",
+      "PR-04",
+      "PR-05",
+      "PR-06",
+      "PR-07",
+      "PR-08",
+      "PR-X1",
+      "PR-X2",
+      "PR-X3"
+    ],
+    "topologicalOrder": [
+      "DF-00",
+      "DF-01",
+      "DF-02",
+      "DF-03",
+      "DF-04",
+      "DF-05",
+      "DF-06",
+      "DF-07",
+      "DF-08",
+      "DF-09",
+      "DF-10",
+      "DF-11",
+      "DF-17",
+      "DF-12",
+      "DF-13",
+      "DF-14",
+      "DF-15",
+      "DF-16",
+      "DF-18",
+      "DF-S01",
+      "DF-S02",
+      "DF-S03",
+      "DF-S04",
+      "DF-S05",
+      "DF-S06",
+      "DF-S07",
+      "DF-S08",
+      "DF-19",
+      "DF-X1",
+      "DF-X2",
+      "DF-X3"
+    ],
+    "warnings": [],
+    "errors": []
+  },
+  "negativeProbes": [
+    {
+      "probe": "unknown dependency",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "result": "PASS"
+    },
+    {
+      "probe": "dependency cycle",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "result": "PASS"
+    },
+    {
+      "probe": "broken local link",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "result": "PASS"
+    },
+    {
+      "probe": "missing acceptance ID",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "result": "PASS"
+    },
+    {
+      "probe": "modified source snapshot",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "result": "PASS"
+    }
+  ],
+  "applicationTestsRun": false
+}

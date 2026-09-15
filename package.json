@@ -1,0 +1,20 @@
+{
+  "name": "deckforge-prototype",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "An original local smoke harness for the audited hybrid presentation architecture. Not the completed system.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "smoke": "node scripts/build-smoke.mjs",
+    "inspect": "python3 scripts/inspect-pptx.py out/smoke/deck.pptx",
+    "preview": "python3 scripts/render-local.py out/smoke/deck.pptx",
+    "check": "npm test && npm run smoke && npm run inspect"
+  },
+  "dependencies": {
+    "pptxgenjs": "4.0.0"
+  }
+}

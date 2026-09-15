@@ -1,0 +1,1343 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "deckforge-implementation-specs",
+  "createdAt": "2026-09-15",
+  "status": "documentation-only",
+  "implementationClaim": false,
+  "sourceDigests": {
+    "ARCHITECTURE.md": "36135014bfaad8395d4672f13f957dd04e39dfe98af1a7e2ace4abd31d223139",
+    "DEVELOPMENT_PLAN.md": "1042ab64c9277fce38bc70b5629354794265722e1b318fce3fd60eff5ace21a0",
+    "deckforge-audited-starter.zip": "58c2c355ee80c96217bd6c7f76ad19d07a899a9e95170acadd824f0904618665"
+  },
+  "specs": [
+    {
+      "id": "DF-00",
+      "path": "core/00-baseline-and-workspace.md",
+      "title": "Baseline, toolchain and repository workspace",
+      "sourcePrs": [
+        "PR-00"
+      ],
+      "dependsOn": [],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-00.R01",
+        "DF-00.R02",
+        "DF-00.R03",
+        "DF-00.R04",
+        "DF-00.R05"
+      ],
+      "taskIds": [
+        "DF-00.T01",
+        "DF-00.T02",
+        "DF-00.T03",
+        "DF-00.T04"
+      ],
+      "acceptanceIds": [
+        "DF-00.AC01",
+        "DF-00.AC02",
+        "DF-00.AC03",
+        "DF-00.AC04",
+        "DF-00.AC05"
+      ],
+      "ownedPaths": [
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json (handoff to DF-01)",
+        "scripts/doctor.py",
+        "scripts/test-spec.mjs (new)",
+        "config/spec-tests.json (new)",
+        "docs/BASELINE_REPORT.md (new)"
+      ]
+    },
+    {
+      "id": "DF-01",
+      "path": "core/01-semantic-contracts-and-migrations.md",
+      "title": "Semantic contracts, identity and schema migration",
+      "sourcePrs": [
+        "PR-01"
+      ],
+      "dependsOn": [
+        "DF-00"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-01.R01",
+        "DF-01.R02",
+        "DF-01.R03",
+        "DF-01.R04",
+        "DF-01.R05"
+      ],
+      "taskIds": [
+        "DF-01.T01",
+        "DF-01.T02",
+        "DF-01.T03",
+        "DF-01.T04"
+      ],
+      "acceptanceIds": [
+        "DF-01.AC01",
+        "DF-01.AC02",
+        "DF-01.AC03",
+        "DF-01.AC04",
+        "DF-01.AC05",
+        "DF-01.AC06"
+      ],
+      "ownedPaths": [
+        "packages/contracts/src/",
+        "packages/contracts/schemas/",
+        "packages/contracts/package.json",
+        "packages/contracts/tests/",
+        "scripts/migrate-smoke.mjs (new)",
+        "examples/contracts/ (new)"
+      ]
+    },
+    {
+      "id": "DF-02",
+      "path": "core/02-job-store-evidence-and-assets.md",
+      "title": "Job store, evidence registry and asset provenance",
+      "sourcePrs": [
+        "PR-01",
+        "PR-05"
+      ],
+      "dependsOn": [
+        "DF-01"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-02.R01",
+        "DF-02.R02",
+        "DF-02.R03",
+        "DF-02.R04",
+        "DF-02.R05",
+        "DF-02.R06"
+      ],
+      "taskIds": [
+        "DF-02.T01",
+        "DF-02.T02",
+        "DF-02.T03",
+        "DF-02.T04"
+      ],
+      "acceptanceIds": [
+        "DF-02.AC01",
+        "DF-02.AC02",
+        "DF-02.AC03",
+        "DF-02.AC04",
+        "DF-02.AC05",
+        "DF-02.AC06"
+      ],
+      "ownedPaths": [
+        "packages/jobs/src/",
+        "packages/jobs/tests/",
+        "packages/contracts/schemas/job.schema.json",
+        "packages/contracts/schemas/source-manifest.schema.json",
+        "examples/provenance/"
+      ]
+    },
+    {
+      "id": "DF-03",
+      "path": "core/03-brand-capture-and-resolution.md",
+      "title": "Private brand capture, approval and token resolution",
+      "sourcePrs": [
+        "PR-02"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-02"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-03.R01",
+        "DF-03.R02",
+        "DF-03.R03",
+        "DF-03.R04",
+        "DF-03.R05",
+        "DF-03.R06"
+      ],
+      "taskIds": [
+        "DF-03.T01",
+        "DF-03.T02",
+        "DF-03.T03",
+        "DF-03.T04",
+        "DF-03.T05"
+      ],
+      "acceptanceIds": [
+        "DF-03.AC01",
+        "DF-03.AC02",
+        "DF-03.AC03",
+        "DF-03.AC04",
+        "DF-03.AC05",
+        "DF-03.AC06"
+      ],
+      "ownedPaths": [
+        "packages/brand/src/capture/",
+        "packages/brand/src/resolve/",
+        "packages/brand/tests/",
+        "packs/brands/demo/",
+        "packages/contracts/schemas/brand.schema.json"
+      ]
+    },
+    {
+      "id": "DF-04",
+      "path": "core/04-voice-terminology-and-claim-integrity.md",
+      "title": "Voice, terminology and claim-preserving rewrites",
+      "sourcePrs": [
+        "PR-02"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-03"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-04.R01",
+        "DF-04.R02",
+        "DF-04.R03",
+        "DF-04.R04",
+        "DF-04.R05",
+        "DF-04.R06"
+      ],
+      "taskIds": [
+        "DF-04.T01",
+        "DF-04.T02",
+        "DF-04.T03",
+        "DF-04.T04"
+      ],
+      "acceptanceIds": [
+        "DF-04.AC01",
+        "DF-04.AC02",
+        "DF-04.AC03",
+        "DF-04.AC04",
+        "DF-04.AC05",
+        "DF-04.AC06"
+      ],
+      "ownedPaths": [
+        "packages/brand/src/voice/",
+        "packages/brand/tests/voice/",
+        "packages/contracts/schemas/rewrite-proposal.schema.json",
+        "examples/voice/"
+      ]
+    },
+    {
+      "id": "DF-05",
+      "path": "core/05-impeccable-design-intent-adapter.md",
+      "title": "Impeccable design-intent adapter",
+      "sourcePrs": [
+        "PR-02"
+      ],
+      "dependsOn": [
+        "DF-03",
+        "DF-04"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-05.R01",
+        "DF-05.R02",
+        "DF-05.R03",
+        "DF-05.R04",
+        "DF-05.R05",
+        "DF-05.R06"
+      ],
+      "taskIds": [
+        "DF-05.T01",
+        "DF-05.T02",
+        "DF-05.T03",
+        "DF-05.T04"
+      ],
+      "acceptanceIds": [
+        "DF-05.AC01",
+        "DF-05.AC02",
+        "DF-05.AC03",
+        "DF-05.AC04",
+        "DF-05.AC05"
+      ],
+      "ownedPaths": [
+        "packages/adapters/impeccable/",
+        "skills/deckforge/references/design-direction.md",
+        "examples/design-intent/",
+        "tests/adapters/impeccable/"
+      ]
+    },
+    {
+      "id": "DF-06",
+      "path": "core/06-structure-pack-sdk-and-registry.md",
+      "title": "Structure-pack SDK, registry and composition contract",
+      "sourcePrs": [
+        "PR-01",
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-02"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-06.R01",
+        "DF-06.R02",
+        "DF-06.R03",
+        "DF-06.R04",
+        "DF-06.R05",
+        "DF-06.R06"
+      ],
+      "taskIds": [
+        "DF-06.T01",
+        "DF-06.T02",
+        "DF-06.T03",
+        "DF-06.T04",
+        "DF-06.T05"
+      ],
+      "acceptanceIds": [
+        "DF-06.AC01",
+        "DF-06.AC02",
+        "DF-06.AC03",
+        "DF-06.AC04",
+        "DF-06.AC05",
+        "DF-06.AC06"
+      ],
+      "ownedPaths": [
+        "packages/structures/src/",
+        "packages/structures/tests/",
+        "packages/contracts/schemas/structure-manifest.schema.json",
+        "packs/core/registry.json",
+        "tests/structures/harness/"
+      ]
+    },
+    {
+      "id": "DF-07",
+      "path": "core/07-layout-text-and-scene-compiler.md",
+      "title": "Layout, font measurement and resolved-scene compiler",
+      "sourcePrs": [
+        "PR-01",
+        "PR-04"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-02",
+        "DF-06"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-07.R01",
+        "DF-07.R02",
+        "DF-07.R03",
+        "DF-07.R04",
+        "DF-07.R05",
+        "DF-07.R06"
+      ],
+      "taskIds": [
+        "DF-07.T01",
+        "DF-07.T02",
+        "DF-07.T03",
+        "DF-07.T04",
+        "DF-07.T05"
+      ],
+      "acceptanceIds": [
+        "DF-07.AC01",
+        "DF-07.AC02",
+        "DF-07.AC03",
+        "DF-07.AC04",
+        "DF-07.AC05",
+        "DF-07.AC06",
+        "DF-07.AC07"
+      ],
+      "ownedPaths": [
+        "packages/compiler/src/",
+        "packages/compiler/tests/",
+        "packages/compiler/fixtures/",
+        "packages/contracts/schemas/scene.schema.json",
+        "packages/contracts/schemas/render-plan.schema.json"
+      ]
+    },
+    {
+      "id": "DF-08",
+      "path": "core/08-reference-pptx-writer.md",
+      "title": "Reference PPTX writer and capability negotiation",
+      "sourcePrs": [
+        "PR-01"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-07"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-08.R01",
+        "DF-08.R02",
+        "DF-08.R03",
+        "DF-08.R04",
+        "DF-08.R05",
+        "DF-08.R06"
+      ],
+      "taskIds": [
+        "DF-08.T01",
+        "DF-08.T02",
+        "DF-08.T03",
+        "DF-08.T04",
+        "DF-08.T05"
+      ],
+      "acceptanceIds": [
+        "DF-08.AC01",
+        "DF-08.AC02",
+        "DF-08.AC03",
+        "DF-08.AC04",
+        "DF-08.AC05",
+        "DF-08.AC06"
+      ],
+      "ownedPaths": [
+        "packages/renderer-pptx/src/backend.ts",
+        "packages/renderer-pptx/src/text.ts",
+        "packages/renderer-pptx/src/shapes.ts",
+        "packages/renderer-pptx/src/images.ts",
+        "packages/renderer-pptx/tests/",
+        "tests/fixtures/export/"
+      ]
+    },
+    {
+      "id": "DF-09",
+      "path": "core/09-native-charts-tables-and-connectors.md",
+      "title": "Native charts, tables, groups and connector behavior",
+      "sourcePrs": [
+        "PR-01",
+        "PR-04"
+      ],
+      "dependsOn": [
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-09.R01",
+        "DF-09.R02",
+        "DF-09.R03",
+        "DF-09.R04",
+        "DF-09.R05",
+        "DF-09.R06"
+      ],
+      "taskIds": [
+        "DF-09.T01",
+        "DF-09.T02",
+        "DF-09.T03",
+        "DF-09.T04",
+        "DF-09.T05"
+      ],
+      "acceptanceIds": [
+        "DF-09.AC01",
+        "DF-09.AC02",
+        "DF-09.AC03",
+        "DF-09.AC04",
+        "DF-09.AC05",
+        "DF-09.AC06",
+        "DF-09.AC07"
+      ],
+      "ownedPaths": [
+        "packages/renderer-pptx/src/charts.ts",
+        "packages/renderer-pptx/src/tables.ts",
+        "packages/renderer-pptx/src/edges.ts",
+        "packages/renderer-pptx/src/groups.ts",
+        "packages/renderer-pptx/tests/native/",
+        "tests/fixtures/native/"
+      ]
+    },
+    {
+      "id": "DF-10",
+      "path": "core/10-svg-preview-gallery-and-motion.md",
+      "title": "SVG/HTML preview, structure gallery and optional motion",
+      "sourcePrs": [
+        "PR-03",
+        "PR-07"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-10.R01",
+        "DF-10.R02",
+        "DF-10.R03",
+        "DF-10.R04",
+        "DF-10.R05",
+        "DF-10.R06"
+      ],
+      "taskIds": [
+        "DF-10.T01",
+        "DF-10.T02",
+        "DF-10.T03",
+        "DF-10.T04"
+      ],
+      "acceptanceIds": [
+        "DF-10.AC01",
+        "DF-10.AC02",
+        "DF-10.AC03",
+        "DF-10.AC04",
+        "DF-10.AC05",
+        "DF-10.AC06"
+      ],
+      "ownedPaths": [
+        "packages/preview/src/",
+        "packages/preview/tests/",
+        "examples/gallery/",
+        "tests/fixtures/preview/"
+      ]
+    },
+    {
+      "id": "DF-11",
+      "path": "core/11-qa-receipts-and-release-gates.md",
+      "title": "QA, review receipts and bounded repair",
+      "sourcePrs": [
+        "PR-04"
+      ],
+      "dependsOn": [
+        "DF-02",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-11.R01",
+        "DF-11.R02",
+        "DF-11.R03",
+        "DF-11.R04",
+        "DF-11.R05",
+        "DF-11.R06",
+        "DF-11.R07"
+      ],
+      "taskIds": [
+        "DF-11.T01",
+        "DF-11.T02",
+        "DF-11.T03",
+        "DF-11.T04",
+        "DF-11.T05"
+      ],
+      "acceptanceIds": [
+        "DF-11.AC01",
+        "DF-11.AC02",
+        "DF-11.AC03",
+        "DF-11.AC04",
+        "DF-11.AC05",
+        "DF-11.AC06",
+        "DF-11.AC07"
+      ],
+      "ownedPaths": [
+        "packages/qa/src/",
+        "packages/qa/tests/",
+        "packages/contracts/schemas/qa-receipt.schema.json",
+        "packages/contracts/schemas/release-manifest.schema.json",
+        "tests/fixtures/qa/",
+        "docs/review-protocols/"
+      ]
+    },
+    {
+      "id": "DF-12",
+      "path": "core/12-markdown-intake.md",
+      "title": "Markdown intake and source-span preservation",
+      "sourcePrs": [
+        "PR-05"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-02",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-12.R01",
+        "DF-12.R02",
+        "DF-12.R03",
+        "DF-12.R04",
+        "DF-12.R05",
+        "DF-12.R06"
+      ],
+      "taskIds": [
+        "DF-12.T01",
+        "DF-12.T02",
+        "DF-12.T03",
+        "DF-12.T04"
+      ],
+      "acceptanceIds": [
+        "DF-12.AC01",
+        "DF-12.AC02",
+        "DF-12.AC03",
+        "DF-12.AC04",
+        "DF-12.AC05",
+        "DF-12.AC06"
+      ],
+      "ownedPaths": [
+        "packages/ingest/src/markdown/",
+        "packages/ingest/tests/markdown/",
+        "examples/intake/markdown/",
+        "packages/contracts/schemas/content-bundle.schema.json"
+      ]
+    },
+    {
+      "id": "DF-13",
+      "path": "core/13-pptx-content-extraction.md",
+      "title": "PPTX content extraction and unsupported-object inventory",
+      "sourcePrs": [
+        "PR-05"
+      ],
+      "dependsOn": [
+        "DF-12",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-13.R01",
+        "DF-13.R02",
+        "DF-13.R03",
+        "DF-13.R04",
+        "DF-13.R05",
+        "DF-13.R06"
+      ],
+      "taskIds": [
+        "DF-13.T01",
+        "DF-13.T02",
+        "DF-13.T03",
+        "DF-13.T04",
+        "DF-13.T05"
+      ],
+      "acceptanceIds": [
+        "DF-13.AC01",
+        "DF-13.AC02",
+        "DF-13.AC03",
+        "DF-13.AC04",
+        "DF-13.AC05",
+        "DF-13.AC06"
+      ],
+      "ownedPaths": [
+        "packages/ingest/src/pptx/",
+        "packages/ingest/tests/pptx/",
+        "tests/fixtures/intake-pptx/",
+        "packages/contracts/schemas/pptx-inventory.schema.json"
+      ]
+    },
+    {
+      "id": "DF-14",
+      "path": "core/14-director-cli-and-agent-skill.md",
+      "title": "Presentation director, CLI and thin agent skill",
+      "sourcePrs": [
+        "PR-07"
+      ],
+      "dependsOn": [
+        "DF-03",
+        "DF-04",
+        "DF-05",
+        "DF-08",
+        "DF-10",
+        "DF-11",
+        "DF-12"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-14.R01",
+        "DF-14.R02",
+        "DF-14.R03",
+        "DF-14.R04",
+        "DF-14.R05",
+        "DF-14.R06",
+        "DF-14.R07"
+      ],
+      "taskIds": [
+        "DF-14.T01",
+        "DF-14.T02",
+        "DF-14.T03",
+        "DF-14.T04",
+        "DF-14.T05"
+      ],
+      "acceptanceIds": [
+        "DF-14.AC01",
+        "DF-14.AC02",
+        "DF-14.AC03",
+        "DF-14.AC04",
+        "DF-14.AC05",
+        "DF-14.AC06"
+      ],
+      "ownedPaths": [
+        "packages/director/src/",
+        "packages/cli/src/",
+        "skills/deckforge/SKILL.md",
+        "skills/deckforge/references/",
+        "packages/director/tests/",
+        "packages/cli/tests/"
+      ]
+    },
+    {
+      "id": "DF-15",
+      "path": "core/15-corporate-template-backend.md",
+      "title": "Corporate-template compatibility and preservation backend",
+      "sourcePrs": [
+        "PR-06"
+      ],
+      "dependsOn": [
+        "DF-03",
+        "DF-08",
+        "DF-09",
+        "DF-11",
+        "DF-13",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-15.R01",
+        "DF-15.R02",
+        "DF-15.R03",
+        "DF-15.R04",
+        "DF-15.R05",
+        "DF-15.R06"
+      ],
+      "taskIds": [
+        "DF-15.T01",
+        "DF-15.T02",
+        "DF-15.T03",
+        "DF-15.T04",
+        "DF-15.T05"
+      ],
+      "acceptanceIds": [
+        "DF-15.AC01",
+        "DF-15.AC02",
+        "DF-15.AC03",
+        "DF-15.AC04",
+        "DF-15.AC05",
+        "DF-15.AC06"
+      ],
+      "ownedPaths": [
+        "packages/adapters/template-pptx/",
+        "packages/contracts/schemas/template-profile.schema.json",
+        "tests/fixtures/templates/ (synthetic only)",
+        "docs/template-compatibility/"
+      ]
+    },
+    {
+      "id": "DF-16",
+      "path": "core/16-review-ui-and-revision-ownership.md",
+      "title": "Review UI, targeted revisions and manual-edit ownership",
+      "sourcePrs": [
+        "PR-07"
+      ],
+      "dependsOn": [
+        "DF-10",
+        "DF-11",
+        "DF-14"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-16.R01",
+        "DF-16.R02",
+        "DF-16.R03",
+        "DF-16.R04",
+        "DF-16.R05",
+        "DF-16.R06"
+      ],
+      "taskIds": [
+        "DF-16.T01",
+        "DF-16.T02",
+        "DF-16.T03",
+        "DF-16.T04",
+        "DF-16.T05"
+      ],
+      "acceptanceIds": [
+        "DF-16.AC01",
+        "DF-16.AC02",
+        "DF-16.AC03",
+        "DF-16.AC04",
+        "DF-16.AC05",
+        "DF-16.AC06"
+      ],
+      "ownedPaths": [
+        "apps/review/",
+        "packages/director/src/review-api/",
+        "tests/review/",
+        "docs/review-flows/"
+      ]
+    },
+    {
+      "id": "DF-17",
+      "path": "core/17-sandbox-security-and-privacy.md",
+      "title": "Sandbox, privacy and controlled external services",
+      "sourcePrs": [
+        "PR-04",
+        "PR-05",
+        "PR-08"
+      ],
+      "dependsOn": [
+        "DF-02"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-17.R01",
+        "DF-17.R02",
+        "DF-17.R03",
+        "DF-17.R04",
+        "DF-17.R05",
+        "DF-17.R06",
+        "DF-17.R07"
+      ],
+      "taskIds": [
+        "DF-17.T01",
+        "DF-17.T02",
+        "DF-17.T03",
+        "DF-17.T04",
+        "DF-17.T05"
+      ],
+      "acceptanceIds": [
+        "DF-17.AC01",
+        "DF-17.AC02",
+        "DF-17.AC03",
+        "DF-17.AC04",
+        "DF-17.AC05",
+        "DF-17.AC06",
+        "DF-17.AC07"
+      ],
+      "ownedPaths": [
+        "packages/security/src/",
+        "packages/security/tests/",
+        "workers/office/",
+        "workers/browser/",
+        "config/security-policy.example.json",
+        "tests/fixtures/security/"
+      ]
+    },
+    {
+      "id": "DF-18",
+      "path": "core/18-pack-distribution-and-upstream-donors.md",
+      "title": "Pack distribution, upstream locks and donor-module integration",
+      "sourcePrs": [
+        "PR-08"
+      ],
+      "dependsOn": [
+        "DF-02",
+        "DF-06",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-18.R01",
+        "DF-18.R02",
+        "DF-18.R03",
+        "DF-18.R04",
+        "DF-18.R05",
+        "DF-18.R06"
+      ],
+      "taskIds": [
+        "DF-18.T01",
+        "DF-18.T02",
+        "DF-18.T03",
+        "DF-18.T04",
+        "DF-18.T05"
+      ],
+      "acceptanceIds": [
+        "DF-18.AC01",
+        "DF-18.AC02",
+        "DF-18.AC03",
+        "DF-18.AC04",
+        "DF-18.AC05",
+        "DF-18.AC06"
+      ],
+      "ownedPaths": [
+        "packages/packs/src/",
+        "packages/packs/tests/",
+        "config/upstreams.json",
+        "config/donors.json (new)",
+        "config/public-files.json (new)",
+        "THIRD_PARTY_NOTICES.md",
+        "docs/upstream-integrations/"
+      ]
+    },
+    {
+      "id": "DF-19",
+      "path": "core/19-ci-benchmarks-and-public-beta.md",
+      "title": "CI, comparative benchmarks and public-beta release",
+      "sourcePrs": [
+        "PR-08"
+      ],
+      "dependsOn": [
+        "DF-11",
+        "DF-15",
+        "DF-16",
+        "DF-18",
+        "DF-S01",
+        "DF-S02",
+        "DF-S03",
+        "DF-S04",
+        "DF-S05",
+        "DF-S06",
+        "DF-S07",
+        "DF-S08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-19.R01",
+        "DF-19.R02",
+        "DF-19.R03",
+        "DF-19.R04",
+        "DF-19.R05",
+        "DF-19.R06",
+        "DF-19.R07"
+      ],
+      "taskIds": [
+        "DF-19.T01",
+        "DF-19.T02",
+        "DF-19.T03",
+        "DF-19.T04",
+        "DF-19.T05"
+      ],
+      "acceptanceIds": [
+        "DF-19.AC01",
+        "DF-19.AC02",
+        "DF-19.AC03",
+        "DF-19.AC04",
+        "DF-19.AC05",
+        "DF-19.AC06"
+      ],
+      "ownedPaths": [
+        ".github/workflows/ci.yml (new)",
+        "scripts/run-benchmarks.mjs (new)",
+        "tests/benchmarks/",
+        "docs/benchmarks/",
+        "docs/pilots/",
+        "docs/RELEASE_CHECKLIST.md"
+      ]
+    },
+    {
+      "id": "DF-X1",
+      "path": "experiments/01-pptkit-backend.md",
+      "title": "PPTKit scene adapter and promotion experiment",
+      "sourcePrs": [
+        "PR-X1"
+      ],
+      "dependsOn": [
+        "DF-07",
+        "DF-08",
+        "DF-09",
+        "DF-11"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X1.R01",
+        "DF-X1.R02",
+        "DF-X1.R03",
+        "DF-X1.R04",
+        "DF-X1.R05"
+      ],
+      "taskIds": [
+        "DF-X1.T01",
+        "DF-X1.T02",
+        "DF-X1.T03",
+        "DF-X1.T04"
+      ],
+      "acceptanceIds": [
+        "DF-X1.AC01",
+        "DF-X1.AC02",
+        "DF-X1.AC03",
+        "DF-X1.AC04",
+        "DF-X1.AC05"
+      ],
+      "ownedPaths": [
+        "packages/adapters/pptkit/",
+        "tests/experiments/pptkit/",
+        "docs/experiments/pptkit/",
+        "config/experiments/pptkit.json"
+      ]
+    },
+    {
+      "id": "DF-X2",
+      "path": "experiments/02-presenton-service-and-editor.md",
+      "title": "Presenton service, generation and editor experiment",
+      "sourcePrs": [
+        "PR-X2"
+      ],
+      "dependsOn": [
+        "DF-00",
+        "DF-02",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X2.R01",
+        "DF-X2.R02",
+        "DF-X2.R03",
+        "DF-X2.R04",
+        "DF-X2.R05",
+        "DF-X2.R06"
+      ],
+      "taskIds": [
+        "DF-X2.T01",
+        "DF-X2.T02",
+        "DF-X2.T03",
+        "DF-X2.T04",
+        "DF-X2.T05"
+      ],
+      "acceptanceIds": [
+        "DF-X2.AC01",
+        "DF-X2.AC02",
+        "DF-X2.AC03",
+        "DF-X2.AC04",
+        "DF-X2.AC05",
+        "DF-X2.AC06"
+      ],
+      "ownedPaths": [
+        "packages/adapters/presenton/",
+        "tests/experiments/presenton/",
+        "docs/experiments/presenton/",
+        "config/experiments/presenton.json",
+        "scripts/start-presenton-lab.py (existing helper; preserve behavior)"
+      ]
+    },
+    {
+      "id": "DF-X3",
+      "path": "experiments/03-isolated-research-critic.md",
+      "title": "Isolated research critic and visual ideation experiment",
+      "sourcePrs": [
+        "PR-X3"
+      ],
+      "dependsOn": [
+        "DF-11",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X3.R01",
+        "DF-X3.R02",
+        "DF-X3.R03",
+        "DF-X3.R04",
+        "DF-X3.R05",
+        "DF-X3.R06"
+      ],
+      "taskIds": [
+        "DF-X3.T01",
+        "DF-X3.T02",
+        "DF-X3.T03",
+        "DF-X3.T04"
+      ],
+      "acceptanceIds": [
+        "DF-X3.AC01",
+        "DF-X3.AC02",
+        "DF-X3.AC03",
+        "DF-X3.AC04",
+        "DF-X3.AC05"
+      ],
+      "ownedPaths": [
+        "packages/adapters/research-critic/",
+        "tests/experiments/research-critic/",
+        "docs/experiments/research-critic/",
+        "config/experiments/research-critic.json"
+      ]
+    },
+    {
+      "id": "DF-S01",
+      "path": "structures/01-transformation-bridge.md",
+      "title": "Transformation bridge composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S01.R01",
+        "DF-S01.R02",
+        "DF-S01.R03",
+        "DF-S01.R04",
+        "DF-S01.R05",
+        "DF-S01.R06"
+      ],
+      "taskIds": [
+        "DF-S01.T01",
+        "DF-S01.T02",
+        "DF-S01.T03",
+        "DF-S01.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S01.AC01",
+        "DF-S01.AC02",
+        "DF-S01.AC03",
+        "DF-S01.AC04",
+        "DF-S01.AC05",
+        "DF-S01.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/transformation-bridge/",
+        "tests/structures/transformation-bridge/"
+      ]
+    },
+    {
+      "id": "DF-S02",
+      "path": "structures/02-hub-and-spoke.md",
+      "title": "Hub-and-spoke ecosystem composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S02.R01",
+        "DF-S02.R02",
+        "DF-S02.R03",
+        "DF-S02.R04",
+        "DF-S02.R05"
+      ],
+      "taskIds": [
+        "DF-S02.T01",
+        "DF-S02.T02",
+        "DF-S02.T03",
+        "DF-S02.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S02.AC01",
+        "DF-S02.AC02",
+        "DF-S02.AC03",
+        "DF-S02.AC04",
+        "DF-S02.AC05",
+        "DF-S02.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/hub-spoke/",
+        "tests/structures/hub-spoke/"
+      ]
+    },
+    {
+      "id": "DF-S03",
+      "path": "structures/03-architecture-layers.md",
+      "title": "Layered technical architecture composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S03.R01",
+        "DF-S03.R02",
+        "DF-S03.R03",
+        "DF-S03.R04",
+        "DF-S03.R05"
+      ],
+      "taskIds": [
+        "DF-S03.T01",
+        "DF-S03.T02",
+        "DF-S03.T03",
+        "DF-S03.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S03.AC01",
+        "DF-S03.AC02",
+        "DF-S03.AC03",
+        "DF-S03.AC04",
+        "DF-S03.AC05",
+        "DF-S03.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/architecture-layers/",
+        "tests/structures/architecture-layers/"
+      ]
+    },
+    {
+      "id": "DF-S04",
+      "path": "structures/04-comparison-and-scorecard.md",
+      "title": "Comparison matrix and decision scorecard",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S04.R01",
+        "DF-S04.R02",
+        "DF-S04.R03",
+        "DF-S04.R04",
+        "DF-S04.R05"
+      ],
+      "taskIds": [
+        "DF-S04.T01",
+        "DF-S04.T02",
+        "DF-S04.T03",
+        "DF-S04.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S04.AC01",
+        "DF-S04.AC02",
+        "DF-S04.AC03",
+        "DF-S04.AC04",
+        "DF-S04.AC05",
+        "DF-S04.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/comparison-matrix/",
+        "tests/structures/comparison-matrix/"
+      ]
+    },
+    {
+      "id": "DF-S05",
+      "path": "structures/05-roadmap-and-swimlane.md",
+      "title": "Roadmap, phases and swimlanes",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S05.R01",
+        "DF-S05.R02",
+        "DF-S05.R03",
+        "DF-S05.R04",
+        "DF-S05.R05"
+      ],
+      "taskIds": [
+        "DF-S05.T01",
+        "DF-S05.T02",
+        "DF-S05.T03",
+        "DF-S05.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S05.AC01",
+        "DF-S05.AC02",
+        "DF-S05.AC03",
+        "DF-S05.AC04",
+        "DF-S05.AC05",
+        "DF-S05.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/roadmap-swimlane/",
+        "tests/structures/roadmap-swimlane/"
+      ]
+    },
+    {
+      "id": "DF-S06",
+      "path": "structures/06-evidence-dashboard.md",
+      "title": "Evidence dashboard and KPI composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S06.R01",
+        "DF-S06.R02",
+        "DF-S06.R03",
+        "DF-S06.R04",
+        "DF-S06.R05",
+        "DF-S06.R06"
+      ],
+      "taskIds": [
+        "DF-S06.T01",
+        "DF-S06.T02",
+        "DF-S06.T03",
+        "DF-S06.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S06.AC01",
+        "DF-S06.AC02",
+        "DF-S06.AC03",
+        "DF-S06.AC04",
+        "DF-S06.AC05",
+        "DF-S06.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/evidence-dashboard/",
+        "tests/structures/evidence-dashboard/"
+      ]
+    },
+    {
+      "id": "DF-S07",
+      "path": "structures/07-conceptual-and-measured-funnel.md",
+      "title": "Conceptual and measured funnel composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S07.R01",
+        "DF-S07.R02",
+        "DF-S07.R03",
+        "DF-S07.R04",
+        "DF-S07.R05",
+        "DF-S07.R06"
+      ],
+      "taskIds": [
+        "DF-S07.T01",
+        "DF-S07.T02",
+        "DF-S07.T03",
+        "DF-S07.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S07.AC01",
+        "DF-S07.AC02",
+        "DF-S07.AC03",
+        "DF-S07.AC04",
+        "DF-S07.AC05",
+        "DF-S07.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/funnel/",
+        "tests/structures/funnel/"
+      ]
+    },
+    {
+      "id": "DF-S08",
+      "path": "structures/08-editorial-hero.md",
+      "title": "Editorial hero and high-impact thesis composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S08.R01",
+        "DF-S08.R02",
+        "DF-S08.R03",
+        "DF-S08.R04",
+        "DF-S08.R05",
+        "DF-S08.R06"
+      ],
+      "taskIds": [
+        "DF-S08.T01",
+        "DF-S08.T02",
+        "DF-S08.T03",
+        "DF-S08.T04"
+      ],
+      "acceptanceIds": [
+        "DF-S08.AC01",
+        "DF-S08.AC02",
+        "DF-S08.AC03",
+        "DF-S08.AC04",
+        "DF-S08.AC05",
+        "DF-S08.AC06"
+      ],
+      "ownedPaths": [
+        "packs/core/editorial-hero/",
+        "tests/structures/editorial-hero/"
+      ]
+    }
+  ]
+}
