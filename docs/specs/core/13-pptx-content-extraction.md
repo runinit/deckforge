@@ -1,18 +1,23 @@
 ---
 spec_id: DF-13
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-05"]
-depends_on: ["DF-12", "DF-17"]
+depends_on: ["DF-12", "DF-17", "DF-20"]
 ---
 
 # DF-13 — PPTX content extraction and unsupported-object inventory
 
 **Goal:** Extract editable information from existing decks with a precise capability/loss report, without promising lossless reconstruction.
 
-**Baseline mapping:** PR-05. **Dependencies:** [DF-12](12-markdown-intake.md), [DF-17](17-sandbox-security-and-privacy.md)
+**Baseline mapping:** PR-05. **Dependencies:** [DF-12](12-markdown-intake.md), [DF-17](17-sandbox-security-and-privacy.md), [DF-20](20-windows-native-office-worker.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -68,6 +73,14 @@ Inventory SmartArt, animations, embedded objects, unusual charts and unknown sha
 Output is a content candidate. Rebuilding through DeckSpec may change layout; native template preservation is separately tested in DF-15.
 
 
+### DF-13.R07 — Native inspection after admission
+
+Keep bounded ZIP/XML extraction first. Use PowerPoint read-only inspection/render only after DF-17 admission and DF-20 session checks; it supplements extraction and never silently repairs an input into acceptance.
+
+### DF-13.R08 — Office input inventory
+
+Record hidden slides, notes, chart workbooks, groups, master/layout roles, unsupported animations/actions and protection status. Native save changes are a separate derived artifact, not a lossless import claim.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-13.T01 — Implement package preflight.** Use DF-17 bounded workers and trusted manifest exchange.
@@ -75,6 +88,8 @@ Output is a content candidate. Rebuilding through DeckSpec may change layout; na
 - [ ] **DF-13.T03 — Extract supported charts.** Read values/labels and cross-check workbook/cache. Add unsupported-type records for all other chart cases.
 - [ ] **DF-13.T04 — Build retention inventory.** Compare source counts and content IDs; produce a per-slide reconciliation report for the planner.
 - [ ] **DF-13.T05 — Test malformed packages.** Include traversal, entity, decompression, relationship and unsupported-object fixtures.
+
+- [ ] **DF-13.T06 — Reconcile parser and desktop views.** Compare synthetic parsed content against PowerPoint’s object inventory and rendered slides; report unsupported objects, divergent notes or repaired sources instead of guessing missing data.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -102,18 +117,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-13.AC05 | Archive bomb | Supply an archive exceeding configured expansion limits. | Worker rejects/terminates within limits. |
 | DF-13.AC06 | Bad ordering | Overlap grouped text with ambiguous reading order. | Flag ambiguity; keep object IDs and original content. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-13.AC07 | Protected source | A supplied deck enters Protected View or requires a password. | Stop for the approved user workflow; do not unblock, enable content or accept repairs automatically. |
+| DF-13.AC08 | Chart embedding | A deck contains a macro-free embedded chart workbook and unrelated OLE. | Allow only the separately validated chart-data exception; reject unapproved embedded objects. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-13
+```powershell
+npm.cmd run test:spec -- DF-13
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -132,4 +154,4 @@ Implement DF-13 in the sandboxed intake lane. Preserve every unsupported object 
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§9, 12; Development plan PR-05, §11 F12. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§9, 12; Development plan PR-05, §11 F12. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

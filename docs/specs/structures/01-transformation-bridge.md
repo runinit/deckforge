@@ -1,6 +1,8 @@
 ---
 spec_id: DF-S01
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-03"]
 depends_on: ["DF-06", "DF-07", "DF-08"]
@@ -13,6 +15,9 @@ depends_on: ["DF-06", "DF-07", "DF-08"]
 **Baseline mapping:** PR-03. **Dependencies:** [DF-06](../core/06-structure-pack-sdk-and-registry.md), [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -71,12 +76,18 @@ Do not invent pain scores, savings, percentages or implied guaranteed outcomes. 
 Record Astra bridge file/commit as visual reference where applicable. Actual copied art/code requires eligibility through DF-18; an original composition may proceed independently.
 
 
+### DF-S01.R07 — Native bridge fidelity
+
+Render both bridge variants in PowerPoint with long-label/dense fixtures and approved Windows fonts. Keep headings, source/target states and transition labels native; inspect static exports so glow/arc artwork never hides essentials.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-S01.T01 — Implement three-slide showcase candidate.** Build the normal bridge first with both variants and the demo brand.
 - [ ] **DF-S01.T02 — Define native/decorative layers.** Keep every semantic label separate from art; attach ID-to-element coverage.
 - [ ] **DF-S01.T03 — Handle density.** Add minimal, dense and long-label fixtures with expected fit/alternate outcomes.
 - [ ] **DF-S01.T04 — Review final output.** Compare real-content gallery and actual-PPTX render at presentation scale; record brand/designer preference separately from package checks.
+
+- [ ] **DF-S01.T05 — Exercise the Windows native variants.** Edit a current-state label and a stage on a throwaway native deck, save/reopen and compare exported spacing; decoration stays separate.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -103,18 +114,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-S01.AC05 | Static | Disable scripts/motion. | All required labels and final values remain visible. |
 | DF-S01.AC06 | Native audit | Inspect output and change a target label. | Label is a native object; decorative art contains no hidden duplicate data. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-S01.AC07 | Native variant edit/save | A bridge title is changed in PowerPoint and saved. | Text remains editable and readable; the original build and evidence remain unchanged. |
+| DF-S01.AC08 | Static export on Windows | Render minimal, normal, dense and long-label fixtures through PowerPoint. | Both variants retain native essentials and readable content; record application/build/font and exact artifact hash. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-S01
+```powershell
+npm.cmd run test:spec -- DF-S01
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -133,4 +151,4 @@ Implement DF-S01 only with both variants. Use an original/permitted bridge treat
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §8, source S02; Development plan PR-03. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §8, source S02; Development plan PR-03. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

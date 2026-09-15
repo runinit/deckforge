@@ -1,6 +1,7 @@
 # Deckforge: development plan and project bootstrap
 
-**Audit date:** 2026-09-15.  
+**Original audit date:** 2026-09-15.
+**Platform revision:** windows-office-1, 2026-09-15. Primary environment: native Windows 11 x64 with installed desktop PowerPoint, Excel and Word. Implementation remains planned except the existing smoke starter.  
 **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md).  
 **Scope:** open-source presentation framework; private company brand/voice packs; editable PowerPoint first; ambitious visual structures and beta backends explicitly included.
 
@@ -24,7 +25,7 @@
 
 ## 1. Start with the right deliverable
 
-The first milestone is **a branded, visually distinctive, editable deck**, not a plugin installer that launches eight unrelated agents.
+The first milestone is **a branded, visually distinctive, editable deck rendered and checked in desktop PowerPoint**, not a plugin installer that launches eight unrelated agents.
 
 The supplied repository is a runnable **acceptance-fixture starter**, not the finished hybrid system. It establishes native text/shapes/charts/tables/notes, a small input validator, structural inspection, and local preview. Its six designs are original smoke fixtures, not Astra ports or a validated Ferroque template.
 
@@ -40,227 +41,125 @@ Do not call planned `/deck` commands and assume the product has been implemented
 
 ## 2. Toolchain and workspace
 
-### Core tooling
+The primary developer environment is **Windows 11 x64 and PowerShell 7** with native Windows Node/Python/Git. The chosen project lines are Node 24.x and Python 3.13.x; record and lock actual tested versions. Existing 22.x starter evidence remains historical, not Windows qualification. Company-approved desktop PowerPoint, Excel and Word are assumed deployed/licensed; verify actual edition/build/architecture rather than guessing.
 
-Use Node.js and npm for the starter. Use Python for local inspection and optional previews. The production packages should migrate to TypeScript in PR-01, without requiring a monorepo task orchestrator on day one.
-
-| Tool | Starter | Later use |
+| Tool/application | Required use | Scope |
 |---|---|---|
-| Node.js | 22+; locally tested on 22.16.0 | Prefer a current Node 24 environment for experiments; the audited Impeccable installer requires at least 22.18.0 [D01] |
-| npm | Dependency installation and scripts | Commit a lockfile after the first successful online installation |
-| Python | Standard library only for supplied scripts | Isolated ingestion/QA dependencies when introduced |
-| LibreOffice + Poppler | Optional actual-PPTX render to PDF/PNG | Reference rendering, not Microsoft PowerPoint certification |
-| Git | Source and revision tracking | Pin upstream source checkouts |
-| Docker | Not required | Presenton and isolated conversion experiments |
-| pnpm | Not required | PPTKit/PPTKit Presentation experiments only |
-| Bun | Not required | Optional `slides-ai-plugin` source experiments; not the proposed core runtime |
+| Node/npm/Git | Portable core, dependencies and source | Lock exact resolved dependencies; do not hardcode Linux shell commands |
+| Python | Standard-library inspection and spec validation | Use `py -3` explicitly until a portable launcher is implemented |
+| PowerShell 7 | Primary setup/developer shell | Prefer npm.cmd; do not bypass script policy |
+| Windows PowerShell 5.1 STA | Planned DF-20 Office worker host | Explicit child process in signed-in desktop session |
+| PowerPoint desktop | Native PNG/PDF, object/text inspection, edit/save probes and template operations | Primary final-artifact reference |
+| Excel desktop | Native embedded chart data probes; optional source intake | No implicit external refresh or destructive edits |
+| Word desktop | Optional native document intake | Not Word document generation |
+| LibreOffice/Poppler | Optional portability comparison | Not the required Windows approval gate |
+| Docker Desktop/WSL, pnpm, Bun | Separate optional upstream experiments | No Office/COM hosting in these environments |
 
-### Commands work without Bash-only syntax
+[Windows setup](docs/specs/WINDOWS_SETUP.md) supplies exact PowerShell/WinGet/extraction/private-path/skill-copy commands. [Windows execution contract](docs/specs/WINDOWS_OFFICE.md) defines Office session/process policy and cites [Microsoft documentation](docs/specs/WINDOWS_SOURCES.md).
 
-The main commands use normal arguments and quoted `$HOME` paths and can be entered in fish, zsh or bash. No heredocs, shell activation scripts, or `export NAME=value` are required. The example workspace is `$HOME/04_Src`; change that path consistently to suit your machine.
-
-**RUN NOW — inventory an existing installation:**
-
-```sh
-node --version
-npm --version
-python3 --version
-git --version
-```
-
-For an **Arch/CachyOS machine only**, the following packages provide a suitable Linux starting point. Review the transaction; do not replace an existing Node version-manager installation blindly. The Node 24 LTS package is `nodejs-lts-krypton` in Arch's repository [D02].
-
-```sh
-sudo pacman -Syu --needed git python unzip nodejs-lts-krypton npm libreoffice-fresh poppler ttf-liberation
-```
-
-On another OS, install equivalent tools through its normal package manager. The code does not require Arch. PowerPoint desktop validation may take place on a separate Windows or macOS workstation.
-
-### Keep four locations separate
-
-```text
-~/04_Src/deckforge/              public source + synthetic fixtures
-~/04_Src/deckforge-lab/          external pinned upstream checkouts
-~/02_Areas/DeckforgePrivate/    private brand packs and client inputs
-~/04_Src/deckforge/out/          ignored local generated artifacts
-```
-
-The last location is acceptable for the synthetic starter. Real client jobs should also use a private external job root, not merely rely on `.gitignore`.
+Use separate source/lab/private locations: `$env:USERPROFILE\04_Src\deckforge`, `$env:USERPROFILE\04_Src\deckforge-lab`, and `$env:LOCALAPPDATA\DeckforgePrivate\{brands,jobs}`. Validate actual ACL/local-storage/sync behavior; these example paths alone are not a privacy boundary. Office files use short local staged paths, safe filenames and hashes. UNC/cloud placeholders/WSL paths do not reach COM directly in v0.1.
 
 ## 3. Run the supplied starter
 
-### 3.1 Extract and install — RUN NOW
+### 3.1 Extract and install — RUN NOW on the target, not executed here
 
-The archive contains a top-level `deckforge/` directory. There is no public Deckforge Git remote to clone yet; this is a working name, not an established repository.
+The complete Windows bundle is `deckforge-windows-complete.zip`, with top-level `deckforge/`. Use [the guarded PowerShell extraction](docs/specs/WINDOWS_SETUP.md) into a new folder. For an existing checkout, stage `deckforge-windows-update.zip` and merge reviewed documentation changes; do not overwrite local source.
 
-Assuming the downloaded archive is in Downloads:
+From the project root after installing Node/Python:
 
-```sh
-mkdir -p "$HOME/04_Src"
-python3 -m zipfile -e "$HOME/Downloads/deckforge-audited-starter.zip" "$HOME/04_Src"
-cd "$HOME/04_Src/deckforge"
-python3 scripts/doctor.py
-npm install
-npm test
-npm run smoke
-npm run inspect
+```powershell
+if (Test-Path -LiteralPath '.\package-lock.json') { npm.cmd ci } else { npm.cmd install }
+if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed.' }
+node --test .\tests\validate.test.mjs
+if ($LASTEXITCODE -ne 0) { throw 'Baseline tests failed.' }
+node .\scripts\build-smoke.mjs .\examples\smoke-deck.json .\out\smoke
+if ($LASTEXITCODE -ne 0) { throw 'Baseline generation failed.' }
+py -3 .\scripts\inspect-pptx.py .\out\smoke\deck.pptx
+if ($LASTEXITCODE -ne 0) { throw 'Package inspection failed.' }
+py -3 .\docs\specs\tools\validate_specs.py
 ```
 
-Extract into a new destination if `deckforge/` already contains your work. Do not overwrite an unrelated project.
+PptxGenJS 4.0.0 remains the historical fixture pin, not a newest-release claim. Create and commit a real dependency lock after a reviewed successful install; no lockfile is fabricated by this documentation revision. The original smoke font is Liberation Sans, which must be checked locally. A separate Windows-font fixture is DF-00 work; substitution is a reported condition, not a silent baseline change.
 
-The starter pins `pptxgenjs` to **4.0.0**, the version used for the local execution evidence. It does **not** claim this is the newest release. The audited `presentation-skill` manifest uses 4.0.1 [D03]; test an upgrade separately rather than changing the baseline without a comparison.
+### 3.2 Expected outputs
 
-A lockfile is deliberately not fabricated: the artifact-building environment had no working registry/network access. Your first successful `npm install` creates `package-lock.json`; inspect and commit it. Subsequently use `npm ci` for reproducible installs. Record Node, npm and platform versions as well as the lockfile.
+The unchanged fixture produces `out/smoke/deck.pptx`, `geometry.json` and `build.json`. The fixture inspector expects six slides, one native chart/table/workbook and six notes parts; it does not prove fitting, anchoring or native edit/save behavior. These are fixture counts, not restrictions on the future product.
 
-### 3.2 Expected outputs — RUN NOW
+### 3.3 Actual PowerPoint review now; automation in DF-20
 
-```text
-out/smoke/deck.pptx
-out/smoke/geometry.json
-out/smoke/build.json
-```
+Use desktop PowerPoint to open a probe copy, edit a heading/table cell/chart datum, save/close/reopen and inspect warnings. Export PNG/PDF through PowerPoint’s UI and review all pages. [Windows setup](docs/specs/WINDOWS_SETUP.md) provides copy/open commands. Keep the generated original immutable; altered probes are not release candidates.
 
-`npm run inspect` prints a structural report. On the supplied fixture, expect six slides, one native chart, one native table, one embedded workbook, six notes parts and zero picture objects. These counts are a test of the fixture, not a universal quality standard for future decks.
+The current `npm run inspect/check/preview` chains still call `python3`; `preview` still uses LibreOffice/Poppler. They have **not** become native Office commands. Use the explicit Windows commands above until DF-00 ports launchers. DF-20 will add PowerPoint PNG/PDF export directly through the object model, with no Poppler requirement for its PNG channel. Future `deck qa --render powerpoint` remains TO IMPLEMENT.
 
-The inspector should reject a missing chart/workbook or broken internal relationship. It does not prove text fits, connectors are anchored, or PowerPoint can edit and save the file correctly.
+### 3.4 Baseline evidence
 
-### 3.3 Render the actual PPTX — RUN NOW
-
-```sh
-npm run preview
-```
-
-This requires `soffice` and `pdftoppm` on PATH. It creates:
-
-```text
-out/smoke/preview/deck.pdf
-out/smoke/preview/slide-1.png ... slide-6.png
-```
-
-The helper uses a temporary LibreOffice profile to avoid sharing state with a desktop instance. Use it only on trusted generated fixtures; it is not an untrusted-document sandbox.
-
-On a Linux desktop:
-
-```sh
-xdg-open out/smoke/preview/deck.pdf
-```
-
-Open the PPTX in Microsoft PowerPoint separately. Edit a heading, a table cell and chart data; save and reopen it; check for repair warnings. Record that check as `NOT_RUN` until it actually happens. LibreOffice success cannot substitute for this gate.
-
-### 3.4 Modify the fixture — RUN NOW
-
-Change the bounded text and synthetic values in `examples/smoke-deck.json`, then run:
-
-```sh
-npm run check
-npm run preview
-```
-
-The builder also accepts explicit paths:
-
-```sh
-node scripts/build-smoke.mjs examples/smoke-deck.json out/second-smoke
-python3 scripts/inspect-pptx.py out/second-smoke/deck.pptx
-python3 scripts/render-local.py out/second-smoke/deck.pptx
-```
-
-The fixture inspector intentionally expects this six-slide contract. Do not mistake it for a general DeckSpec validator.
+Record native PowerPoint/Excel behavior on the actual Windows Office/font/locale profile. Missing or unperformed checks remain NOT_RUN. Historical Linux rendering and existing documentation tests cannot be copied into a Windows PASS record. Source and baseline application code remain unchanged in this revision.
 
 ## 4. Put the project under version control
 
-**RUN NOW — review the included MIT license for original starter code and initialize locally:**
+For a new extracted project only:
 
-```sh
-cd "$HOME/04_Src/deckforge"
+```powershell
 git init -b main
 git add README.md ARCHITECTURE.md DEVELOPMENT_PLAN.md AGENTS.md LICENSE THIRD_PARTY_NOTICES.md
-git add package.json package-lock.json .gitignore .env.example src scripts tests skills config examples docs
+git add package.json .gitignore .env.example src scripts tests skills config examples docs
+if (Test-Path -LiteralPath '.\package-lock.json') { git add package-lock.json }
 git diff --cached --stat
 git diff --cached --name-only
 git status --short
 ```
 
-Inspect the staged files before committing. No fonts, customer inputs, company template, generated deck, credentials, source checkout, or proprietary brand pack should be staged.
+Review staged files before committing. No Office binaries, company template/fonts, private corpus, customer data, generated decks, temporary locks, credentials or private acceptance receipts belong in public source.
 
-```sh
-git commit -m "Bootstrap audited native-PPTX fixture and hybrid architecture"
-git switch -c feat/contracts-and-scene
+```powershell
+git commit -m 'Document Windows-native Office architecture and implementation specs'
+git switch -c feat/windows-baseline
 ```
 
-A network remote is optional. After installing/authenticating GitHub CLI and reviewing the staged/public content, an explicit publication command is:
-
-```sh
-gh repo create deckforge --public --source . --remote origin --push
-```
-
-That command creates a public repository under the account selected by `gh`; it may fail if the name is taken. Change the name deliberately rather than overwriting another remote. No repository has been created on your behalf by this delivery.
-
-Use the included MIT license for original code if that matches the project's choice. Adapted upstream files retain their own licenses and notices. A license on this project does not cover an upstream file or asset with unresolved permission.
+For an existing repository, create a review branch and merge the staged document update rather than reinitializing/resetting it. Optional publication through an authenticated GitHub CLI remains explicit and separate; this delivery creates no remote or public repository. Source licenses/provenance remain unchanged; private brand/Office assets are not redistributed.
 
 ## 5. Make the repository usable by a coding agent
 
-### 5.1 Install only our thin development skill — RUN NOW
+Follow the Windows setup's project-local copy installation for `skills/deckforge` into `.agents/skills/` or `.claude/skills/`. It works without symlink privileges; record the source/copy digest and refresh deliberately. The root AGENTS.md and skill now point to the Windows contract and 33-spec index. This is still a development skill, not a completed `/deck` product.
 
-From the project root, choose the host you use. These links are project-scoped and fail rather than overwrite an existing destination.
+Impeccable remains a separately reviewed optional dependency. The prior audit's pinned launcher command, adapted to PowerShell invocation, is:
 
-For Claude Code, whose documented project skill location is `.claude/skills/` [D04]:
-
-```sh
-mkdir -p .claude/skills
-ln -s ../../skills/deckforge .claude/skills/deckforge
+```powershell
+npm.cmd exec --yes --package=impeccable@4.1.0 -- impeccable install --providers=claude,codex --scope=project
 ```
 
-For Codex, whose documented repository skill directory is `.agents/skills/` and which supports symlinks [D05]:
-
-```sh
-mkdir -p .agents/skills
-ln -s ../../skills/deckforge .agents/skills/deckforge
-```
-
-The bundled skill reads `AGENTS.md` and both plans and directs implementation/testing. Do not install every presentation skill globally under competing auto-trigger descriptions. Reusable references should be loaded selectively by the eventual director.
-
-### 5.2 Add Impeccable — EXPERIMENT
-
-Use a Node version satisfying its audited installer manifest. The following pins the npm launcher; it does not magically pin every separately fetched engine or generated provider file [D01].
-
-```sh
-npm exec --yes --package=impeccable@4.1.0 -- impeccable install --providers=claude,codex --scope=project
-```
-
-Inspect its generated files and record the installed engine version/hash. Use it initially for design-context capture and review of the gallery/preview UI. The Office-specific adapter still needs implementation. Do not tell it that the smoke palette is Ferroque's identity.
-
-The future adapter should read approved `PRODUCT.md`/`DESIGN.md`, translate permitted design intent into our brand/structure contracts, and emit proposed changes. It must not invoke frontend-only checks as if they were PowerPoint validators.
+**EXPERIMENT, not Windows-tested here.** Verify installed engine/version and its actual Windows launcher; a launcher package pin does not pin every downloaded binary. Do not invoke Unix-only scripts in the native core or copy an upstream author's preferences into a brand pack. DF-05 owns the presentation-specific adapter and approved brand precedence.
 
 ## 6. Acquire upstream source without entangling runtimes
 
 ### 6.1 Fetch the first four checkouts — RUN NOW, requires network
 
-The supplied script clones source only. It does not install packages, load skills, or run upstream code. Four commits were verified through GitHub during this audit; the manifest records them.
+The supplied script, invoked through `py -3` on Windows, clones source only. It does not install packages, load skills, or run upstream code. Four commits were verified through GitHub during this audit; the manifest records them.
 
-```sh
-python3 scripts/fetch-upstreams.py --root "$HOME/04_Src/deckforge-lab" --only astra presentation-skill impeccable pptkit
+```powershell
+py -3 scripts/fetch-upstreams.py --root "$env:USERPROFILE/04_Src/deckforge-lab" --only astra presentation-skill impeccable pptkit
 ```
 
 It creates detached checkouts and writes:
 
 ```text
-~/04_Src/deckforge-lab/upstreams.lock.json
+%USERPROFILE%\04_Src\deckforge-lab\upstreams.lock.json
 ```
 
 The script refuses existing checkout directories rather than resetting local edits. To rerun only unfinished acquisitions, pass only those IDs. A failed fetch may leave a partial directory for inspection; it is not silently deleted.
 
 ### 6.2 Add selective experiments — RUN NOW, requires network
 
-```sh
-python3 scripts/fetch-upstreams.py --root "$HOME/04_Src/deckforge-lab" --only knowledge-cat slides-ai pptkit-presentation presenton pptx-automizer
+```powershell
+py -3 scripts/fetch-upstreams.py --root "$env:USERPROFILE/04_Src/deckforge-lab" --only knowledge-cat slides-ai pptkit-presentation presenton pptx-automizer
 ```
 
 These extra repositories were reviewed as candidates, but their exact commit IDs were not recorded during this audit. The script resolves and locks their fetched HEADs at acquisition. Do not describe those as pre-audited revisions.
 
 PPTAgent is a separate research-only acquisition:
 
-```sh
-python3 scripts/fetch-upstreams.py --root "$HOME/04_Src/deckforge-lab" --only pptagent
+```powershell
+py -3 scripts/fetch-upstreams.py --root "$env:USERPROFILE/04_Src/deckforge-lab" --only pptagent
 ```
 
 Fetching is not a security approval. Before execution, review the selected revision against all applicable advisories and inspect dependencies. The known code-execution advisory identifies a fix commit, so check patch inclusion rather than rejecting the project solely by its name [D11].
@@ -279,7 +178,7 @@ Initial patch-maintenance priorities:
 
 For example, after reviewing the candidate, create a fork without modifying the pinned reference checkout:
 
-```sh
+```powershell
 gh repo fork siril9/presentation-skill --clone=false
 ```
 
@@ -287,29 +186,29 @@ A GitHub fork preserves a source relationship. It is not a substitute for a redi
 
 ## 7. Run the most useful upstream checks
 
-These are **documented upstream commands to run locally**, not test results from this audit. Keep each experiment in its own checkout and dependency environment.
+These are **optional upstream command probes**, adapted at the shell entrypoint for Windows but not tested here. Upstream npm/Python scripts may still contain python3/Bash/POSIX assumptions; report those before execution, port only reviewed modules, or run an explicitly separate WSL lab. A WSL pass is not native-Windows evidence. Keep each experiment in its own checkout and dependency environment.
 
 ### 7.1 presentation-skill — EXPERIMENT
 
 Its audited v0.11.0 package exposes the following scripts [D03]:
 
-```sh
-cd "$HOME/04_Src/deckforge-lab/presentation-skill"
-npm install
-npm run setup:python
-npm run doctor
-npm run check:node
-npm run check:python
-npm run check:role-contracts-v2
-npm run check:visual-receipt
+```powershell
+Set-Location "$env:USERPROFILE/04_Src/deckforge-lab/presentation-skill"
+npm.cmd install
+npm.cmd run setup:python
+npm.cmd run doctor
+npm.cmd run check:node
+npm.cmd run check:python
+npm.cmd run check:role-contracts-v2
+npm.cmd run check:visual-receipt
 ```
 
 `check:python` is largely syntax validation; do not call that full behavioral QA. `setup:python` installs an isolated runtime and needs network. Read its emitted diagnostics before adding other test suites.
 
 Inspect the supported CLI surface rather than assuming the future Deckforge commands exist there:
 
-```sh
-python3 scripts/present.py --help
+```powershell
+py -3 scripts/present.py --help
 ```
 
 **Acceptance for reuse:** identify the exact composition/QA modules that work without hidden files, custom runtimes, or absolute paths; run their tests; document interface and license; port one module at a time. Do not copy its entire agent prompt into ours.
@@ -318,9 +217,9 @@ python3 scripts/present.py --help
 
 Start with the available check runner [D06]:
 
-```sh
-cd "$HOME/04_Src/deckforge-lab/knowledge-cat"
-python3 scripts/run_checks.py
+```powershell
+Set-Location "$env:USERPROFILE/04_Src/deckforge-lab/knowledge-cat"
+py -3 scripts/run_checks.py
 ```
 
 Its native lane expects a prepared `@oai/artifact-tool` workspace. Passing planning checks does not establish a portable native renderer. Reuse planning/evidence ideas and dependency-free validators only after inspection, or build a specific adapter for an environment where the dependency is legitimately available.
@@ -341,8 +240,8 @@ Use its pinned source checkout. Read `package.json` and `pnpm-lock.yaml` before 
 
 With that pnpm available, its documented developer workflow is [D08]:
 
-```sh
-cd "$HOME/04_Src/deckforge-lab/pptkit"
+```powershell
+Set-Location "$env:USERPROFILE/04_Src/deckforge-lab/pptkit"
 pnpm install --frozen-lockfile
 pnpm build
 pnpm typecheck
@@ -355,12 +254,12 @@ If a checkout has no lockfile or the frozen install fails, stop and record the m
 
 Alternatively, test published preview packages in a **separate** npm project:
 
-```sh
-mkdir -p "$HOME/04_Src/deckforge-lab/pptkit-package-probe"
-cd "$HOME/04_Src/deckforge-lab/pptkit-package-probe"
-npm init -y
-npm install --save-exact @pptkit/core @pptkit/pptx-exporter @pptkit/svg-renderer
-npm ls --depth=0
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/04_Src/deckforge-lab/pptkit-package-probe"
+Set-Location "$env:USERPROFILE/04_Src/deckforge-lab/pptkit-package-probe"
+npm.cmd init -y
+npm.cmd install --save-exact @pptkit/core @pptkit/pptx-exporter @pptkit/svg-renderer
+npm.cmd ls --depth=0
 ```
 
 This resolves whatever published versions are available at execution and saves exact direct versions plus a lockfile. It is a package experiment, **not** proof that the packages equal the audited source commit. Start from the upstream README's `createPresentation` / `writePptx` example, then implement our scene adapter as PR-X1.
@@ -371,13 +270,13 @@ Required capability probes: rich text, native charts with editable workbook data
 
 Its audited README specifies Node 20+ and pnpm 10.13.1 and provides this workflow [D09]. Keep it separate from the core checkout's package-manager choice:
 
-```sh
-cd "$HOME/04_Src/deckforge-lab/pptkit-presentation"
-npm exec --yes --package=pnpm@10.13.1 -- pnpm install
-npm exec --yes --package=pnpm@10.13.1 -- pnpm build
-npm exec --yes --package=pnpm@10.13.1 -- pnpm typecheck
-npm exec --yes --package=pnpm@10.13.1 -- pnpm test
-npm exec --yes --package=pnpm@10.13.1 -- pnpm --filter presentation-preview dev
+```powershell
+Set-Location "$env:USERPROFILE/04_Src/deckforge-lab/pptkit-presentation"
+npm.cmd exec --yes --package=pnpm@10.13.1 -- pnpm install
+npm.cmd exec --yes --package=pnpm@10.13.1 -- pnpm build
+npm.cmd exec --yes --package=pnpm@10.13.1 -- pnpm typecheck
+npm.cmd exec --yes --package=pnpm@10.13.1 -- pnpm test
+npm.cmd exec --yes --package=pnpm@10.13.1 -- pnpm --filter presentation-preview dev
 ```
 
 Assess session/review UX independently of the underlying exporter. Its browser SVG review is not advertised as pixel-identical PowerPoint. Do not put customer content into an unreviewed input path.
@@ -386,22 +285,22 @@ Assess session/review UX independently of the underlying exporter. Its browser S
 
 Docker is optional and must already be installed/configured. The included helper is print-only unless `--start` is provided:
 
-```sh
-cd "$HOME/04_Src/deckforge"
-python3 scripts/start-presenton-lab.py
+```powershell
+Set-Location "$env:USERPROFILE/04_Src/deckforge"
+py -3 scripts/start-presenton-lab.py
 ```
 
 To actually pull and start the local experiment:
 
-```sh
-python3 scripts/start-presenton-lab.py --start
+```powershell
+py -3 scripts/start-presenton-lab.py --start
 ```
 
 The helper uses the documented Presenton image and `/app_data` volume [D10]. It pulls the selected tag, resolves a repository digest, and runs that digest rather than the moving tag. It binds port 5001 to **127.0.0.1 only**, disables the documented memory/image-generation/web-grounding options for the initial text-only experiment, and records the resolved image in `out/lab/presenton-image.json`.
 
-Open `http://127.0.0.1:5001` locally; finish authentication/provider setup in the UI. No credential or model is preconfigured by this starter. A local service may still send content to an external model provider. Use only synthetic input during this experiment. Pulling/running the image and provider configuration have **not** been executed in the audit environment.
+Use Docker Desktop only as a separate experiment; do not expose Office COM or the Windows profile to the container. Open `http://127.0.0.1:5001` locally; finish authentication/provider setup in the UI. No credential or model is preconfigured by this starter. A local service may still send content to an external model provider. Use only synthetic input during this experiment. Pulling/running the image and provider configuration have **not** been executed in the audit environment.
 
-```sh
+```powershell
 docker logs --tail 100 deckforge-presenton-lab
 docker stop deckforge-presenton-lab
 docker start deckforge-presenton-lab
@@ -409,8 +308,8 @@ docker start deckforge-presenton-lab
 
 The helper refuses to replace an existing container. A fresh test can use another name and port, leaving the first experiment and volume intact:
 
-```sh
-python3 scripts/start-presenton-lab.py --start --name deckforge-presenton-lab-2 --port 5002
+```powershell
+py -3 scripts/start-presenton-lab.py --start --name deckforge-presenton-lab-2 --port 5002
 ```
 
 When repeating a specific image, pass the recorded digest through `--image`; keep the private application-data volume out of version control. Tag discovery is a one-time convenience, not the final release pin.
@@ -433,9 +332,11 @@ These are implementation units, not elapsed-time promises. Run X1/X2 in parallel
 | **PR-01 Contracts/compiler** | PR-00 | Versioned semantic schema, structure registry, measured scene boundary, reference writer | Unknown fields/capabilities rejected; same resolved geometry on repeat runs; no silent flattening |
 | **PR-02 Brand/voice** | PR-01 | Private pack loader, token rules, voice pairs, brand approval record | Three company-approved treatments; no invented company defaults; approved vocabulary and co-brand policy |
 | **PR-03 Visual pack v1** | PR-01; PR-02 for real branding | First eight attractive structures and a real-content gallery | Minimal/normal/dense/long-label fixtures; native essentials; visual review against agreed references |
-| **PR-04 Office/QA gates** | PR-01–03 | Text fit, package inspection, final renders, capability reports and receipts | No unreviewed clipping/repair warnings; chart/table edits; missing-font diagnostic; bounded repair loop |
+| **PR-04 Office/QA gates** | PR-01–03 plus Windows admission/session contracts | Text fit, package inspection, final renders, capability reports and receipts | No unreviewed clipping/repair warnings; chart/table edits; missing-font diagnostic; bounded repair loop |
+| **PR-04W Native Office host** | PR-01 and security/admission | DF-20: attended STA worker, native render/inspect/save/edit probes | Exact PowerPoint/Excel/font environment; ownership and timeout fixtures |
 | **PR-05 Source intake** | PR-01, PR-04 | Markdown intake, then PPTX content extraction with provenance | Text/data/notes retention tests; unsupported content inventory; hostile-file limits |
-| **PR-06 Template lane** | PR-02, PR-04 | `pptx-automizer` adapter for one approved company template | Approved masters/placeholders/theme inheritance; edited chart/notes survive; limits declared |
+| **PR-05W Word/Excel intake** | PR-05 foundations plus DF-20 | DF-21 optional native read-only source extraction | Revisions, typed values, links/privacy and unchanged source hashes |
+| **PR-06 Template lane** | PR-02, PR-04, DF-20 | Native `powerpoint-template` adapter for one approved company template; optional automizer comparison | Approved masters/placeholders/theme inheritance; edited chart/notes survive; limits declared |
 | **PR-07 Review experience** | PR-03–05 | Story approval, gallery, specific-slide revision, preview/export states | Consultant completes a deck without choosing coordinates or understanding APIs |
 | **PR-08 Public beta** | PR-04–07 | Pack distribution, reproducible CI, privacy review, documentation and pilot | Synthetic public fixtures only; brand pack private; three realistic pilot decks meet gates |
 | **PR-X1 PPTKit** | PR-01 | Subset scene adapter + comparison report | Final artifact fidelity and native contracts pass on exact pin |
@@ -454,7 +355,7 @@ Implement in order:
 4. `ResolvedScene` in points, with fonts, measured lines, z-order and declared overlap exceptions.
 5. `RenderPlan` containing the selected backend and required capabilities.
 6. The first compiler for cover, bridge, layers and comparison; an explicit adapter from the smoke input for regression tests.
-7. PptxGenJS emission from the scene, not an LLM-generated source file.
+7. PptxGenJS emission from the scene, not an LLM-generated source file. Add the separate DF-20 Windows worker early after storage/security boundaries; do not embed COM calls in the compiler.
 
 Determinism means the same canonical scene for fixed inputs, fonts and versions. Raw PPTX ZIP bytes may differ due to timestamps or packaging metadata; normalize those before using a binary hash as a regression assertion.
 
@@ -464,9 +365,9 @@ Acquire the corporate master/template, authoritative brand guide, approved logo 
 
 Create the private workspace without placing actual material in the public project:
 
-```sh
-mkdir -p "$HOME/02_Areas/DeckforgePrivate/ferroque-brand"
-mkdir -p "$HOME/02_Areas/DeckforgePrivate/jobs"
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:LOCALAPPDATA/DeckforgePrivate/brands/ferroque"
+New-Item -ItemType Directory -Force -Path "$env:LOCALAPPDATA/DeckforgePrivate/jobs"
 ```
 
 The capture tool should produce candidate rules with a source and confidence for each inference, then require brand-owner approval. It should distinguish `official`, `observed`, `proposed`, and `deprecated` rather than treating an old deck as authority.
@@ -489,7 +390,7 @@ Each pack needs `manifest.json`, content schema, compiler, style variants, stati
 
 ### PR-04 QA must separate facts from appearance
 
-Produce a machine-readable result with `PASS`, `FAIL`, `WARN`, or `NOT_RUN` for every check. Never let a missing PowerPoint installation produce a green Office-compatibility result.
+Produce a machine-readable result with `PASS`, `FAIL`, `WARN`, or `NOT_RUN` for every check. Never let a missing PowerPoint installation produce a green Office-compatibility result. PowerPoint-native rendering and feature probes are required for the default Windows release; human review remains independent.
 
 Implement a bounded loop: compile/render, inspect all affected slides, apply a single batched repair, rerender and confirm. A remaining failure stops release and lists the affected slide IDs. Do not create an unbounded polish agent.
 
@@ -505,7 +406,7 @@ Use bounded ZIP/XML parsing, path checks, entity restrictions, decompression lim
 
 ### PR-06 corporate template compatibility
 
-Start with one approved template. Identify its layout names, placeholders, masters, theme mapping, font requirements, notes and special objects. Add fixture slides with tables/charts and unusual content, then copy/edit/export through `pptx-automizer`.
+Start with one approved template. Identify its layout names, placeholders, masters, theme mapping, font requirements, notes and special objects. Add fixture slides with tables/charts and unusual content, then copy/edit/export through the selected Windows `powerpoint-template` worker backend. Test `pptx-automizer` separately as a portability path. Native layout-based slide creation is documented in W10; preservation still needs empirical evidence.
 
 Test adding a new slide in PowerPoint and applying the intended layout. Test chart data, notes and theme colors after save/reopen. Existing animation/layout limitations must be declared [D13]. A visually similar rebuilt theme must never be described as preservation of the original master.
 
@@ -526,10 +427,12 @@ deck plan --brief <file> --brand <approved-pack> --out <deck.json>
 deck validate <deck.json>
 deck gallery --deck <deck.json> --structures bridge,roadmap
 deck build <deck.json> --backend pptxgenjs --out <job>/build
-deck qa <job>/build --render libreoffice
+deck qa <job>/build --render powerpoint --profile windows-office
 deck review <job>
 deck export <job> --require-approved
 ```
+
+Additional planned commands: `deck doctor --profile windows-office`, `deck office probe <build> --checks save-reopen,chart-data,connectors`, and optional `deck ingest <source.docx|source.xlsx> --engine word-desktop|excel-desktop --job <job>` (choose the matching file/engine, not literal pipe syntax).
 
 Expected job files:
 
@@ -542,10 +445,11 @@ design-intent.json
 render-plan.json
 scene.json
 build/deck.pptx
-build/preview/
+build/preview/powerpoint/
 qa/content.json
 qa/geometry.json
 qa/office.json
+qa/office-environment.json
 qa/visual-review.json
 release/manifest.json
 ```
@@ -581,48 +485,45 @@ Record supported capability coverage, severe visual failures, factual changes, b
 
 For visual comparison, use frozen content and a fixed brand pack. Randomize candidate order for reviewers; record ties and reasons. Include both executive and technical slides. An engine should not win merely by deleting difficult content or substituting artwork for an editable chart.
 
-CI should run deterministic tests and render goldens in a pinned environment. Keep automated CI credentials and private corpora separate. The initial public CI uses synthetic inputs only. Add actual PowerPoint application verification as a separately recorded human/approved-workstation gate, not an untested server-automation promise.
+CI should run deterministic tests and render goldens in a pinned environment. Keep automated CI credentials and private corpora separate. The initial public CI uses synthetic inputs only. Run public Windows/no-Office CI plus optional Linux portability checks. Run native application acceptance separately on a private attended Windows workstation using approved commits, not a service or untrusted pull request. Import granular application and human receipts; do not advertise unattended Office support.
 
 ## 12. First coding-agent assignment
 
-Paste this into the coding agent from the repository root:
-
 ```text
-Read AGENTS.md, ARCHITECTURE.md and DEVELOPMENT_PLAN.md.
+Read AGENTS.md, ARCHITECTURE.md, DEVELOPMENT_PLAN.md and docs/specs/README.md.
+Read WINDOWS_SETUP.md and WINDOWS_OFFICE.md under docs/specs.
 
-Implement PR-01 only: a minimal TypeScript semantic contract, structure registry,
-resolved-scene model and PptxGenJS adapter. Preserve the supplied smoke harness
-as a regression baseline, and explicitly migrate its synthetic input rather
-than pretending its schema is production DeckSpec.
+Implement DF-00 for native Windows first. Preserve the original fixture, add a
+portable Python launcher and explicit test paths, record actual tools/fonts/
+Office prerequisites, and introduce a separately identified Windows-font fixture.
+Do not mark Windows tests as passed from historical Linux evidence.
 
-Keep native text, table cells, chart data and notes. Distinguish line primitives
-from anchored connectors. Reject unsupported capabilities rather than silently
-rasterizing. Use one final PPTX package writer. Do not add a web UI, Presenton,
-PPTKit, an LLM SDK, a vector database or real company assets in this change.
+Then implement DF-01 only in a separate change: strict semantic/scene and Office
+request/result contracts without running arbitrary model-generated scripts.
 
-Run the baseline tests first. Install/lock dependencies only where network access
-is available. Add tests for schema rejection, evidence state, point-to-inch
-conversion, stable IDs and capability failures. Render the final PPTX if tools
-are available. Report unexecuted checks as NOT_RUN.
+After DF-02 and the DF-17 security/session slice, implement DF-20's attended
+read-only PowerPoint render/inspection path in parallel with visual structures.
+No SYSTEM/service/container Office automation, Trust Center bypass, blanket
+process termination, or overwriting user documents. Add mutation probes later.
 
-Deliver the implementation, test log, changed-file summary and the next bounded
-PR task. Do not fabricate a brand guide, technical claims, permissions, a clean
-install result or Microsoft PowerPoint verification.
+Keep one final writer, native essential text/chart/table data and bounded QA.
+Deliver changed-file summary, exact tests/results, blockers and the next bounded
+spec task. Report unavailable Windows/Office checks as NOT_RUN.
 ```
 
-After this PR, start PR-02 with real brand inputs and PR-03 with the three showcase structures. Run X1/X2 as experiments rather than delaying the first branded deck.
+Use the [33-spec implementation order](docs/specs/IMPLEMENTATION_ORDER.md) for subsequent work. First design milestone remains bridge + architecture layers + editorial hero, reviewed in actual PowerPoint. Word/Excel intake is an optional DF-21 extension, not a prerequisite for that milestone.
 
 ## 13. What is verified in this delivery
 
-The starter's thirteen tests passed locally. It generated a six-slide PPTX with native text, shapes, one table, one chart, an embedded workbook and six notes parts. The actual PPTX rendered to six LibreOffice pages, and a contact sheet was inspected for obvious layout failures. See [docs/LOCAL_TEST_REPORT.md](docs/LOCAL_TEST_REPORT.md).
+This Windows revision updates the architecture, development plan, every original component spec and shared index/contracts/agent workflow, and adds DF-20/DF-21. The existing starter application code and dependencies remain unchanged. The documentation validator checks IDs, dependency graph, links, source snapshots and platform coverage; its current result is in [VALIDATION_REPORT.md](docs/specs/VALIDATION_REPORT.md).
 
-The environment's preinstalled PptxGenJS 4.0.0 was used through a local module link, excluded from the distribution. A clean registry installation, the external clone commands, upstream suites, Docker/Presenton, PPTKit and Microsoft PowerPoint were not executed. The helper scripts for upstream fetching and Presenton setup are provided for execution on your machine; neither is represented as an already-running integration.
+The earlier thirteen-test/six-slide/LibreOffice record is retained as a historical non-Windows result in [LOCAL_TEST_REPORT.md](docs/LOCAL_TEST_REPORT.md). It does not establish Windows install success or native Office behavior. No Office worker, native template adapter, Word/Excel importer, PowerShell script execution or Windows/PowerPoint/Excel/Word acceptance has been performed for this documentation revision.
 
-**Immediate sequence:** run the baseline, commit the real dependency lock, open/edit/save the fixture in PowerPoint, implement PR-01, and build the first three brand-approved showcase slides. That establishes both Office usability and the visual quality the project is meant to deliver.
+Immediate sequence: follow guarded Windows setup, reproduce the original fixture, record native manual observations, implement DF-00/01/02 and the security/Office host slice, then deliver the three showcase compositions. Use new exports and immutable probe copies; never overwrite a consultant's edited file.
 
 ## 14. Primary sources
 
-Sources were inspected on 2026-09-15. Upstream commands may evolve; use the recorded checkout or re-audit a deliberate update. The architecture document contains the detailed source/commit register.
+Prior donor-source audit entries below are retained from 2026-09-15 and not re-certified by the Windows revision. New native Windows/Office API facts are verified in [WINDOWS_SOURCES.md](docs/specs/WINDOWS_SOURCES.md). Upstream commands may evolve; use the recorded checkout or re-audit a deliberate update. The architecture document contains the detailed source/commit register.
 
 - **D01:** [Impeccable installation](https://github.com/pbakaus/impeccable), [audited package manifest](https://github.com/pbakaus/impeccable/blob/0a4e72a254f3b175c95b36b82e5f2e60fa63f116/package.json).
 - **D02:** [Arch Node 24 LTS package](https://archlinux.org/packages/extra/x86_64/nodejs-lts-krypton/).

@@ -37,8 +37,16 @@ def validate(root: Path) -> dict:
     ids = [s.get('id') for s in specs]
     if len(ids) != len(set(ids)):
         errors.append('Duplicate spec IDs.')
-    if len(specs) != 31:
-        errors.append(f'Expected 31 specs; found {len(specs)}.')
+    if len(specs) != 33 or manifest.get('specCountExpected') != 33:
+        errors.append(f'Expected 33 Windows revision specs; found {len(specs)}.')
+    if manifest.get('platformRevision') != 'windows-office-1':
+        errors.append('Missing Windows platform revision.')
+    original_ids = set(manifest.get('originalSpecIds', []))
+    expected_original = {f'DF-{i:02d}' for i in range(20)} | {f'DF-S{i:02d}' for i in range(1,9)} | {f'DF-X{i}' for i in range(1,4)}
+    if original_ids != expected_original or not expected_original.issubset(set(ids)):
+        errors.append('Original 31-spec coverage changed.')
+    if not {'DF-20','DF-21'}.issubset(set(ids)):
+        errors.append('New native Office specs missing.')
     by_id = {s['id']: s for s in specs}
     paths: set[str] = set()
     all_ids: set[str] = set()
@@ -60,6 +68,24 @@ def validate(root: Path) -> dict:
             errors.append(f'{sid}: frontmatter identity mismatch.')
         if 'implementation_status: not_implemented_by_this_delivery' not in text:
             errors.append(f'{sid}: missing documentation-only implementation status.')
+        if spec.get('platformRevision') != 'windows-office-1' or 'platform_revision: windows-office-1' not in text:
+            errors.append(f'{sid}: Windows platform coverage missing.')
+        for target in ('../WINDOWS_OFFICE.md', '../WINDOWS_SETUP.md'):
+            if target not in text:
+                errors.append(f'{sid}: common Windows contract/setup link missing.')
+        match = re.search(r'^depends_on: (.+)$', text, re.M)
+        try:
+            front_deps = json.loads(match.group(1)) if match else None
+        except ValueError:
+            front_deps = None
+        if front_deps != spec.get('dependsOn'):
+            errors.append(f'{sid}: frontmatter/manifest dependencies disagree.')
+        original = manifest.get('originalItemIds', {}).get(sid, {})
+        for field in ('requirementIds','taskIds','acceptanceIds'):
+            if not set(original.get(field, [])).issubset(spec.get(field, [])):
+                errors.append(f'{sid}: original {field} not preserved.')
+            if sid in original_ids and len(spec.get(field, [])) <= len(original.get(field, [])):
+                errors.append(f'{sid}: no platform-specific additions in {field}.')
         for heading in REQUIRED_SECTIONS:
             if heading not in text:
                 errors.append(f'{sid}: missing required section {heading}.')
@@ -134,8 +160,9 @@ def validate(root: Path) -> dict:
             elif not resolved.exists():
                 errors.append(f'{path.relative_to(root)}: broken local file link: {target}.')
     snapshots = 0
+    active_copies = 0
     for filename in ('ARCHITECTURE.md', 'DEVELOPMENT_PLAN.md'):
-        path = root / 'references' / filename
+        path = root / 'references' / 'archive' / 'pre-windows' / filename
         expected = manifest.get('sourceDigests', {}).get(filename)
         if not path.is_file():
             errors.append(f'Missing original source snapshot: {filename}.')
@@ -143,6 +170,17 @@ def validate(root: Path) -> dict:
             errors.append(f'Original source snapshot hash mismatch: {filename}.')
         else:
             snapshots += 1
+    for filename, expected in manifest.get('activeSourceDigests', {}).items():
+        path = root / 'references' / filename
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+            errors.append(f'Active Windows reference mismatch: {filename}.')
+        else:
+            active_copies += 1
+    if active_copies != 2:
+        errors.append('Expected two active Windows source copies.')
+    for name in ('WINDOWS_SETUP.md','WINDOWS_OFFICE.md','WINDOWS_SOURCES.md','WINDOWS_CHANGELOG.md'):
+        if not (root / name).is_file():
+            errors.append(f'Missing Windows shared document: {name}.')
     return {
         'status': 'PASS' if not errors else 'FAIL',
         'scope': 'Documentation integrity only; no product or Office checks.',
@@ -153,6 +191,9 @@ def validate(root: Path) -> dict:
         'acceptanceScenarios': sum(len(s.get('acceptanceIds', [])) for s in specs),
         'localFileLinksChecked': local_links,
         'sourceSnapshotsVerified': snapshots,
+        'activeSourceCopiesVerified': active_copies,
+        'windowsComponentCoverage': sum(s.get('platformRevision') == 'windows-office-1' for s in specs),
+        'originalComponentsPreserved': len(original_ids),
         'originalPrsCovered': sorted(prs),
         'topologicalOrder': order,
         'warnings': warnings,

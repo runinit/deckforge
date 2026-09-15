@@ -1,6 +1,8 @@
 ---
 spec_id: DF-X3
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-X3"]
 depends_on: ["DF-11", "DF-17"]
@@ -13,6 +15,9 @@ depends_on: ["DF-11", "DF-17"]
 **Baseline mapping:** PR-X3. **Dependencies:** [DF-11](../core/11-qa-receipts-and-release-gates.md), [DF-17](../core/17-sandbox-security-and-privacy.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -66,12 +71,18 @@ Compare against existing deterministic/Impeccable-style review using fixed defec
 A missing or failed critic never blocks the tested reference workflow; it remains an explicitly optional experiment.
 
 
+### DF-X3.R07 — Native-review input and isolation
+
+Give the critic only approved PowerPoint-rendered images and sanitized semantic context through a controlled egress stage. It has no desktop/COM/VBA access and cannot alter files or mark Office checks passed.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-X3.T01 — Review runtime.** Document selected pin, dependency surface and security disposition before launching anything.
 - [ ] **DF-X3.T02 — Build inert adapter.** Validate output and map findings; reject code/commands and unknown IDs.
 - [ ] **DF-X3.T03 — Create defect set.** Use known clipping, bad hierarchy, weak directional flow and correct-control fixtures.
 - [ ] **DF-X3.T04 — Run comparative review.** Record what the critic catches/misses and whether accepted suggestions improve the final render.
+
+- [ ] **DF-X3.T05 — Compare bounded Windows critique.** Measure critic findings against the same native artifacts and repair budget as human/baseline review; do not let screenshots leak private paths or source metadata.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -97,18 +108,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-X3.AC04 | Budget exhaustion | Critic requests repeated redesign passes. | Shared repair budget stops the loop. |
 | DF-X3.AC05 | No measurable gain | Critic adds cost without useful accepted findings. | Do not promote; keep optional or remove. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-X3.AC06 | Critic emits script | Research output includes PowerShell/VBA instructions. | Treat as unsupported proposed text and reject execution. |
+| DF-X3.AC07 | Critic passes broken chart | Aesthetic review passes a chart with uneditable data. | Native feature gate remains failed; the critic cannot override it. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-X3
+```powershell
+npm.cmd run test:spec -- DF-X3
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -127,4 +145,4 @@ Implement DF-X3 only as an isolated synthetic evaluation. Never execute model-pr
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§10–12; source S10 retained in baseline; Development plan PR-X3. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§10–12; source S10 retained in baseline; Development plan PR-X3. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

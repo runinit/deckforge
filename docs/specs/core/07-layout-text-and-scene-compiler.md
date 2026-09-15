@@ -1,6 +1,8 @@
 ---
 spec_id: DF-07
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-01", "PR-04"]
 depends_on: ["DF-01", "DF-02", "DF-06"]
@@ -13,6 +15,9 @@ depends_on: ["DF-01", "DF-02", "DF-06"]
 **Baseline mapping:** PR-01, PR-04. **Dependencies:** [DF-01](01-semantic-contracts-and-migrations.md), [DF-02](02-job-store-evidence-and-assets.md), [DF-06](06-structure-pack-sdk-and-registry.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -72,6 +77,14 @@ Allow only declared containment, decoration and connector contact. Diagnose unin
 Cache by content, brand, intent, pack, compiler, metrics and asset hashes. Fixed inputs produce equal canonical scenes; absent metrics cannot be presented as measured.
 
 
+### DF-07.R07 — PowerPoint text calibration
+
+Keep point-based deterministic compilation. Use a separately cached optional native measurement provider through DF-20 for font/run calibration and actual-file text bounds; do not infer perfect fitting from BoundHeight alone. See W05 in WINDOWS_SOURCES.
+
+### DF-07.R08 — Windows rendering environment
+
+Bind metrics to requested/resolved font evidence, Office build when applicable, locale, DPI/export settings and measurement-provider version. Font or Office changes invalidate only appropriate caches/receipts; no hidden text shrink or content edit is allowed.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-07.T01 — Implement metric abstraction.** Start with an explicit provider and fixtures; donor utilities may be ported only after their dependency and fit behavior are tested.
@@ -79,6 +92,8 @@ Cache by content, brand, intent, pack, compiler, metrics and asset hashes. Fixed
 - [ ] **DF-07.T03 — Implement bounded solver.** Separate region allocation, measurement, wrap and collision detection; impose candidate/iteration limits and deterministic tie-breaking.
 - [ ] **DF-07.T04 — Add semantic retention check.** Require every essential content ID to map to scene content; ensure no data or text is lost during splitting.
 - [ ] **DF-07.T05 — Calibrate against exported renders.** Compare the same text fixtures through the reference backend and actual PPTX render; record discrepancies rather than claiming browser metrics guarantee Office fidelity.
+
+- [ ] **DF-07.T06 — Compare measured and native text.** Test Windows fonts, CJK, mixed weight, margins, rotated text and 100/150/200-percent desktop scaling with fixed export dimensions. Record unknown fallback identity instead of claiming a match.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -107,18 +122,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-07.AC06 | Repeat compile | Compile twice with identical inputs and font manifest. | Canonical scene digests match. |
 | DF-07.AC07 | Unsupported request | Request anchored connectors from a backend without demonstrated support. | Render plan fails; a plain line is not substituted. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-07.AC08 | Native overflow | Compiler predicts fit but a PowerPoint text frame clips. | The actual-artifact check fails and proposes re-layout/split without deleting words. |
+| DF-07.AC09 | Office update | Re-run calibration with a changed Office build. | Affected measurement/application cache keys differ; old receipts are not reused. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-07
+```powershell
+npm.cmd run test:spec -- DF-07
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -137,4 +159,4 @@ Implement DF-07 in bounded steps: units, fonts/measurement, scene resolution, th
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§6.4–6.5, 9; Development plan PR-01, PR-04. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§6.4–6.5, 9; Development plan PR-01, PR-04. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

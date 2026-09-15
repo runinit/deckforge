@@ -1,6 +1,8 @@
 ---
 spec_id: DF-18
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-08"]
 depends_on: ["DF-02", "DF-06", "DF-17"]
@@ -13,6 +15,9 @@ depends_on: ["DF-02", "DF-06", "DF-17"]
 **Baseline mapping:** PR-08. **Dependencies:** [DF-02](02-job-store-evidence-and-assets.md), [DF-06](06-structure-pack-sdk-and-registry.md), [DF-17](17-sandbox-security-and-privacy.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -69,6 +74,14 @@ Verify schema/compiler range and required capabilities before install/activation
 Updates run original and local regression fixtures on a review branch. Preserve the last known-good pin; no automatic production update to HEAD.
 
 
+### DF-18.R07 — Windows distribution
+
+Ship source/specs and signed-or-policy-approved worker scripts with exact digests; never bundle Office binaries, registration changes, credentials or fonts. No install-time COM actions or system-wide execution-policy changes.
+
+### DF-18.R08 — Cross-platform upstream isolation
+
+Re-audit donor scripts for bash/python3 assumptions, executable bits, symlinks, native module builds and case-colliding filenames. A successful WSL test does not prove Windows portability; preserve one lock/evidence record per environment.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-18.T01 — Create donor ledger.** Record candidate module boundaries and evaluation status without claiming suites already passed.
@@ -76,6 +89,8 @@ Updates run original and local regression fixtures on a review branch. Preserve 
 - [ ] **DF-18.T03 — Implement local pack installer.** Start with reviewed local directories/archives; enforce digest, compatibility and path/size checks before registration.
 - [ ] **DF-18.T04 — Build public release allowlist.** Include only original/permitted source, synthetic examples, schemas/docs and required notices.
 - [ ] **DF-18.T05 — Add update workflow.** Resolve new pins deliberately, run regression evidence and publish a changed-capability report.
+
+- [ ] **DF-18.T06 — Validate Windows packages.** Extract/install in a clean Windows path containing spaces, check copied skill digests without symlink privileges and run no-Office tests. Stage beta services outside the Office runtime with no profile or COM exposure.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -103,18 +118,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-18.AC05 | Upstream change | Update a donor pin and introduce a text-fit regression. | Upgrade fails the fixture comparison and prior pin remains usable. |
 | DF-18.AC06 | Unresolved rights | A copied visual lacks established output eligibility. | Exclude it from public output and report it; original packs continue to work. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-18.AC07 | No admin install | Install source/spec/skill files under a standard user account. | Copy-based skill setup works or reports policy limits without elevation. |
+| DF-18.AC08 | Untrusted upstream change | An update adds a post-install executable or Office automation. | Require explicit review before reuse; no automatic activation. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-18
+```powershell
+npm.cmd run test:spec -- DF-18
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -133,4 +155,4 @@ Implement DF-18 with a donor ledger and one bounded tested port. Keep external l
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§3, 10, 12; Development plan §§6–8, PR-08. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§3, 10, 12; Development plan §§6–8, PR-08. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

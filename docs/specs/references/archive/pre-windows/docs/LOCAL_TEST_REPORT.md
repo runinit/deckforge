@@ -1,9 +1,3 @@
-# Historical non-Windows execution record
-
-**Scope warning for windows-office-1:** the original report below describes the earlier artifact-building environment only. It is not evidence of a Windows install, PowerShell execution, native PowerPoint rendering, Excel/Word automation or the new Office worker. The application source remains unchanged. Current documentation checks are in [VALIDATION_REPORT.md](specs/VALIDATION_REPORT.md).
-
----
-
 # Local execution report
 
 **Date:** 2026-09-15.  

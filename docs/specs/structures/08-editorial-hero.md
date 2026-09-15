@@ -1,6 +1,8 @@
 ---
 spec_id: DF-S08
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-03"]
 depends_on: ["DF-06", "DF-07", "DF-08"]
@@ -13,6 +15,9 @@ depends_on: ["DF-06", "DF-07", "DF-08"]
 **Baseline mapping:** PR-03. **Dependencies:** [DF-06](../core/06-structure-pack-sdk-and-registry.md), [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -64,12 +69,18 @@ Text over imagery needs a verified readable zone/treatment. If contrast cannot b
 An unsupported tagline cannot be promoted to an absolute promise to make the opening more dramatic.
 
 
+### DF-S08.R07 — Native editorial typography
+
+Review the actual PowerPoint hero with approved fonts, crops and aspect ratio. Large type, SVG artwork/transparency and fallback appearance need native renders; Windows display scaling must not hide a cropped heading.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-S08.T01 — Build third showcase slide.** Implement type-led hero using actual synthetic deck title and a deliberate two/three-line composition.
 - [ ] **DF-S08.T02 — Add image-led variant.** Use an original/permitted local illustration/photo placeholder only when explicitly marked synthetic; require asset eligibility.
 - [ ] **DF-S08.T03 — Add crop and contrast checks.** Respect protected image focal regions and keep essential text out of unsafe zones.
 - [ ] **DF-S08.T04 — Review impact.** Compare against the baseline title slide with identical content and brand, recording preference reasons and native-editability checks.
+
+- [ ] **DF-S08.T05 — Exercise the Windows native variants.** Probe title edits and figure crop across both variants at fixed native export dimensions; keep critical titles native and respect font/image distribution policy.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -96,18 +107,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-S08.AC05 | Missing image | Optional asset cannot be resolved. | Offer type-led composition explicitly; no random network image. |
 | DF-S08.AC06 | Strong claim | Proposal changes “can simplify” to “guarantees”. | Claim validation blocks it regardless of visual quality. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-S08.AC07 | Native variant edit/save | The title font is unavailable or substituted in desktop PowerPoint. | Font-strict release blocks until resolved; a scene-only hero preview cannot approve it. |
+| DF-S08.AC08 | Static export on Windows | Render minimal, normal, dense and long-label fixtures through PowerPoint. | Both variants retain native essentials and readable content; record application/build/font and exact artifact hash. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-S08
+```powershell
+npm.cmd run test:spec -- DF-S08
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -126,4 +144,4 @@ Implement DF-S08 as a first-milestone showcase. Make typography and composition 
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§7–8; Development plan PR-03. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§7–8; Development plan PR-03. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

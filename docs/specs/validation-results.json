@@ -1,95 +1,143 @@
 {
-  "documentation": {
-    "status": "PASS",
-    "scope": "Documentation integrity only; no product or Office checks.",
-    "specCount": 31,
-    "markdownFileCount": 42,
-    "requirements": 183,
-    "tasks": 138,
-    "acceptanceScenarios": 186,
-    "localFileLinksChecked": 606,
-    "sourceSnapshotsVerified": 2,
-    "originalPrsCovered": [
-      "PR-00",
-      "PR-01",
-      "PR-02",
-      "PR-03",
-      "PR-04",
-      "PR-05",
-      "PR-06",
-      "PR-07",
-      "PR-08",
-      "PR-X1",
-      "PR-X2",
-      "PR-X3"
-    ],
-    "topologicalOrder": [
-      "DF-00",
-      "DF-01",
-      "DF-02",
-      "DF-03",
-      "DF-04",
-      "DF-05",
-      "DF-06",
-      "DF-07",
-      "DF-08",
-      "DF-09",
-      "DF-10",
-      "DF-11",
-      "DF-17",
-      "DF-12",
-      "DF-13",
-      "DF-14",
-      "DF-15",
-      "DF-16",
-      "DF-18",
-      "DF-S01",
-      "DF-S02",
-      "DF-S03",
-      "DF-S04",
-      "DF-S05",
-      "DF-S06",
-      "DF-S07",
-      "DF-S08",
-      "DF-19",
-      "DF-X1",
-      "DF-X2",
-      "DF-X3"
-    ],
-    "warnings": [],
-    "errors": []
-  },
-  "negativeProbes": [
+  "status": "PASS",
+  "scope": "Documentation integrity only; no product or Office checks.",
+  "specCount": 33,
+  "markdownFileCount": 53,
+  "requirements": 256,
+  "tasks": 181,
+  "acceptanceScenarios": 272,
+  "localFileLinksChecked": 847,
+  "sourceSnapshotsVerified": 2,
+  "activeSourceCopiesVerified": 2,
+  "windowsComponentCoverage": 33,
+  "originalComponentsPreserved": 31,
+  "originalPrsCovered": [
+    "PR-00",
+    "PR-01",
+    "PR-02",
+    "PR-03",
+    "PR-04",
+    "PR-05",
+    "PR-06",
+    "PR-07",
+    "PR-08",
+    "PR-X1",
+    "PR-X2",
+    "PR-X3"
+  ],
+  "topologicalOrder": [
+    "DF-00",
+    "DF-01",
+    "DF-02",
+    "DF-03",
+    "DF-04",
+    "DF-05",
+    "DF-06",
+    "DF-07",
+    "DF-08",
+    "DF-17",
+    "DF-20",
+    "DF-09",
+    "DF-10",
+    "DF-11",
+    "DF-12",
+    "DF-13",
+    "DF-14",
+    "DF-15",
+    "DF-16",
+    "DF-18",
+    "DF-S01",
+    "DF-S02",
+    "DF-S03",
+    "DF-S04",
+    "DF-S05",
+    "DF-S06",
+    "DF-S07",
+    "DF-S08",
+    "DF-19",
+    "DF-21",
+    "DF-X1",
+    "DF-X2",
+    "DF-X3"
+  ],
+  "warnings": [],
+  "errors": [],
+  "negativeValidatorProbes": [
     {
-      "probe": "unknown dependency",
+      "defect": "unknown-dependency",
       "expected": "FAIL",
       "observed": "FAIL",
-      "result": "PASS"
+      "passed": true
     },
     {
-      "probe": "dependency cycle",
+      "defect": "dependency-cycle",
       "expected": "FAIL",
       "observed": "FAIL",
-      "result": "PASS"
+      "passed": true
     },
     {
-      "probe": "broken local link",
+      "defect": "broken-link",
       "expected": "FAIL",
       "observed": "FAIL",
-      "result": "PASS"
+      "passed": true
     },
     {
-      "probe": "missing acceptance ID",
+      "defect": "missing-acceptance-id",
       "expected": "FAIL",
       "observed": "FAIL",
-      "result": "PASS"
+      "passed": true
     },
     {
-      "probe": "modified source snapshot",
+      "defect": "changed-history",
       "expected": "FAIL",
       "observed": "FAIL",
-      "result": "PASS"
+      "passed": true
+    },
+    {
+      "defect": "missing-windows-coverage",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true
+    },
+    {
+      "defect": "changed-active-copy",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true
+    },
+    {
+      "defect": "missing-new-spec",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true
     }
   ],
-  "applicationTestsRun": false
+  "unchangedApplicationFiles": [
+    ".env.example",
+    ".gitignore",
+    "LICENSE",
+    "config/upstreams.json",
+    "examples/smoke-deck.json",
+    "package.json",
+    "scripts/build-smoke.mjs",
+    "scripts/doctor.py",
+    "scripts/fetch-upstreams.py",
+    "scripts/inspect-pptx.py",
+    "scripts/render-local.py",
+    "scripts/start-presenton-lab.py",
+    "src/validate-smoke.mjs",
+    "tests/validate.test.mjs"
+  ],
+  "originalSpecsModified": 31,
+  "existingPortableTests": {
+    "status": "PASS",
+    "passed": 13,
+    "platform": "Linux",
+    "node": "v22.16.0",
+    "scope": "Existing synthetic input validator only"
+  },
+  "windowsNativeOfficeTests": {
+    "status": "NOT_RUN",
+    "reason": "Documentation revision created on Linux; no Windows/Office runtime execution."
+  }
 }

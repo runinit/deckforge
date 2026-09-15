@@ -1,6 +1,7 @@
 # Deckforge: audited hybrid presentation architecture
 
-**Status:** proposed architecture, with a small executable native-PPTX smoke starter.  
+**Status:** Windows/native-Office-first proposed architecture; existing portable smoke starter retained unchanged.
+**Platform revision:** windows-office-1, 2026-09-15; native desktop PowerPoint, Excel and Word assumed for deployment, not verified in this execution environment.  
 **Audit date:** 2026-09-15.  
 **Working name:** Deckforge; naming and repository availability have not been checked.  
 **Primary use:** a company-branded presentation system for non-designers, initially for Ferroque consulting work.  
@@ -24,7 +25,7 @@
 - [13. Proposed repository evolution](#13-proposed-repository-evolution)
 - [14. Architecture decisions to preserve](#14-architecture-decisions-to-preserve)
 - [15. Source register](#15-source-register)
-- [16. Audit execution record](#16-audit-execution-record)
+- [16. Historical execution record and this revision](#16-historical-execution-record-and-this-revision)
 
 ## 1. Decision
 
@@ -39,7 +40,7 @@ Keep the compelling part of the original idea: Astra's visual structures, Impecc
 - Experimental engines remain eligible, but earn adoption using the same fixtures.
 - Browser previews and the final PowerPoint file have separate verification gates.
 
-**Initial implementation:** PptxGenJS as the executable reference backend; `presentation-skill` as a fork/donor for composition and QA; Impeccable as design guidance; an Astra structure-porting track from the first visual milestone. PPTKit and Presenton are early experiments, not distant afterthoughts. Neither is the canonical project data model.
+**Initial implementation:** native Windows Node/PowerShell development; PptxGenJS as the executable reference backend; PowerPoint desktop as the primary actual-artifact renderer and edit/save verifier; `presentation-skill` as a fork/donor for composition and QA; Impeccable as design guidance; an Astra structure-porting track from the first visual milestone. PPTKit and Presenton are early experiments, not distant afterthoughts. Neither is the canonical project data model.
 
 This is not a retreat to generic corporate templates. The first visual milestone must include a transformation bridge, an architectural composition, and an editorial or infographic treatment—not merely title/bullets/cards.
 
@@ -50,7 +51,7 @@ This is not a retreat to generic corporate templates. The first visual milestone
 | More presentation skills produce a better combined agent | Their workflows overlap and can disagree on output format, style, language questions, editing policy, and renderer | Load selected reference modules under one orchestrator; do not concatenate whole skill instructions |
 | A `SKILL.md` is an interchangeable engine API | It is an instruction package; scripts and runtime requirements differ [S12] | Wrap actual scripts or callable APIs with tested adapters |
 | PPTKit can ingest a company PPTX losslessly | Its engine roadmap puts import and round-trip preservation in a later track [S04] | Separate content extraction, visual reconstruction, and native-template reuse |
-| An SVG preview verifies PowerPoint appearance | PPTKit Presentation explicitly says its preview is not pixel-identical PowerPoint [S05] | Render the final PPTX; retain an actual PowerPoint edit/save gate |
+| An SVG preview verifies PowerPoint appearance | PPTKit Presentation explicitly says its preview is not pixel-identical PowerPoint [S05] | Render the final PPTX through installed PowerPoint; automate bounded application probes and retain independent human edit/save review |
 | Knowledge Cat is a portable native renderer out of the box | Its bundled native builder expects a prepared `@oai/artifact-tool` workspace [S06] | Reuse planning, evidence contracts, and appropriate validators; do not make that runtime a core dependency |
 | `pptx-automizer` preserves arbitrary templates and animations | Its documented limits include animation IDs and restrictions around layouts [S09] | Admit templates through a tested compatibility profile |
 | Mix a different PPTX engine on every slide | Package parts, theme IDs, masters, charts, notes, relationships, and animation references must survive assembly | One final writer per deck. Per-slide *composition* routing is supported; foreign-PPTX merging is a later, explicit mode |
@@ -74,7 +75,7 @@ Earlier popularity counts and unverified maturity claims are not used as selecti
 | Knowledge Cat | Story/evidence planning, output lanes, validators and case artifacts; MIT; native runtime prerequisite [S06] | Story planner references, evidence schema ideas, selected dependency-free checks | Module donor, not the native compiler |
 | `slides-ai-plugin` | TypeScript helpers, font measurement and layout checks; helper execution uses Bun and auto-installed packages [S08] | Measured text fitting, image/SVG utilities, layout helpers | Selectively port after tests; replace dynamic installation with explicit locked dependencies |
 | PptxGenJS | Native PPTX construction and native chart APIs [S11] | Final package writer for the reference path | Dependency; smoke starter deliberately pins 4.0.0, which was available for local execution |
-| `pptx-automizer` | Native template editing, import/merge, PptxGenJS integration, documented limits [S09] | Approved master/template workflow | Optional template backend, separately tested |
+| `pptx-automizer` | Native template editing, import/merge, PptxGenJS integration, documented limits [S09] | Portable comparison for approved master/template workflow | Secondary template backend; native Windows PowerPoint template operations are the first desktop candidate |
 | PPTKit | Pre-release authoring/IR/export pipeline, SVG preview, layout separation; roadmap includes charts and deferred import features [S04] | Alternative scene/export backend and layout ideas | Early backend experiment; native charts, font fit, and anchored connectors must be fixture-tested on the exact package/commit |
 | PPTKit Presentation | Local review workflow and explicit export; preview is not a fidelity oracle [S05] | Review UX, session organization, input provenance ideas | Experimental review adapter, not a lossless importer |
 | Presenton | Template-based generation/editor, REST and MCP, custom template workflow; Apache-2.0 [S13] | Existing team-facing UI and alternative full-deck generation | Run as a separate local service; do not assume it accepts DeckSpec or provides lossless arbitrary editing |
@@ -99,7 +100,7 @@ These are repository commit IDs read from GitHub during the audit, not file/blob
 
 ### v0.1 must do
 
-Accept a reviewed outline or structured content; capture a private brand pack; select an appropriate composition; output a native editable widescreen PPTX; show a gallery/contact sheet; identify unsupported capabilities and unverified checks. A consultant should be able to change a heading, a hostname, a table cell, and a chart value without regenerating the deck.
+Accept a reviewed outline or structured content; capture a private brand pack; select an appropriate composition; output a native editable widescreen PPTX; show a gallery/contact sheet; identify unsupported capabilities and unverified checks. A consultant should be able to change a heading, a hostname, a table cell, and a chart value in desktop PowerPoint/Excel without regenerating the deck. Optional native Word/Excel source intake is separate from general Office authoring.
 
 ### v0.1 deliberately does not promise
 
@@ -139,16 +140,29 @@ Untrusted inputs                         Private brand pack
                                       |
                             ResolvedScene (points)
                               /               \
-                  reference PPTX writer     SVG/HTML preview
+                  selected PPTX writer      SVG/HTML preview
                               |
-                       final artifact render
+                       PowerPoint PNG/PDF render
                               |
-             object checks + visual review + Office probe
+             native object/save/edit probes + human review
                               |
                         delivery manifest
 ```
 
 Parallel experiments receive **frozen inputs** and produce independent candidate decks and reports. They do not overwrite the active deck or each other's workspace.
+
+
+### Windows desktop application boundary
+
+The deployment target is a signed-in Windows 11 x64 workstation with company-approved desktop PowerPoint, Excel and Word, locally available approved fonts and normal user permissions. The TypeScript core remains portable; it delegates **only allowlisted native operations** to a serialized Windows PowerShell STA worker. The [Windows Office contract](../WINDOWS_OFFICE.md) and [DF-20](../core/20-windows-native-office-worker.md) own details.
+
+PowerPoint supplies native PNG/PDF export, text/object inspection and copy-based save/edit probes. Excel verifies embedded chart workbooks; optional Word/Excel input uses DF-21. These capabilities follow Microsoft's object-model documentation [W02–W14](../WINDOWS_SOURCES.md). They are not implemented merely because Office is installed.
+
+The worker runs in the operator's interactive session, not as SYSTEM, a Windows service, remote non-interactive task, Docker process or public CI runner. Native acceptance uses a private **attended** workstation/VM and approved fixtures; portable CI never pretends to provide Office. This boundary follows Microsoft's automation deployment constraints [W01](../WINDOWS_SOURCES.md).
+
+Each application operation has input/output hashes, environment/build/font/locale evidence, ownership-aware cleanup and a parent deadline. Do not attach to or close arbitrary user Office documents, assume COM activation makes a fresh isolated instance, or globally kill Office processes. Source admission precedes native open; read-only COM is not a malware sandbox. Macro/protection/label/connected-experience policy remains explicit.
+
+Keep meanings and point-based geometry outside COM. An optional native measurement calibration provider may improve font/run estimates, but final PowerPoint rendering is an independent check. SVG is the fast design view, PowerPoint is the Windows deliverable view, and LibreOffice is an explicitly requested portability comparison. No Poppler is needed for PNGs exported directly from PowerPoint.
 
 ### Three separations are mandatory
 
@@ -224,7 +238,7 @@ interface AssetRecord {
 }
 ```
 
-Do not put confidential file paths or private URLs into public speaker notes. Export uses a separate source-display policy. Private corpus indexes and their embeddings are private assets too.
+Do not put confidential file paths or private URLs into public speaker notes. Windows logical IDs map to safe physical filenames; validate junctions/reparse points, case collisions, reserved names, streams, file locks and local staging before native operations. Export uses a separate source-display policy. Private corpus indexes and their embeddings are private assets too.
 
 ### 6.3 DesignIntent: constrained creative direction
 
@@ -420,23 +434,23 @@ PPTKit's current roadmap lists native bar/line/pie charts as implemented, while 
 
 **Reconstructed theme:** extract an approved visual specification and rebuild a native theme. This is a design reconstruction, not preservation of the original master.
 
-**Native-template path:** use approved existing slides/layouts through `pptx-automizer`. Inventory placeholders, relationships, special objects and animations. Verify theme inheritance and that adding a new slide behaves acceptably.
+**Native-template path (Windows primary):** select a `powerpoint-template` backend using the installed PowerPoint object model through DF-20. Open an admitted template copy, retain its designs/custom layouts, bind approved placeholder roles and add slides with the intended native layout. Save to a new final artifact and verify theme inheritance, notes, chart workbooks and new-slide behavior. `pptx-automizer` remains a separately selected portable comparison path, not the only route to real masters. Native APIs support layout-based slide creation [W10](../WINDOWS_SOURCES.md); arbitrary template/animation preservation still requires fixtures.
 
 **Preserved slide:** retain a complex slide as a restricted/imported element only when necessary. Declare limited editing; never count it as equivalent to a fully rebuilt native slide.
 
-Template intake must return a compatibility report before promising preservation. `pptx-automizer` specifically documents restrictions on layouts and animation references [S09].
+Template intake must return an exact template/build/backend compatibility report before promising preservation. Native PowerPoint saving is a declared final-writer stage when selected; probe copies never silently change the reference writer output or inherit its approvals. `pptx-automizer` specifically documents restrictions on layouts and animation references [S09].
 
 ## 10. Experimental engines without architectural lock-in
 
 ### PPTKit experiment
 
-Run the same fixtures through a pinned source/package build. Test rich text, nested grouping, native chart data, merged table cells, anchored connectors, notes, SVGs and font fallback. Compare final PowerPoint renders—not only its workbench SVG output. Promote it if it materially simplifies the scene/export path while satisfying the contract; otherwise retain the PptxGenJS backend.
+Run the same fixtures through a pinned source/package build. Test rich text, nested grouping, native chart data, merged table cells, anchored connectors, notes, SVGs and font fallback. Compare final PowerPoint renders and feature probes in the same Windows Office build/font/locale profile—not only its workbench SVG output. Promote it if it materially simplifies the scene/export path while satisfying the contract; otherwise retain the PptxGenJS backend.
 
 Do not create a universal bidirectional IR converter. Implement a documented subset from our resolved scene to PPTKit and fail on unsupported fields.
 
 ### Presenton experiment
 
-Use it as an independent full-deck generator/editor and a possible future UI. Its API can accept slide Markdown, but that is not a promise to preserve every element of our DeckSpec or every word without rewriting [S13]. Freeze inputs, inspect exported content, and compare against the reference backend.
+Use it as an independent full-deck generator/editor and a possible future UI. On Windows, a separate Docker Desktop/WSL lab may host the service, but never desktop Office or the user profile; only admitted local exported artifacts reach DF-20. Its API can accept slide Markdown, but that is not a promise to preserve every element of our DeckSpec or every word without rewriting [S13]. Freeze inputs, inspect exported content, and compare against the reference backend.
 
 A UI integration is not “easy wrapping.” It needs ownership of edits, job state, authentication, customer isolation, and content round-tripping. Only choose it as the team interface after those behaviors are demonstrated.
 
@@ -462,7 +476,7 @@ A skipped or unavailable check is `NOT_RUN`, never `PASS`.
 | Content | Numeric consistency; required evidence; forbidden placeholders; changed-claim diff | Technical owner approves unsupported claims/assumptions |
 | Brand/voice | Allowed tokens/fonts; protected strings; terminology; required marks | Brand reviewer approves treatment and phrasing |
 | Geometry | Bounds; intended-overlap exceptions; text-fit estimates; object limits | Inspect all rendered slides at presentation scale |
-| Office package | XML/package relationships; notes; charts/tables/workbooks; external links/macros policy | PowerPoint opens without repair; edit/save/reopen probe |
+| Office package | XML/package relationships; notes; charts/tables/workbooks; external links/macros policy | Native PowerPoint render/inspection and copy-based edit/save/reopen probes; human no-repair-warning observation recorded separately |
 | Design | Density, hierarchy and repeated-layout diagnostics | Side-by-side preference test against an approved design baseline |
 | Privacy | Output/log/artifact classification; asset rights; publication allowlist | Release owner approves intended recipient scope |
 
@@ -482,11 +496,11 @@ Keep generated source authoritative **until** someone edits the PPTX. Save outpu
 
 Separate the public framework from private brand packs, customer inputs, output decks, visual goldens, embeddings, logs and credentials. `.gitignore` is a convenience, not the boundary: use external directories and CI publication allowlists.
 
-Treat source files and HTML as untrusted. Before production ingestion, enforce archive size/entry/decompression limits, path confinement, XML entity/DTD policy, relationship allowlists, macro/embedded-object policy and asset type checks. Render in an isolated worker with a disposable writable directory, resource limits, no Docker socket, and no mounted home directory. Disable renderer networking; use a separate controlled fetch/model stage when necessary.
+Treat source files and HTML as untrusted. Before production ingestion, enforce archive size/entry/decompression limits, path confinement, XML entity/DTD policy, relationship allowlists, macro/embedded-object policy and asset type checks. Parse untrusted content in an isolated worker with a disposable writable directory, resource limits, no Docker socket and no mounted home directory. Only admitted inputs enter the separate attended Windows Office lane; that COM child is not equivalent to an isolated parser. A stricter native lane needs an approved licensed Windows acceptance VM/profile. Disable renderer networking; use a separate controlled fetch/model stage when necessary.
 
 The provided local smoke scripts are for **trusted generated fixtures**. They are not a hardened arbitrary-file ingestion sandbox.
 
-Self-hosted Presenton or a local preview does not automatically mean prompts stay local. Model, image, search, telemetry and font requests need separate policies. Start external services on loopback and with synthetic data. Do not log API keys or bake them into generated HTML.
+Self-hosted Presenton, local Office automation or a local preview does not automatically mean data stays local. Office cloud fonts, connected experiences, add-ins and protection/export behavior require a recorded policy, independent of model egress. Model, image, search, telemetry and font requests need separate policies. Start external services on loopback and with synthetic data. Do not log API keys or bake them into generated HTML.
 
 For PPTAgent, verify the selected revision contains the published fixes and review the other advisories before execution. The code-execution advisory identifies `418491a9a1c02d9d93194b5973bb58df35cf9d00` as patched [S10]. That is not a blanket security certification.
 
@@ -514,6 +528,8 @@ deckforge/
     ingest/             # safe source extraction, not arbitrary round-trip
     qa/                 # package, geometry, evidence, receipts
     adapters/           # bounded upstream contracts
+    office-host/        # Windows request transport, native app receipts
+  scripts/windows/      # reviewed allowlisted STA worker, to implement
   packs/
     core/               # original/permitted implementation
     consulting/
@@ -537,9 +553,14 @@ Start with a few packages once boundaries need enforcement; do not create a micr
 - **ADR-009:** portable CLI/skill first; UI integration is a separate product decision.
 - **ADR-010:** imported manual edits and preserved template content have explicit limits.
 
+- **ADR-011:** Windows 11 and desktop PowerPoint are the primary deployment/acceptance profile; portable core/no-Office CI stays supported for drafts.
+- **ADR-012:** one attended per-user Office worker owns native operations; no unsupported non-interactive Office service.
+- **ADR-013:** native chart/edit/template/save evidence is granular and bound to final bytes, Office build and fonts; native open success is not human approval.
+- **ADR-014:** Word/Excel input is opt-in read-only intake; the project remains PowerPoint-first.
+
 ## 15. Source register
 
-Primary sources inspected on 2026-09-15. Descriptions above distinguish upstream documentation from tests actually executed in this package. Upstream `main` and published packages may diverge; use the recorded pins and local acquisition locks for reproduction.
+Original donor sources were inspected in the prior 2026-09-15 audit; their pins are retained, not re-certified by this platform revision. Added Windows facts are supported by the [Microsoft source register](../WINDOWS_SOURCES.md). Descriptions above distinguish upstream documentation from tests actually executed in this package. Upstream `main` and published packages may diverge; use the recorded pins and local acquisition locks for reproduction.
 
 - **S01 — Astra workflow:** [README](https://github.com/Astralune-ai/Astra-slide-impeccable/blob/7425bb043d59bde2e84cf6d7d7685e451d31f3ac/README.md).
 - **S02 — Astra implementation:** [Bridge source](https://github.com/Astralune-ai/Astra-slide-impeccable/blob/7425bb043d59bde2e84cf6d7d7685e451d31f3ac/structures/04-bridge.html).
@@ -556,8 +577,10 @@ Primary sources inspected on 2026-09-15. Descriptions above distinguish upstream
 - **S13 — Presenton:** [README, Docker, authentication, modes and API](https://github.com/presenton/presenton/blob/main/README.md).
 - **S14 — GitHub:** [licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
-## 16. Audit execution record
+## 16. Historical execution record and this revision
 
-The accompanying prototype was executed locally with Node 22.16.0, Python 3.13.5 and the environment's preinstalled PptxGenJS 4.0.0. Thirteen validation tests passed. A six-slide native PPTX was generated and structurally inspected: 45 native text boxes, one native table, one native chart, one embedded workbook, six notes parts and zero picture objects. LibreOffice produced all six preview pages, and a contact sheet was visually reviewed.
+In the **prior, non-Windows delivery**, the accompanying prototype was executed locally with Node 22.16.0, Python 3.13.5 and the environment's preinstalled PptxGenJS 4.0.0. Thirteen validation tests passed. A six-slide native PPTX was generated and structurally inspected: 45 native text boxes, one native table, one native chart, one embedded workbook, six notes parts and zero picture objects. LibreOffice produced all six preview pages, and a contact sheet was visually reviewed.
 
 Not executed: a clean online dependency installation, any full upstream test suite, Presenton/PPTKit integration, actual corporate-template ingestion, or Microsoft PowerPoint edit/save verification. Network access from the runtime was unavailable, although web/GitHub research tools were available. The included prototype is a starting acceptance fixture—not evidence that the proposed hybrid system is already built.
+
+The Windows revision updates planning/specification documents only. No Office worker, native template backend or Word/Excel importer has been implemented here, and no Windows/PowerPoint/Excel/Word execution has occurred. Use the [current validation report](../VALIDATION_REPORT.md) for documentation checks; historical logs remain separately labeled.

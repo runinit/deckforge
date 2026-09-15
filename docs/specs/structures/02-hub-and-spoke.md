@@ -1,6 +1,8 @@
 ---
 spec_id: DF-S02
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-03"]
 depends_on: ["DF-06", "DF-07", "DF-08", "DF-09"]
@@ -13,6 +15,9 @@ depends_on: ["DF-06", "DF-07", "DF-08", "DF-09"]
 **Baseline mapping:** PR-03. **Dependencies:** [DF-06](../core/06-structure-pack-sdk-and-registry.md), [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md), [DF-09](../core/09-native-charts-tables-and-connectors.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -59,12 +64,18 @@ Use split-orbit when radial labels would collide or content approaches capacity.
 Make the hub dominant through region/typography/emphasis, not by deleting spoke details. Avoid decorative orbit lines that could be read as missing data edges.
 
 
+### DF-S02.R06 — Native hub connection behavior
+
+Inspect node/label grouping and connector endpoints in PowerPoint. The backend may advertise anchored edges only after move/save/reopen passes; diagram appearance alone does not establish the capability.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-S02.T01 — Implement radial geometry.** Place nodes with stable ordering and explicit orientation; create semantic edge routes.
 - [ ] **DF-S02.T02 — Implement long-label variant.** Measure each side column and space edge exits to avoid crossings.
 - [ ] **DF-S02.T03 — Add anchoring negotiation.** Test native-line and anchored requests independently through DF-09.
 - [ ] **DF-S02.T04 — Review representative ecosystems.** Use synthetic service labels with and without approved icon assets.
+
+- [ ] **DF-S02.T05 — Exercise the Windows native variants.** Run the native node-move and group-selection probes for both variants, including a long hub label and edge-label collisions.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -91,18 +102,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-S02.AC05 | Move node | In a supported anchor fixture, move a spoke and save/reopen. | Edge remains connected, or capability is withdrawn. |
 | DF-S02.AC06 | Icon unavailable | Remove an optional vendor icon. | Readable native label remains; asset failure follows approved fallback policy. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-S02.AC07 | Native variant edit/save | A spoke node is moved after native export. | Declared anchored edges remain connected, or the requirement fails without a repair masquerading as writer support. |
+| DF-S02.AC08 | Static export on Windows | Render minimal, normal, dense and long-label fixtures through PowerPoint. | Both variants retain native essentials and readable content; record application/build/font and exact artifact hash. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-S02
+```powershell
+npm.cmd run test:spec -- DF-S02
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -121,4 +139,4 @@ Implement DF-S02 with explicit edge semantics and two variants. Native-line and 
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §8.3; Development plan PR-03, F07. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §8.3; Development plan PR-03, F07. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

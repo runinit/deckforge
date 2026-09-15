@@ -1,6 +1,8 @@
 ---
 spec_id: DF-04
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-02"]
 depends_on: ["DF-01", "DF-03"]
@@ -13,6 +15,9 @@ depends_on: ["DF-01", "DF-03"]
 **Baseline mapping:** PR-02. **Dependencies:** [DF-01](01-semantic-contracts-and-migrations.md), [DF-03](03-brand-capture-and-resolution.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -70,12 +75,18 @@ Retrieve only from the selected brand and allowed customer context; examples are
 Layout may request a shorter alternative with an explanation, but cannot apply that text automatically.
 
 
+### DF-04.R07 — Office text integrity
+
+Protect PowerPoint notes and imported Word revision/qualification context during rewrites. Office smart punctuation, line endings or locale formatting must not strengthen claims, change values or break source locators.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-04.T01 — Represent voice rules.** Implement terminology aliases, preferred constructions, banned phrases, protected strings and paired examples with source IDs.
 - [ ] **DF-04.T02 — Build deterministic lint.** Check exact product spelling, forbidden placeholders, required qualifiers and token-preservation invariants.
 - [ ] **DF-04.T03 — Build proposal validation.** Compare before/after facts, attach uncertainty warnings and generate a reviewable diff.
 - [ ] **DF-04.T04 — Integrate approved patch.** Apply only an approved proposal against the expected revision; invalidate narrative/content review receipts as appropriate.
+
+- [ ] **DF-04.T05 — Add Office-derived voice fixtures.** Use synthetic slide/notes and document-paragraph samples with tracked-change alternatives, curly quotes, decimal separators and protected product names. No Word grammar/autocorrect or optional style linter can auto-approve a rewrite.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -103,18 +114,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-04.AC05 | Audience variation | Produce executive and technical wording for the same approved claim. | Evidence and qualification remain; reviewer can accept either wording. |
 | DF-04.AC06 | Stale proposal | Apply a rewrite against a newer source revision. | Conflict returned; no replacement of user edits. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-04.AC07 | Qualification in notes | A caveat exists only in speaker notes. | Rewrite and PowerPoint save/reopen preserve the caveat and evidence binding. |
+| DF-04.AC08 | Regional number format | Display text changes from comma-decimal to dot-decimal. | Canonical number/unit remains unchanged and presentation format follows explicit locale policy. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-04
+```powershell
+npm.cmd run test:spec -- DF-04
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -133,4 +151,4 @@ Implement DF-04 as lint and patch validation first. Use synthetic approved/rejec
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§6.1, 7, 11; Development plan PR-02, PR-04. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§6.1, 7, 11; Development plan PR-02, PR-04. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

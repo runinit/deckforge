@@ -1,18 +1,23 @@
 ---
 spec_id: DF-X1
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-X1"]
-depends_on: ["DF-07", "DF-08", "DF-09", "DF-11"]
+depends_on: ["DF-07", "DF-08", "DF-09", "DF-11", "DF-20"]
 ---
 
 # DF-X1 — PPTKit scene adapter and promotion experiment
 
 **Goal:** Test whether PPTKit improves authoring/layout/export quality while satisfying the same DeckSpec and native-editability contract.
 
-**Baseline mapping:** PR-X1. **Dependencies:** [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md), [DF-09](../core/09-native-charts-tables-and-connectors.md), [DF-11](../core/11-qa-receipts-and-release-gates.md)
+**Baseline mapping:** PR-X1. **Dependencies:** [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md), [DF-09](../core/09-native-charts-tables-and-connectors.md), [DF-11](../core/11-qa-receipts-and-release-gates.md), [DF-20](../core/20-windows-native-office-worker.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -61,12 +66,22 @@ Export success does not establish original-template import or arbitrary edit rou
 Promote only if all mandatory reference fixtures pass and a concrete improvement is recorded in fidelity, implementation complexity, authoring ergonomics or maintenance. A beta label is neither a rejection nor a guarantee.
 
 
+### DF-X1.R06 — Native Windows bake-off
+
+Build the exact PPTKit pin on native Windows or record the blocker. Feed both engines frozen content/brand and render each final PPTX in the same native Office profile; SVG workbench output is separate evidence.
+
+### DF-X1.R07 — Promotion requires editability
+
+Probe Excel chart data, native tables, groups/connectors and save/reopen using DF-20. Office presence cannot make unsupported PPTKit imports/features supported; adapter fails explicitly on gaps.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-X1.T01 — Reproduce upstream example.** Run the exact selected package/source build in the external lab and capture environment/results.
 - [ ] **DF-X1.T02 — Map core elements.** Implement the smallest scene subset with source-object mappings and explicit unsupported diagnostics.
 - [ ] **DF-X1.T03 — Run F01–F09 and F14.** Check actual native data and Office behavior alongside final renders.
 - [ ] **DF-X1.T04 — Compare and decide.** Document keep-experimental/promote/fork-fix decision with fixture evidence and bounded upstream patch candidates.
+
+- [ ] **DF-X1.T05 — Run Windows comparisons.** Record Windows install/toolchain results, path/font tests and Office feature receipts for the candidate and reference; preserve the reference backend until promotion gates pass.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -92,18 +107,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-X1.AC04 | Pin mismatch | Run published package differing from audited source. | Report identifies its actual version, not the source pin. |
 | DF-X1.AC05 | Promotion | Compare all mandatory fixtures. | A promotion record names evidence and improvement; any required failure prevents promotion. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-X1.AC06 | SVG-only success | PPTKit preview looks correct but PowerPoint export loses a label. | Candidate fails native fidelity; no promotion based on preview. |
+| DF-X1.AC07 | WSL-only dependency | The pin builds only in a Linux lab. | Record Windows prerequisite failure; do not mark native-Windows compatibility passed. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-X1
+```powershell
+npm.cmd run test:spec -- DF-X1
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -122,4 +144,4 @@ Implement DF-X1 in a separate adapter and lab. Keep canonical contracts unchange
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §10; source S04 retained in baseline; Development plan §8.1, PR-X1. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §10; source S04 retained in baseline; Development plan §8.1, PR-X1. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

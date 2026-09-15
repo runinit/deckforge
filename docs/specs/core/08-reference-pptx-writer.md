@@ -1,6 +1,8 @@
 ---
 spec_id: DF-08
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-01"]
 depends_on: ["DF-01", "DF-07"]
@@ -13,6 +15,9 @@ depends_on: ["DF-01", "DF-07"]
 **Baseline mapping:** PR-01. **Dependencies:** [DF-01](01-semantic-contracts-and-migrations.md), [DF-07](07-layout-text-and-scene-compiler.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -75,6 +80,14 @@ Write stable semantic object names where supported and keep a sidecar mapping to
 A generated theme is a reconstructed theme, not preservation of a corporate master. DF-15 owns original-template preservation claims.
 
 
+### DF-08.R07 — Writer versus Office validator
+
+Keep pptxgenjs as the reference final writer and PowerPoint as the primary Windows validator. Read-only native rendering is not a second writer; any production Office-save stage is explicitly named and produces a new final artifact with fresh gates.
+
+### DF-08.R08 — No native repair camouflage
+
+Application probes may detect writer gaps but must not add missing groups/connectors or rewrite charts before crediting the reference writer with those capabilities.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-08.T01 — Implement adapter shell.** Dispatch validated scene kinds to explicit handlers and reject unknown payloads.
@@ -82,6 +95,8 @@ A generated theme is a reconstructed theme, not preservation of a corporate mast
 - [ ] **DF-08.T03 — Define native-feature extension seam.** Add explicit handler registration and fail-closed capability probes. DF-08 is complete with text/shapes/images/notes; data/edge/group capabilities stay unsupported until DF-09 implements and verifies their handlers. Do not create a circular dependency by requiring DF-09 to finish DF-08.
 - [ ] **DF-08.T04 — Emit immutable bundle.** Write deck.pptx, source-object-map.json, capability-report.json and build manifest atomically through DF-02.
 - [ ] **DF-08.T05 — Add package assertions.** Check notes/text counts, identifiers and absence of unexpected picture substitution; actual visual QA remains DF-11.
+
+- [ ] **DF-08.T06 — Add native artifact mapping.** Expose stable semantic IDs and actual shape/object mappings for DF-20 inspection; preserve native data and notes across observed PowerPoint save/reopen without relying on ZIP byte identity.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -109,18 +124,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-08.AC05 | Corrupt output path | Destination conflicts with a user-modified artifact. | Writer refuses to overwrite it. |
 | DF-08.AC06 | Notes | Export notes for every intended slide. | Notes remain associated with the correct slide after reorder. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-08.AC07 | Probe discovers bad edge | PowerPoint inspector sees an unanchored line. | Capability remains unsupported; probe does not silently attach it. |
+| DF-08.AC08 | Save changes package | A declared Office finalization saves new bytes. | New hash and re-render/inspection are required before release. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-08
+```powershell
+npm.cmd run test:spec -- DF-08
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -139,4 +161,4 @@ Implement DF-08 as a pure scene-to-PPTX adapter. Keep PptxGenJS pin changes sepa
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§5–6, 9; Development plan PR-01. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§5–6, 9; Development plan PR-01. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

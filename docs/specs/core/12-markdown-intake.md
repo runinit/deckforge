@@ -1,6 +1,8 @@
 ---
 spec_id: DF-12
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-05"]
 depends_on: ["DF-01", "DF-02", "DF-17"]
@@ -13,6 +15,9 @@ depends_on: ["DF-01", "DF-02", "DF-17"]
 **Baseline mapping:** PR-05. **Dependencies:** [DF-01](01-semantic-contracts-and-migrations.md), [DF-02](02-job-store-evidence-and-assets.md), [DF-17](17-sandbox-security-and-privacy.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -68,12 +73,18 @@ Unsupported syntax is retained as source plus an extraction warning. No truncati
 Register external links as references. Fetching, when explicitly authorized later, is a separate egress-controlled operation.
 
 
+### DF-12.R07 — Windows text intake
+
+Accept explicit UTF-8 BOM/CRLF normalization while retaining raw source hash and reliable source spans. Resolve relative assets beneath the approved root across drive letters/junctions; never execute Markdown snippets or shell-looking paths.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-12.T01 — Build bounded parser wrapper.** Apply byte/block limits and deterministic source IDs before parsing.
 - [ ] **DF-12.T02 — Extract blocks.** Support headings, paragraphs, lists, fenced code, quotes, images, tables and explicit notes syntax.
 - [ ] **DF-12.T03 — Build source mapping.** Keep normalized-to-original span mapping and register extracted assets through DF-02.
 - [ ] **DF-12.T04 — Produce retention report.** Report extracted/unsupported blocks, boundary decisions, notes counts and any split proposals.
+
+- [ ] **DF-12.T05 — Add Windows Markdown fixtures.** Test BOM/CRLF, spaces/Unicode filenames, Windows-style links, malformed drive paths and a junction escape. Imported PowerShell samples remain quoted data.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -101,18 +112,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-12.AC05 | Unsafe link | Reference a remote image and a local path escape. | No fetch; escaped local path rejected. |
 | DF-12.AC06 | Dense section | Extract a very long technical section. | Content retained with a split candidate, not silently summarized. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-12.AC07 | CRLF source span | Parse a Markdown note with CRLF and a BOM. | Original source locator and decoded content reconcile without lost numbers or off-by-one lines. |
+| DF-12.AC08 | Shell-like link | Markdown contains a link that resembles a command. | It stays inert text or fails asset admission; no process is launched. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-12
+```powershell
+npm.cmd run test:spec -- DF-12
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -131,4 +149,4 @@ Implement DF-12 as safe content extraction only. Add source-span and retention t
 
 ## 10. Source and decision traceability
 
-This spec decomposes Development plan PR-05; Architecture §§5, 12. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Development plan PR-05; Architecture §§5, 12. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

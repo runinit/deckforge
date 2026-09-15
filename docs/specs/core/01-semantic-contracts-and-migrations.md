@@ -1,6 +1,8 @@
 ---
 spec_id: DF-01
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-01"]
 depends_on: ["DF-00"]
@@ -13,6 +15,9 @@ depends_on: ["DF-00"]
 **Baseline mapping:** PR-01. **Dependencies:** [DF-00](00-baseline-and-workspace.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -68,12 +73,22 @@ Sort object keys, preserve meaningful array order, encode deterministically and 
 An incompatible schemaVersion fails with a migration suggestion. Migration produces a new file and report; it never overwrites source input or fabricates approved evidence/brand decisions.
 
 
+### DF-01.R06 — Platform-neutral semantics
+
+Keep Windows paths, COM dispatch objects and Office numeric enums out of DeckSpec. Add closed OfficeRequest/OfficeResult, environment/profile and application-receipt schemas owned by the shared contract; use logical artifact IDs and relative locations.
+
+### DF-01.R07 — Office operation validation
+
+Reject arbitrary script text/member names and unsupported worker operations. Canonical hashing ignores transport encoding differences only through a versioned rule; raw input hashes remain separate.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-01.T01 — Freeze public envelopes.** Implement DeckSpec, SourceManifest, EvidenceRecord, AssetRecord, BrandReference, DesignIntent, ResolvedScene, RenderPlan and diagnostics from the shared contract.
 - [ ] **DF-01.T02 — Add validator coverage.** Select and lock one schema implementation; generate or verify TypeScript types in CI. Validate each discriminated element and cross-reference after schema shape validation.
 - [ ] **DF-01.T03 — Migrate the synthetic input.** Write an explicit adapter from all six smoke slide types. Give demo facts synthetic status and a demo brand identity; unsupported fields appear in the migration report.
 - [ ] **DF-01.T04 — Add roundtrip and identity fixtures.** Serialize/parse DeckSpec, reorder slides, change a label and split a slide. Verify IDs and evidence lineage remain correct.
+
+- [ ] **DF-01.T05 — Define Office boundary schemas.** Coordinate DF-20 envelope/result and application-evidence fields in CONTRACTS/WINDOWS_OFFICE. Add safe filename mappings for semantic IDs containing colons without restricting otherwise valid logical IDs.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -101,18 +116,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-01.AC05 | Smoke migration | Migrate original input to a new output, preserving the original file. | All six roles, notes and synthetic numbers appear; no field is silently discarded. |
 | DF-01.AC06 | Determinism | Canonicalize equal objects with different object-key insertion order. | Equal canonical digest; a meaningful array reorder changes the digest. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-01.AC07 | Logical ID on NTFS | Serialize a node ID containing a colon. | ID survives unchanged; storage uses a safe mapped name, not raw NTFS syntax. |
+| DF-01.AC08 | Host code in a request | Submit an unknown operation or PowerShell expression field. | Schema rejects it before a worker or shell is launched. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-01
+```powershell
+npm.cmd run test:spec -- DF-01
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -131,4 +153,4 @@ Implement DF-01 after DF-00. Deliver schemas, types, validation, canonicalizatio
 
 ## 10. Source and decision traceability
 
-This spec decomposes Development plan PR-01 details; Architecture §6. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Development plan PR-01 details; Architecture §6. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

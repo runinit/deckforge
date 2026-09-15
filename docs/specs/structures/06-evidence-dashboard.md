@@ -1,6 +1,8 @@
 ---
 spec_id: DF-S06
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-03"]
 depends_on: ["DF-06", "DF-07", "DF-08", "DF-09"]
@@ -13,6 +15,9 @@ depends_on: ["DF-06", "DF-07", "DF-08", "DF-09"]
 **Baseline mapping:** PR-03. **Dependencies:** [DF-06](../core/06-structure-pack-sdk-and-registry.md), [DF-07](../core/07-layout-text-and-scene-compiler.md), [DF-08](../core/08-reference-pptx-writer.md), [DF-09](../core/09-native-charts-tables-and-connectors.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -64,12 +69,18 @@ Lead metric creates hierarchy; supporting regions align to a shared grid. Decora
 More than four metrics/two charts proposes a second slide. Chart axes and labels must meet the data-readable policy.
 
 
+### DF-S06.R07 — Native dashboard evidence
+
+Require PowerPoint plus Excel chart-data probes for declared native charts. Verify metrics, unit labels and caches against frozen datasets after save/reopen; final images retain all source/assumption qualifications.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-S06.T01 — Implement lead metric first.** Use a dominant value with unit/period and one evidence-rich chart region.
 - [ ] **DF-S06.T02 — Implement analytic grid.** Measure all data labels, legend/axes and callouts before arranging regions.
 - [ ] **DF-S06.T03 — Add delta validation.** Check baseline/units/period, division by zero and beneficial direction.
 - [ ] **DF-S06.T04 — Add native-data probes.** Compare workbook/cache to source datasets and inspect final renders for axis clipping.
+
+- [ ] **DF-S06.T05 — Exercise the Windows native variants.** Change a synthetic embedded workbook value on a copy; verify chart refresh, direct metric labels and native-data evidence without touching the release candidate.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -96,18 +107,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-S06.AC05 | Negative trend | Metric is cost and it rises. | Color meaning follows explicit metadata, not an automatic green up-arrow. |
 | DF-S06.AC06 | Data equality | Inspect native chart workbook. | Category/series values equal approved dataset, including zeros/negatives/missing policy. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-S06.AC07 | Native variant edit/save | A chart-data probe edits a value through Excel. | Workbook and visual chart agree after reopening; native editability has evidence beyond a chart count. |
+| DF-S06.AC08 | Static export on Windows | Render minimal, normal, dense and long-label fixtures through PowerPoint. | Both variants retain native essentials and readable content; record application/build/font and exact artifact hash. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-S06
+```powershell
+npm.cmd run test:spec -- DF-S06
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -126,4 +144,4 @@ Implement DF-S06 with native metric text and real charts. Keep value, unit, peri
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§8.3, 9; Development plan PR-03, F04–F05. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§8.3, 9; Development plan PR-03, F04–F05. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

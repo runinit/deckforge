@@ -1,6 +1,8 @@
 ---
 spec_id: DF-19
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-08"]
 depends_on: ["DF-11", "DF-15", "DF-16", "DF-18", "DF-S01", "DF-S02", "DF-S03", "DF-S04", "DF-S05", "DF-S06", "DF-S07", "DF-S08"]
@@ -14,9 +16,12 @@ depends_on: ["DF-11", "DF-15", "DF-16", "DF-18", "DF-S01", "DF-S02", "DF-S03", "
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
 
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
+
 ## 1. Scope and non-goals
 
-Own CI pipeline policy, normalized goldens, cross-engine benchmarking, manual acceptance protocols, pilot evidence and release packaging. Do not treat popularity or a model’s self-score as quality evidence or claim PowerPoint server automation has been implemented.
+Own CI pipeline policy, normalized goldens, cross-engine benchmarking, native desktop and human acceptance protocols, pilot evidence and release packaging. Do not treat popularity or a model’s self-score as quality evidence or claim PowerPoint server automation has been implemented.
 
 ## 2. File ownership and integration boundary
 
@@ -50,7 +55,7 @@ Pin rendering application, platform and font metrics. Pixel differences trigger 
 
 ### DF-19.R03 — Office application gate
 
-Maintain a separate manual Windows/macOS PowerPoint open/edit/save/reopen receipt. Linux rendering cannot fill that gate.
+Maintain native Windows PowerPoint render/inspection/edit/save receipts and a separate human review. Use an attended acceptance workstation for Office; portable CI and optional macOS/LibreOffice comparison cannot fill those native Windows gates.
 
 
 ### DF-19.R04 — Aesthetic benchmark
@@ -73,6 +78,18 @@ Publish an explicit capability matrix and limitations. Any mandatory gate failin
 Keep intended cleanup-time/design-preference targets distinct from observations. Do not fabricate pilot success because code tests pass.
 
 
+### DF-19.R08 — Two acceptance environments
+
+Run deterministic unit/schema/OOXML suites on public Windows and optional Linux CI without Office. Run native acceptance separately on a private attended Windows workstation/VM, not a hosted worker or Windows service; consume only approved commits/fixtures.
+
+### DF-19.R09 — Office-bound goldens
+
+Bind native PNG/PDF/golden and behavior receipts to Office build, locale, font profile and export resolution. Require review when these change; do not disable corporate updates or accept screenshots from a different final hash.
+
+### DF-19.R10 — Windows pilot gates
+
+Default pilot decks require native rendering plus feature-specific edit/save tests and human design/repair-warning review. Separate COM automation from human evidence and include Windows path/lock/session regressions.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-19.T01 — Build reproducible CI.** Use the real dependency lock and a recorded renderer/font environment, with no private credentials in public jobs.
@@ -80,6 +97,8 @@ Keep intended cleanup-time/design-preference targets distinct from observations.
 - [ ] **DF-19.T03 — Add manual review forms.** Capture actual PowerPoint behaviors, device/app versions and exact artifact hashes.
 - [ ] **DF-19.T04 — Run three pilots.** Use approved private pack/material only in the private lane, with retained review evidence.
 - [ ] **DF-19.T05 — Package beta.** Produce source, notices, demo packs, CLI docs and a sanitized capability matrix after release allowlist checks.
+
+- [ ] **DF-19.T06 — Add attended acceptance bundle.** Produce a signed/digest-bound fixture/request bundle for the operator, import redacted receipts, and block release for missing Windows gates. No automatic Office launch on untrusted pull requests.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -107,18 +126,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-19.AC05 | Confidential golden | Attempt to publish a private client screenshot. | Publication allowlist blocks it. |
 | DF-19.AC06 | Optional engine fails | PPTKit experiment fails a fixture but reference backend passes. | Reference release remains eligible; experiment is labeled unsupported/experimental. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-19.AC07 | Public pull request | A contributor changes worker code and requests a native run. | Public CI runs no-Office tests only; private workstation execution requires reviewed code. |
+| DF-19.AC08 | Office version drift | Office updates between golden approval and a release. | Affected native results are stale and rerun/reviewed; no fake stable version assertion. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-19
+```powershell
+npm.cmd run test:spec -- DF-19
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -137,4 +163,4 @@ Implement DF-19 only after the core workflow is usable. Publish real test/benchm
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §11; Development plan PR-08, §11. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §11; Development plan PR-08, §11. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

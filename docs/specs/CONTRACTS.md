@@ -1,10 +1,10 @@
 # Shared contracts and implementation conventions
 
-**Status:** proposed public interfaces; no application implementation is supplied in this pack. These contracts refine the accompanying audited architecture. They are the single reference for field names, units, identity, approval and capability behavior across the component specs.
+**Platform revision:** windows-office-1. **Status:** proposed public interfaces; no application implementation is supplied in this pack. These contracts refine the accompanying audited architecture. They are the single reference for field names, units, identity, approval and capability behavior across the component specs.
 
 ## 1. Non-negotiable boundaries
 
-Meaning belongs to DeckSpec; coordinates belong to the compiler; one selected backend writes a complete PPTX. Company brand authority is distinct from design advice. A browser preview is distinct from a render of the actual PPTX. Content extraction, visual reconstruction and original-template preservation are separate operations.
+Meaning belongs to DeckSpec; coordinates belong to the compiler; one selected backend writes a complete PPTX. Company brand authority is distinct from design advice. A browser preview is distinct from a render of the actual PPTX. PowerPoint desktop is the primary final-artifact renderer for the Windows profile; LibreOffice is a separately labeled portability comparison. Content extraction, visual reconstruction and original-template preservation are separate operations.
 
 The synthetic smoke schema and its fixed 0–100 chart range are not production restrictions. The original validator and renderer remain a regression harness during migration. Existing public files are listed in [STARTER_INVENTORY.md](references/STARTER_INVENTORY.md).
 
@@ -83,7 +83,7 @@ An evidence record has:
 
 This formalizes multi-source evidence and source-locator bindings beyond the architecture’s illustrative single-source example. DF-01 must choose one schema representation and use it consistently; these are not already-implemented migration rules.
 
-An asset record has `id`, `contentHash`, verified `mediaType`, root-confined `localPath`, `origin`, `sensitivity`, `licenseStatus` (`approved`, `restricted`, `unresolved`), `allowedOutputs` (`private`, `public`), `altText` and any approved crop/focal metadata. Paths are relative to an approved asset root and must survive realpath/symlink confinement checks. A hash is integrity metadata, not permission.
+An asset record has `id`, `contentHash`, verified `mediaType`, root-confined `localPath`, `origin`, `sensitivity`, `licenseStatus` (`approved`, `restricted`, `unresolved`), `allowedOutputs` (`private`, `public`), `altText` and any approved crop/focal metadata. Paths are relative to an approved asset root and must survive realpath/symlink/junction/reparse-point confinement and Windows alias/ADS/case-collision checks. Logical IDs never become raw physical filenames. A hash is integrity metadata, not permission.
 
 Output eligibility combines rights, sensitivity, approved recipients and source-display policy. “Private” does not authorize sending any company content to any external recipient. Derived charts, screenshots, embeddings, previews and logs inherit source classification unless explicitly reviewed for declassification.
 
@@ -199,7 +199,7 @@ Proposed private layout:
   events.jsonl
 ```
 
-This expands the baseline’s illustrative flat job layout into immutable revision/build directories. Friendly `latest` pointers are metadata, not mutable overwrites of released files. Use atomic writes and optimistic revision checks.
+This expands the baseline’s illustrative flat job layout into immutable revision/build directories. Friendly `latest` pointers are metadata, not mutable overwrites of released files. Use same-volume atomic writes and optimistic revision checks; handle Windows file-sharing violations and use fresh paths rather than deleting lock files or overwriting an open Office document.
 
 State progression: `DRAFT → STORY_APPROVED → COMPILED → RENDERED → REVIEWED → RELEASED`; failures go to `NEEDS_FIX` with retained last-good artifacts. Updating content returns the active revision to DRAFT. Re-layout can preserve story approval only when its bound content/meaning digest is unchanged; it invalidates downstream visual/artifact receipts. Released revisions remain immutable; new changes create a new revision.
 
@@ -222,7 +222,7 @@ Receipts bind exact dependency digests. Timestamps and filenames alone are not p
 
 ## 11. QA and command results
 
-Check states: PASS, FAIL, WARN, NOT_RUN. Required WARN behavior is policy-defined; required FAIL or NOT_RUN blocks approved export. A successful draft build and missing Office review are compatible only when labeled draft.
+Check states: PASS, FAIL, WARN, NOT_RUN. Required WARN behavior is policy-defined; required FAIL or NOT_RUN blocks approved export. A successful office-free-draft build and missing Office review are compatible only when labeled draft. The default windows-office release profile requires native PowerPoint rendering, save/reopen and applicable feature probes plus independent human review. Word intake is optional; Excel chart-data gates are required when editable chart workbooks are used.
 
 ```ts
 interface OperationResult {
@@ -245,3 +245,39 @@ Repair budget defaults to one initial render, one batched approved correction an
 Start with contracts and the existing smoke harness. Create package boundaries only as features are implemented. The listed paths are ownership targets, not permission to generate empty scaffolding for every package. Keep one schema validator, one agreed test harness and one explicit package writer.
 
 Current commands versus proposed commands are listed in [COMMANDS.md](COMMANDS.md). Specification validation only checks this documentation pack’s integrity; it is not application or Office verification.
+
+
+## 13. Windows execution and Office environment contracts
+
+The [Windows Office execution contract](WINDOWS_OFFICE.md) is normative for host/session/process/path behavior. [DF-20](core/20-windows-native-office-worker.md) implements the bridge; [DF-21](core/21-word-excel-native-intake.md) adds optional Word/Excel intake. DeckSpec and ResolvedScene remain portable and do not contain COM objects or raw Office commands.
+
+`OfficeEnvironmentManifest` records `schemaVersion`, `id`, OS name/build/architecture, worker/protocol/PowerShell versions, interactive-session eligibility, per-application availability/edition/executable build/architecture/channel when known, locale, font profile, export dimensions/settings and policy digest. Unknown values remain explicit; no product-key/account credentials are serialized. Raw paths and process/user details stay in job-private diagnostics.
+
+`OfficeRequest` and `OfficeResult` use the exact closed envelopes in WINDOWS_OFFICE. Operation names are `doctor`, `render-powerpoint`, `inspect-powerpoint`, `probe-save-reopen`, `probe-chart-data`, `probe-connectors`, `compose-template`, `extract-word`, `extract-excel`. Implement each operation with a discriminated parameters/result schema; unsupported operations fail. The worker executes reviewed code, never source text from a model.
+
+`ApplicationReceipt` has `id`, `checkId`, `status`, `inputArtifactId`, `inputSha256`, optional distinct `probeArtifactId`/`probeSha256`, `environmentId`/digest, `policyDigest`, `workerVersion`, `operation`, output artifact hashes, affected slide/object IDs, reviewer/tool identity and cleanup outcome. Human UI/repair-warning review is not synthesized by an automated receipt.
+
+Initial check IDs:
+
+```text
+powerpoint.render.png
+powerpoint.render.pdf
+powerpoint.objects.inspect
+powerpoint.save-reopen
+powerpoint.text-fit
+powerpoint.table.edit
+powerpoint.chart-data.edit
+powerpoint.connector.move
+powerpoint.group.edit
+powerpoint.template.new-slide
+powerpoint.ui.human-review
+powerpoint.ui.no-repair-observed
+word.source.extract
+excel.source.extract
+```
+
+Check IDs are **application observations**, not writer capability IDs. They may be NOT_RUN without changing what a draft can build. Required check selection is feature/profile-based: chart workbooks require chart-data edit evidence, declared anchored diagrams require connector-move evidence, template preservation requires native new-slide evidence. An absent optional Word operation does not block a deck with no Word source.
+
+The `windows-office` profile requires native PowerPoint evidence on the actual release bytes; `office-free-draft` never claims that status. Alternate Linux/macOS/LibreOffice outcomes are separately recorded. Exports do not downgrade profiles silently. A selected `powerpoint-template` backend owns its final native save; the default `pptxgenjs` backend does not gain capabilities from probe-copy repairs.
+
+Office build/locale/font/export-setting changes invalidate related render/visual/capability receipts. A last-minute native save creates new artifact bytes: rehash and re-run final-byte checks. Save/reopen copies are evidence, not permission to overwrite the final build. Workspace source IDs containing colons map to safe filenames; JSON line endings/encoding rules stay canonical across shells.

@@ -1,6 +1,8 @@
 ---
 spec_id: DF-17
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-04", "PR-05", "PR-08"]
 depends_on: ["DF-02"]
@@ -13,6 +15,9 @@ depends_on: ["DF-02"]
 **Baseline mapping:** PR-04, PR-05, PR-08. **Dependencies:** [DF-02](02-job-store-evidence-and-assets.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -73,6 +78,18 @@ Bind experiments to loopback, use synthetic inputs and isolated volumes. A self-
 Time/memory/format failures terminate only the job worker, preserve a sanitized incident report and do not publish partial success.
 
 
+### DF-17.R08 — Separate desktop and sandbox trust
+
+Use isolated bounded parsing before Office admission. The Office worker runs only in the logged-in user’s interactive session, is not a hardened sandbox, and never services anonymous uploads or SYSTEM/service jobs. Dedicated acceptance profiles/VMs require company provisioning.
+
+### DF-17.R09 — Office policy is not bypassed
+
+Reject macros/ActiveX/unapproved OLE/external content; validate embedded chart workbooks as a narrow exception. Preserve MOTW/protection decisions during staging. Never disable Protected View, strip labels, bulk-unblock inputs or lower Trust Center; see W08/W12 in WINDOWS_SOURCES.
+
+### DF-17.R10 — Windows process and egress safety
+
+Enforce a serial desktop lease, ownership-aware cleanup, user-restricted job/IPC permissions and no shared user profile mounts. Offline render policy accounts for Office fonts/add-ins/connected experiences and external model services separately.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-17.T01 — Define threat/egress model.** List inputs, trusted components and capabilities with defaults denying unnecessary access.
@@ -80,6 +97,8 @@ Time/memory/format failures terminate only the job worker, preserve a sanitized 
 - [ ] **DF-17.T03 — Add malicious fixtures.** Test archive traversal, entity expansion, huge decompression, external image/relationship loading and model-output injection.
 - [ ] **DF-17.T04 — Add egress/publication checks.** Simulate unapproved endpoints and private metadata leaking into notes, logs, previews and package manifests.
 - [ ] **DF-17.T05 — Document exceptions.** Allow explicit per-job override of resource limits with evidence; do not silently weaken macro or arbitrary-code policy.
+
+- [ ] **DF-17.T06 — Add desktop threat fixtures.** Test preexisting unsaved Office files, junction/ADS paths, macro-content spoofing, protected inputs, unhydrated cloud files, unexpected prompts, worker deadlines and Office-created Excel ownership. Prove user files/processes are untouched.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -108,18 +127,26 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-17.AC06 | Timeout | Hang a rendering worker. | Worker terminates, job remains failed/not released, other jobs unaffected. |
 | DF-17.AC07 | Provider classification | Try to send confidential content to an unapproved provider. | No request is sent. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-17.AC08 | Unsafe session | A worker is invoked as SYSTEM or outside the interactive desktop. | Refuse native operations with a policy diagnostic. |
+| DF-17.AC09 | Ownership race | A personal presentation appears while the worker is running. | Pause and avoid global Quit/process termination; preserve unrelated state. |
+| DF-17.AC10 | Security prompt | Office requests Enable Content or a label decision. | Return interaction-required; no scripted security downgrade or auto-click. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-17
+```powershell
+npm.cmd run test:spec -- DF-17
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -138,4 +165,4 @@ Implement DF-17 before arbitrary-file or third-party-service handling. Use synth
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §12; Development plan PR-05, §8, §11 F11–F12. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §12; Development plan PR-05, §8, §11 F11–F12. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

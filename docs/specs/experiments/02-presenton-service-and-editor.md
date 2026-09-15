@@ -1,6 +1,8 @@
 ---
 spec_id: DF-X2
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-X2"]
 depends_on: ["DF-00", "DF-02", "DF-17"]
@@ -13,6 +15,9 @@ depends_on: ["DF-00", "DF-02", "DF-17"]
 **Baseline mapping:** PR-X2. **Dependencies:** [DF-00](../core/00-baseline-and-workspace.md), [DF-02](../core/02-job-store-evidence-and-assets.md), [DF-17](../core/17-sandbox-security-and-privacy.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -67,6 +72,14 @@ Never put API/provider credentials into generated HTML, public config, logs or f
 Require useful review/editor behavior, reproducible editable export, known retention limits and a coherent ownership model. Promotion does not require merging its engine into our final writer.
 
 
+### DF-X2.R07 — Docker Desktop boundary
+
+Presenton may run in Docker Desktop/Linux containers as a separate experiment. It must not mount the Windows Office profile, get COM access or invoke Office through a service; move admitted exported files to DF-20 for desktop verification.
+
+### DF-X2.R08 — Windows editor handoff
+
+Reconcile content/notes/data from Presenton export on a staged local path, then render/probe in PowerPoint. Keep API/editor state ownership independent of DeckSpec and preserve manual Office edits.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-X2.T01 — Dry-run helper.** Inspect the exact command before starting Docker; preserve existing containers/volumes.
@@ -74,6 +87,8 @@ Require useful review/editor behavior, reproducible editable export, known reten
 - [ ] **DF-X2.T03 — Run fixed deck candidates.** Generate independently, extract/reconcile content, inspect native objects and render final PPTX.
 - [ ] **DF-X2.T04 — Exercise browser editing.** Change text/data/layout; document where state changes and what can be safely re-imported.
 - [ ] **DF-X2.T05 — Decide UI/backend role.** Recommend independent experimental service, approved UI adapter or no integration based on observed behavior.
+
+- [ ] **DF-X2.T06 — Exercise the local Windows handoff.** Record image digest, loopback binding, explicit mounted paths, egress policy, download hash and native export results. No customer content until security and provider policy pass.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -101,18 +116,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-X2.AC05 | Editor roundtrip | Edit a slide in the browser and export. | Report identifies preserved/lost semantics and actual owner of edits. |
 | DF-X2.AC06 | Provider denial | Configure an unapproved external model endpoint. | Synthetic-only restriction or egress policy prevents unauthorized company-data submission. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-X2.AC07 | Container requests COM | An integration asks to call desktop Office from the container. | Request is rejected; only admitted artifacts cross the boundary. |
+| DF-X2.AC08 | Editor rewrites text | A generated slide changes a qualifier before export. | Content diff blocks acceptance even if PowerPoint renders cleanly. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-X2
+```powershell
+npm.cmd run test:spec -- DF-X2
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -131,4 +153,4 @@ Implement DF-X2 as a synthetic local experiment. Capture the real selected API b
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §10; source S13 retained in baseline; Development plan §8.3, PR-X2. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §10; source S13 retained in baseline; Development plan §8.3, PR-X2. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

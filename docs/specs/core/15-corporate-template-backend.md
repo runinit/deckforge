@@ -1,22 +1,27 @@
 ---
 spec_id: DF-15
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-06"]
-depends_on: ["DF-03", "DF-08", "DF-09", "DF-11", "DF-13", "DF-17"]
+depends_on: ["DF-03", "DF-08", "DF-09", "DF-11", "DF-13", "DF-17", "DF-20"]
 ---
 
 # DF-15 — Corporate-template compatibility and preservation backend
 
 **Goal:** Use one approved corporate PPTX template with explicit, tested preservation guarantees rather than a visual imitation labeled as original-template support.
 
-**Baseline mapping:** PR-06. **Dependencies:** [DF-03](03-brand-capture-and-resolution.md), [DF-08](08-reference-pptx-writer.md), [DF-09](09-native-charts-tables-and-connectors.md), [DF-11](11-qa-receipts-and-release-gates.md), [DF-13](13-pptx-content-extraction.md), [DF-17](17-sandbox-security-and-privacy.md)
+**Baseline mapping:** PR-06. **Dependencies:** [DF-03](03-brand-capture-and-resolution.md), [DF-08](08-reference-pptx-writer.md), [DF-09](09-native-charts-tables-and-connectors.md), [DF-11](11-qa-receipts-and-release-gates.md), [DF-13](13-pptx-content-extraction.md), [DF-17](17-sandbox-security-and-privacy.md), [DF-20](20-windows-native-office-worker.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
 
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
+
 ## 1. Scope and non-goals
 
-Own template inventory, compatibility profiles, placeholder mappings and the pptx-automizer backend. Support one known template first. Do not attempt arbitrary lossless roundtrip, preserve every animation by default or merge unreviewed decks from multiple engines.
+Own template inventory, compatibility profiles, placeholder mappings and the Windows-native powerpoint-template backend through DF-20, with pptx-automizer retained as an optional portable comparison backend. Support one known template first. Do not attempt arbitrary lossless roundtrip, preserve every animation by default or merge unreviewed decks from multiple engines.
 
 ## 2. File ownership and integration boundary
 
@@ -66,6 +71,18 @@ Keep a per-object preservation/degradation list; notes, chart workbooks, layout 
 Add a slide with the intended layout, edit chart data/table text, save and reopen without repair. A copied master part alone is insufficient evidence.
 
 
+### DF-15.R07 — Windows-native template lane
+
+Make powerpoint-template the primary native-template candidate on Windows. Start from a staged admitted .potx/.pptx, use its existing design/custom layout and semantic placeholder map, then save a new artifact. Retain pptx-automizer as a separately selected portability lane.
+
+### DF-15.R08 — Native master fidelity evidence
+
+Use existing CustomLayout with Slides.AddSlide for new-slide tests; verify theme inheritance, placeholder types, notes and charts after save/reopen. ApplyTemplate or color matching alone does not prove original-master preservation. See W10 in WINDOWS_SOURCES.
+
+### DF-15.R09 — One assembly owner
+
+The selected template backend owns the final PowerPoint save and final bytes. Any generated contributions are admitted/mapped internally; no undocumented per-slide writer mixing or silent normalization after approval.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-15.T01 — Create synthetic template.** Build a public test template with representative layout, placeholders, notes, chart/table and intentional unsupported features.
@@ -73,6 +90,8 @@ Add a slide with the intended layout, edit chart data/table text, save and reope
 - [ ] **DF-15.T03 — Map approved company template.** Keep actual template and profile private; approval binds the tested digest.
 - [ ] **DF-15.T04 — Implement backend adapter.** Assemble through one owner and produce the same ArtifactBundle/CapabilityReport contracts as the reference backend.
 - [ ] **DF-15.T05 — Run new-slide and save tests.** Record each application behavior and release limitation separately.
+
+- [ ] **DF-15.T06 — Implement template transactions.** Use DF-20 compose-template operations with a closed plan and owned copies; test one synthetic template, then one supplied approved company template in native Office. Keep the portable automizer comparison independent.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -100,18 +119,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-15.AC05 | Unsupported animation | Template contains an untested animation. | Report it explicitly; do not mark animation preservation supported. |
 | DF-15.AC06 | Reconstructed theme | Use a generated theme rather than the original master. | Output manifest labels reconstruction, never native-master preservation. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-15.AC07 | Native new-slide test | Add a slide using the admitted corporate custom layout and edit its placeholders. | Theme/layout inheritance and expected native editing survive save/reopen; record the exact build/profile. |
+| DF-15.AC08 | Template input preserved | Compose a new deck from a company .potx/.pptx. | Source hash remains unchanged; final native-saved artifact gets fresh render/QA receipts. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-15
+```powershell
+npm.cmd run test:spec -- DF-15
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -130,4 +156,4 @@ Implement DF-15 for one synthetic template, then one explicitly supplied approve
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §9; source S09 retained in baseline; Development plan PR-06. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §9; source S09 retained in baseline; Development plan PR-06. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

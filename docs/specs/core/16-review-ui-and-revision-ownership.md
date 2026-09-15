@@ -1,6 +1,8 @@
 ---
 spec_id: DF-16
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-07"]
 depends_on: ["DF-10", "DF-11", "DF-14"]
@@ -13,6 +15,9 @@ depends_on: ["DF-10", "DF-11", "DF-14"]
 **Baseline mapping:** PR-07. **Dependencies:** [DF-10](10-svg-preview-gallery-and-motion.md), [DF-11](11-qa-receipts-and-release-gates.md), [DF-14](14-director-cli-and-agent-skill.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -66,6 +71,14 @@ Detect changed exported PPTX hashes. Offer a new export or controlled re-import;
 Support keyboard navigation, readable labels, focus management, empty/error/loading states and side-by-side comparison. Visual polish cannot hide a failed QA gate.
 
 
+### DF-16.R07 — Windows review ownership
+
+Expose Open in PowerPoint for a job-owned review copy; do not attach to an arbitrary active presentation or send it commands. Rehash only after save/stability checks and preserve all manual edits with an explicit external-edit branch.
+
+### DF-16.R08 — Native image provenance
+
+Use PowerPoint export as the default final-slide view; keep fast scene previews distinct. Show Office/session status and the required feature/human gates without a generic green compatibility badge.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-16.T01 — Implement read-only workspace.** Display story, previews, evidence and check states before adding any editing.
@@ -73,6 +86,8 @@ Support keyboard navigation, readable labels, focus management, empty/error/load
 - [ ] **DF-16.T03 — Add targeted repair flow.** Show exact before/after content and design changes plus invalidated receipts.
 - [ ] **DF-16.T04 — Add export flow.** Distinguish draft from approved release and preserve manually edited output files.
 - [ ] **DF-16.T05 — Run task-based pilot.** Ask a consultant to create/revise/export using a frozen synthetic brief without explaining source coordinates.
+
+- [ ] **DF-16.T06 — Add desktop handoff controls.** Test local allowlisted document launch, file-in-use state, Save As paths, revision mismatch and user-controlled import/new-export choices. Bind localhost actions to the current user and validate origin/token; do not expose arbitrary local file paths.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -100,18 +115,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-16.AC05 | External Office edit | Alter the exported PPTX and request regeneration. | User sees protected changed artifact plus explicit new-export/re-import choices. |
 | DF-16.AC06 | Keyboard task | Navigate story, variant selection, finding and export via keyboard. | Focus and labels make the complete task operable. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-16.AC07 | Manual Save As | Reviewer saves a new PPTX filename outside the current build. | No overwrite or automatic source reconciliation; user explicitly selects an import or retains external ownership. |
+| DF-16.AC08 | File held open | Reviewer keeps the deck open while regenerating. | New revision/export uses new paths; live document is not killed or replaced. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-16
+```powershell
+npm.cmd run test:spec -- DF-16
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -130,4 +152,4 @@ Implement DF-16 as a thin job/preview UI. Begin read-only, then add revision-che
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§10–11; Development plan PR-07. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§10–11; Development plan PR-07. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

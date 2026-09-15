@@ -24,20 +24,26 @@
         "DF-00.R02",
         "DF-00.R03",
         "DF-00.R04",
-        "DF-00.R05"
+        "DF-00.R05",
+        "DF-00.R06",
+        "DF-00.R07"
       ],
       "taskIds": [
         "DF-00.T01",
         "DF-00.T02",
         "DF-00.T03",
-        "DF-00.T04"
+        "DF-00.T04",
+        "DF-00.T05",
+        "DF-00.T06"
       ],
       "acceptanceIds": [
         "DF-00.AC01",
         "DF-00.AC02",
         "DF-00.AC03",
         "DF-00.AC04",
-        "DF-00.AC05"
+        "DF-00.AC05",
+        "DF-00.AC06",
+        "DF-00.AC07"
       ],
       "ownedPaths": [
         "package.json",
@@ -47,7 +53,8 @@
         "scripts/test-spec.mjs (new)",
         "config/spec-tests.json (new)",
         "docs/BASELINE_REPORT.md (new)"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-01",
@@ -65,13 +72,16 @@
         "DF-01.R02",
         "DF-01.R03",
         "DF-01.R04",
-        "DF-01.R05"
+        "DF-01.R05",
+        "DF-01.R06",
+        "DF-01.R07"
       ],
       "taskIds": [
         "DF-01.T01",
         "DF-01.T02",
         "DF-01.T03",
-        "DF-01.T04"
+        "DF-01.T04",
+        "DF-01.T05"
       ],
       "acceptanceIds": [
         "DF-01.AC01",
@@ -79,7 +89,9 @@
         "DF-01.AC03",
         "DF-01.AC04",
         "DF-01.AC05",
-        "DF-01.AC06"
+        "DF-01.AC06",
+        "DF-01.AC07",
+        "DF-01.AC08"
       ],
       "ownedPaths": [
         "packages/contracts/src/",
@@ -88,7 +100,8 @@
         "packages/contracts/tests/",
         "scripts/migrate-smoke.mjs (new)",
         "examples/contracts/ (new)"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-02",
@@ -108,13 +121,16 @@
         "DF-02.R03",
         "DF-02.R04",
         "DF-02.R05",
-        "DF-02.R06"
+        "DF-02.R06",
+        "DF-02.R07",
+        "DF-02.R08"
       ],
       "taskIds": [
         "DF-02.T01",
         "DF-02.T02",
         "DF-02.T03",
-        "DF-02.T04"
+        "DF-02.T04",
+        "DF-02.T05"
       ],
       "acceptanceIds": [
         "DF-02.AC01",
@@ -122,7 +138,9 @@
         "DF-02.AC03",
         "DF-02.AC04",
         "DF-02.AC05",
-        "DF-02.AC06"
+        "DF-02.AC06",
+        "DF-02.AC07",
+        "DF-02.AC08"
       ],
       "ownedPaths": [
         "packages/jobs/src/",
@@ -130,7 +148,8 @@
         "packages/contracts/schemas/job.schema.json",
         "packages/contracts/schemas/source-manifest.schema.json",
         "examples/provenance/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-03",
@@ -150,14 +169,17 @@
         "DF-03.R03",
         "DF-03.R04",
         "DF-03.R05",
-        "DF-03.R06"
+        "DF-03.R06",
+        "DF-03.R07",
+        "DF-03.R08"
       ],
       "taskIds": [
         "DF-03.T01",
         "DF-03.T02",
         "DF-03.T03",
         "DF-03.T04",
-        "DF-03.T05"
+        "DF-03.T05",
+        "DF-03.T06"
       ],
       "acceptanceIds": [
         "DF-03.AC01",
@@ -165,7 +187,9 @@
         "DF-03.AC03",
         "DF-03.AC04",
         "DF-03.AC05",
-        "DF-03.AC06"
+        "DF-03.AC06",
+        "DF-03.AC07",
+        "DF-03.AC08"
       ],
       "ownedPaths": [
         "packages/brand/src/capture/",
@@ -173,7 +197,8 @@
         "packages/brand/tests/",
         "packs/brands/demo/",
         "packages/contracts/schemas/brand.schema.json"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-04",
@@ -193,13 +218,15 @@
         "DF-04.R03",
         "DF-04.R04",
         "DF-04.R05",
-        "DF-04.R06"
+        "DF-04.R06",
+        "DF-04.R07"
       ],
       "taskIds": [
         "DF-04.T01",
         "DF-04.T02",
         "DF-04.T03",
-        "DF-04.T04"
+        "DF-04.T04",
+        "DF-04.T05"
       ],
       "acceptanceIds": [
         "DF-04.AC01",
@@ -207,14 +234,17 @@
         "DF-04.AC03",
         "DF-04.AC04",
         "DF-04.AC05",
-        "DF-04.AC06"
+        "DF-04.AC06",
+        "DF-04.AC07",
+        "DF-04.AC08"
       ],
       "ownedPaths": [
         "packages/brand/src/voice/",
         "packages/brand/tests/voice/",
         "packages/contracts/schemas/rewrite-proposal.schema.json",
         "examples/voice/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-05",
@@ -234,27 +264,33 @@
         "DF-05.R03",
         "DF-05.R04",
         "DF-05.R05",
-        "DF-05.R06"
+        "DF-05.R06",
+        "DF-05.R07",
+        "DF-05.R08"
       ],
       "taskIds": [
         "DF-05.T01",
         "DF-05.T02",
         "DF-05.T03",
-        "DF-05.T04"
+        "DF-05.T04",
+        "DF-05.T05"
       ],
       "acceptanceIds": [
         "DF-05.AC01",
         "DF-05.AC02",
         "DF-05.AC03",
         "DF-05.AC04",
-        "DF-05.AC05"
+        "DF-05.AC05",
+        "DF-05.AC06",
+        "DF-05.AC07"
       ],
       "ownedPaths": [
         "packages/adapters/impeccable/",
         "skills/deckforge/references/design-direction.md",
         "examples/design-intent/",
         "tests/adapters/impeccable/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-06",
@@ -275,14 +311,17 @@
         "DF-06.R03",
         "DF-06.R04",
         "DF-06.R05",
-        "DF-06.R06"
+        "DF-06.R06",
+        "DF-06.R07",
+        "DF-06.R08"
       ],
       "taskIds": [
         "DF-06.T01",
         "DF-06.T02",
         "DF-06.T03",
         "DF-06.T04",
-        "DF-06.T05"
+        "DF-06.T05",
+        "DF-06.T06"
       ],
       "acceptanceIds": [
         "DF-06.AC01",
@@ -290,7 +329,9 @@
         "DF-06.AC03",
         "DF-06.AC04",
         "DF-06.AC05",
-        "DF-06.AC06"
+        "DF-06.AC06",
+        "DF-06.AC07",
+        "DF-06.AC08"
       ],
       "ownedPaths": [
         "packages/structures/src/",
@@ -298,7 +339,8 @@
         "packages/contracts/schemas/structure-manifest.schema.json",
         "packs/core/registry.json",
         "tests/structures/harness/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-07",
@@ -320,14 +362,17 @@
         "DF-07.R03",
         "DF-07.R04",
         "DF-07.R05",
-        "DF-07.R06"
+        "DF-07.R06",
+        "DF-07.R07",
+        "DF-07.R08"
       ],
       "taskIds": [
         "DF-07.T01",
         "DF-07.T02",
         "DF-07.T03",
         "DF-07.T04",
-        "DF-07.T05"
+        "DF-07.T05",
+        "DF-07.T06"
       ],
       "acceptanceIds": [
         "DF-07.AC01",
@@ -336,7 +381,9 @@
         "DF-07.AC04",
         "DF-07.AC05",
         "DF-07.AC06",
-        "DF-07.AC07"
+        "DF-07.AC07",
+        "DF-07.AC08",
+        "DF-07.AC09"
       ],
       "ownedPaths": [
         "packages/compiler/src/",
@@ -344,7 +391,8 @@
         "packages/compiler/fixtures/",
         "packages/contracts/schemas/scene.schema.json",
         "packages/contracts/schemas/render-plan.schema.json"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-08",
@@ -364,14 +412,17 @@
         "DF-08.R03",
         "DF-08.R04",
         "DF-08.R05",
-        "DF-08.R06"
+        "DF-08.R06",
+        "DF-08.R07",
+        "DF-08.R08"
       ],
       "taskIds": [
         "DF-08.T01",
         "DF-08.T02",
         "DF-08.T03",
         "DF-08.T04",
-        "DF-08.T05"
+        "DF-08.T05",
+        "DF-08.T06"
       ],
       "acceptanceIds": [
         "DF-08.AC01",
@@ -379,7 +430,9 @@
         "DF-08.AC03",
         "DF-08.AC04",
         "DF-08.AC05",
-        "DF-08.AC06"
+        "DF-08.AC06",
+        "DF-08.AC07",
+        "DF-08.AC08"
       ],
       "ownedPaths": [
         "packages/renderer-pptx/src/backend.ts",
@@ -388,7 +441,8 @@
         "packages/renderer-pptx/src/images.ts",
         "packages/renderer-pptx/tests/",
         "tests/fixtures/export/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-09",
@@ -399,7 +453,8 @@
         "PR-04"
       ],
       "dependsOn": [
-        "DF-08"
+        "DF-08",
+        "DF-20"
       ],
       "implementationStatus": "planned",
       "requirementIds": [
@@ -408,14 +463,17 @@
         "DF-09.R03",
         "DF-09.R04",
         "DF-09.R05",
-        "DF-09.R06"
+        "DF-09.R06",
+        "DF-09.R07",
+        "DF-09.R08"
       ],
       "taskIds": [
         "DF-09.T01",
         "DF-09.T02",
         "DF-09.T03",
         "DF-09.T04",
-        "DF-09.T05"
+        "DF-09.T05",
+        "DF-09.T06"
       ],
       "acceptanceIds": [
         "DF-09.AC01",
@@ -424,7 +482,9 @@
         "DF-09.AC04",
         "DF-09.AC05",
         "DF-09.AC06",
-        "DF-09.AC07"
+        "DF-09.AC07",
+        "DF-09.AC08",
+        "DF-09.AC09"
       ],
       "ownedPaths": [
         "packages/renderer-pptx/src/charts.ts",
@@ -433,7 +493,8 @@
         "packages/renderer-pptx/src/groups.ts",
         "packages/renderer-pptx/tests/native/",
         "tests/fixtures/native/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-10",
@@ -454,13 +515,16 @@
         "DF-10.R03",
         "DF-10.R04",
         "DF-10.R05",
-        "DF-10.R06"
+        "DF-10.R06",
+        "DF-10.R07",
+        "DF-10.R08"
       ],
       "taskIds": [
         "DF-10.T01",
         "DF-10.T02",
         "DF-10.T03",
-        "DF-10.T04"
+        "DF-10.T04",
+        "DF-10.T05"
       ],
       "acceptanceIds": [
         "DF-10.AC01",
@@ -468,14 +532,17 @@
         "DF-10.AC03",
         "DF-10.AC04",
         "DF-10.AC05",
-        "DF-10.AC06"
+        "DF-10.AC06",
+        "DF-10.AC07",
+        "DF-10.AC08"
       ],
       "ownedPaths": [
         "packages/preview/src/",
         "packages/preview/tests/",
         "examples/gallery/",
         "tests/fixtures/preview/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-11",
@@ -487,7 +554,8 @@
       "dependsOn": [
         "DF-02",
         "DF-08",
-        "DF-09"
+        "DF-09",
+        "DF-20"
       ],
       "implementationStatus": "planned",
       "requirementIds": [
@@ -497,14 +565,18 @@
         "DF-11.R04",
         "DF-11.R05",
         "DF-11.R06",
-        "DF-11.R07"
+        "DF-11.R07",
+        "DF-11.R08",
+        "DF-11.R09",
+        "DF-11.R10"
       ],
       "taskIds": [
         "DF-11.T01",
         "DF-11.T02",
         "DF-11.T03",
         "DF-11.T04",
-        "DF-11.T05"
+        "DF-11.T05",
+        "DF-11.T06"
       ],
       "acceptanceIds": [
         "DF-11.AC01",
@@ -513,7 +585,10 @@
         "DF-11.AC04",
         "DF-11.AC05",
         "DF-11.AC06",
-        "DF-11.AC07"
+        "DF-11.AC07",
+        "DF-11.AC08",
+        "DF-11.AC09",
+        "DF-11.AC10"
       ],
       "ownedPaths": [
         "packages/qa/src/",
@@ -522,7 +597,8 @@
         "packages/contracts/schemas/release-manifest.schema.json",
         "tests/fixtures/qa/",
         "docs/review-protocols/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-12",
@@ -543,13 +619,15 @@
         "DF-12.R03",
         "DF-12.R04",
         "DF-12.R05",
-        "DF-12.R06"
+        "DF-12.R06",
+        "DF-12.R07"
       ],
       "taskIds": [
         "DF-12.T01",
         "DF-12.T02",
         "DF-12.T03",
-        "DF-12.T04"
+        "DF-12.T04",
+        "DF-12.T05"
       ],
       "acceptanceIds": [
         "DF-12.AC01",
@@ -557,14 +635,17 @@
         "DF-12.AC03",
         "DF-12.AC04",
         "DF-12.AC05",
-        "DF-12.AC06"
+        "DF-12.AC06",
+        "DF-12.AC07",
+        "DF-12.AC08"
       ],
       "ownedPaths": [
         "packages/ingest/src/markdown/",
         "packages/ingest/tests/markdown/",
         "examples/intake/markdown/",
         "packages/contracts/schemas/content-bundle.schema.json"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-13",
@@ -575,7 +656,8 @@
       ],
       "dependsOn": [
         "DF-12",
-        "DF-17"
+        "DF-17",
+        "DF-20"
       ],
       "implementationStatus": "planned",
       "requirementIds": [
@@ -584,14 +666,17 @@
         "DF-13.R03",
         "DF-13.R04",
         "DF-13.R05",
-        "DF-13.R06"
+        "DF-13.R06",
+        "DF-13.R07",
+        "DF-13.R08"
       ],
       "taskIds": [
         "DF-13.T01",
         "DF-13.T02",
         "DF-13.T03",
         "DF-13.T04",
-        "DF-13.T05"
+        "DF-13.T05",
+        "DF-13.T06"
       ],
       "acceptanceIds": [
         "DF-13.AC01",
@@ -599,14 +684,17 @@
         "DF-13.AC03",
         "DF-13.AC04",
         "DF-13.AC05",
-        "DF-13.AC06"
+        "DF-13.AC06",
+        "DF-13.AC07",
+        "DF-13.AC08"
       ],
       "ownedPaths": [
         "packages/ingest/src/pptx/",
         "packages/ingest/tests/pptx/",
         "tests/fixtures/intake-pptx/",
         "packages/contracts/schemas/pptx-inventory.schema.json"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-14",
@@ -622,7 +710,8 @@
         "DF-08",
         "DF-10",
         "DF-11",
-        "DF-12"
+        "DF-12",
+        "DF-20"
       ],
       "implementationStatus": "planned",
       "requirementIds": [
@@ -632,14 +721,17 @@
         "DF-14.R04",
         "DF-14.R05",
         "DF-14.R06",
-        "DF-14.R07"
+        "DF-14.R07",
+        "DF-14.R08",
+        "DF-14.R09"
       ],
       "taskIds": [
         "DF-14.T01",
         "DF-14.T02",
         "DF-14.T03",
         "DF-14.T04",
-        "DF-14.T05"
+        "DF-14.T05",
+        "DF-14.T06"
       ],
       "acceptanceIds": [
         "DF-14.AC01",
@@ -647,7 +739,9 @@
         "DF-14.AC03",
         "DF-14.AC04",
         "DF-14.AC05",
-        "DF-14.AC06"
+        "DF-14.AC06",
+        "DF-14.AC07",
+        "DF-14.AC08"
       ],
       "ownedPaths": [
         "packages/director/src/",
@@ -656,7 +750,8 @@
         "skills/deckforge/references/",
         "packages/director/tests/",
         "packages/cli/tests/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-15",
@@ -671,7 +766,8 @@
         "DF-09",
         "DF-11",
         "DF-13",
-        "DF-17"
+        "DF-17",
+        "DF-20"
       ],
       "implementationStatus": "planned",
       "requirementIds": [
@@ -680,14 +776,18 @@
         "DF-15.R03",
         "DF-15.R04",
         "DF-15.R05",
-        "DF-15.R06"
+        "DF-15.R06",
+        "DF-15.R07",
+        "DF-15.R08",
+        "DF-15.R09"
       ],
       "taskIds": [
         "DF-15.T01",
         "DF-15.T02",
         "DF-15.T03",
         "DF-15.T04",
-        "DF-15.T05"
+        "DF-15.T05",
+        "DF-15.T06"
       ],
       "acceptanceIds": [
         "DF-15.AC01",
@@ -695,14 +795,17 @@
         "DF-15.AC03",
         "DF-15.AC04",
         "DF-15.AC05",
-        "DF-15.AC06"
+        "DF-15.AC06",
+        "DF-15.AC07",
+        "DF-15.AC08"
       ],
       "ownedPaths": [
         "packages/adapters/template-pptx/",
         "packages/contracts/schemas/template-profile.schema.json",
         "tests/fixtures/templates/ (synthetic only)",
         "docs/template-compatibility/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-16",
@@ -723,14 +826,17 @@
         "DF-16.R03",
         "DF-16.R04",
         "DF-16.R05",
-        "DF-16.R06"
+        "DF-16.R06",
+        "DF-16.R07",
+        "DF-16.R08"
       ],
       "taskIds": [
         "DF-16.T01",
         "DF-16.T02",
         "DF-16.T03",
         "DF-16.T04",
-        "DF-16.T05"
+        "DF-16.T05",
+        "DF-16.T06"
       ],
       "acceptanceIds": [
         "DF-16.AC01",
@@ -738,14 +844,17 @@
         "DF-16.AC03",
         "DF-16.AC04",
         "DF-16.AC05",
-        "DF-16.AC06"
+        "DF-16.AC06",
+        "DF-16.AC07",
+        "DF-16.AC08"
       ],
       "ownedPaths": [
         "apps/review/",
         "packages/director/src/review-api/",
         "tests/review/",
         "docs/review-flows/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-17",
@@ -767,14 +876,18 @@
         "DF-17.R04",
         "DF-17.R05",
         "DF-17.R06",
-        "DF-17.R07"
+        "DF-17.R07",
+        "DF-17.R08",
+        "DF-17.R09",
+        "DF-17.R10"
       ],
       "taskIds": [
         "DF-17.T01",
         "DF-17.T02",
         "DF-17.T03",
         "DF-17.T04",
-        "DF-17.T05"
+        "DF-17.T05",
+        "DF-17.T06"
       ],
       "acceptanceIds": [
         "DF-17.AC01",
@@ -783,7 +896,10 @@
         "DF-17.AC04",
         "DF-17.AC05",
         "DF-17.AC06",
-        "DF-17.AC07"
+        "DF-17.AC07",
+        "DF-17.AC08",
+        "DF-17.AC09",
+        "DF-17.AC10"
       ],
       "ownedPaths": [
         "packages/security/src/",
@@ -792,7 +908,8 @@
         "workers/browser/",
         "config/security-policy.example.json",
         "tests/fixtures/security/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-18",
@@ -813,14 +930,17 @@
         "DF-18.R03",
         "DF-18.R04",
         "DF-18.R05",
-        "DF-18.R06"
+        "DF-18.R06",
+        "DF-18.R07",
+        "DF-18.R08"
       ],
       "taskIds": [
         "DF-18.T01",
         "DF-18.T02",
         "DF-18.T03",
         "DF-18.T04",
-        "DF-18.T05"
+        "DF-18.T05",
+        "DF-18.T06"
       ],
       "acceptanceIds": [
         "DF-18.AC01",
@@ -828,7 +948,9 @@
         "DF-18.AC03",
         "DF-18.AC04",
         "DF-18.AC05",
-        "DF-18.AC06"
+        "DF-18.AC06",
+        "DF-18.AC07",
+        "DF-18.AC08"
       ],
       "ownedPaths": [
         "packages/packs/src/",
@@ -838,7 +960,8 @@
         "config/public-files.json (new)",
         "THIRD_PARTY_NOTICES.md",
         "docs/upstream-integrations/"
-      ]
+      ],
+      "platformRevision": "windows-office-1"
     },
     {
       "id": "DF-19",
@@ -869,6 +992,1175 @@
         "DF-19.R04",
         "DF-19.R05",
         "DF-19.R06",
+        "DF-19.R07",
+        "DF-19.R08",
+        "DF-19.R09",
+        "DF-19.R10"
+      ],
+      "taskIds": [
+        "DF-19.T01",
+        "DF-19.T02",
+        "DF-19.T03",
+        "DF-19.T04",
+        "DF-19.T05",
+        "DF-19.T06"
+      ],
+      "acceptanceIds": [
+        "DF-19.AC01",
+        "DF-19.AC02",
+        "DF-19.AC03",
+        "DF-19.AC04",
+        "DF-19.AC05",
+        "DF-19.AC06",
+        "DF-19.AC07",
+        "DF-19.AC08"
+      ],
+      "ownedPaths": [
+        ".github/workflows/ci.yml (new)",
+        "scripts/run-benchmarks.mjs (new)",
+        "tests/benchmarks/",
+        "docs/benchmarks/",
+        "docs/pilots/",
+        "docs/RELEASE_CHECKLIST.md"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-20",
+      "path": "core/20-windows-native-office-worker.md",
+      "title": "Windows desktop Office worker and application acceptance",
+      "sourcePrs": [
+        "PR-00",
+        "PR-04"
+      ],
+      "dependsOn": [
+        "DF-01",
+        "DF-02",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "platformRevision": "windows-office-1",
+      "requirementIds": [
+        "DF-20.R01",
+        "DF-20.R02",
+        "DF-20.R03",
+        "DF-20.R04",
+        "DF-20.R05",
+        "DF-20.R06",
+        "DF-20.R07",
+        "DF-20.R08",
+        "DF-20.R09",
+        "DF-20.R10"
+      ],
+      "taskIds": [
+        "DF-20.T01",
+        "DF-20.T02",
+        "DF-20.T03",
+        "DF-20.T04",
+        "DF-20.T05",
+        "DF-20.T06"
+      ],
+      "acceptanceIds": [
+        "DF-20.AC01",
+        "DF-20.AC02",
+        "DF-20.AC03",
+        "DF-20.AC04",
+        "DF-20.AC05",
+        "DF-20.AC06",
+        "DF-20.AC07",
+        "DF-20.AC08",
+        "DF-20.AC09",
+        "DF-20.AC10",
+        "DF-20.AC11",
+        "DF-20.AC12"
+      ],
+      "ownedPaths": [
+        "packages/office-host/src/",
+        "packages/contracts/schemas/office-request.schema.json",
+        "packages/contracts/schemas/office-result.schema.json",
+        "packages/contracts/schemas/office-environment.schema.json",
+        "scripts/windows/Invoke-OfficeWorker.ps1 (to implement)",
+        "scripts/windows/OfficeOperations/ (to implement)",
+        "tests/office-host/unit/",
+        "tests/office-host/native/",
+        "docs/office-compatibility/"
+      ]
+    },
+    {
+      "id": "DF-21",
+      "path": "core/21-word-excel-native-intake.md",
+      "title": "Native Word and Excel source intake",
+      "sourcePrs": [
+        "PR-05"
+      ],
+      "dependsOn": [
+        "DF-12",
+        "DF-17",
+        "DF-20"
+      ],
+      "implementationStatus": "planned",
+      "platformRevision": "windows-office-1",
+      "requirementIds": [
+        "DF-21.R01",
+        "DF-21.R02",
+        "DF-21.R03",
+        "DF-21.R04",
+        "DF-21.R05",
+        "DF-21.R06",
+        "DF-21.R07",
+        "DF-21.R08"
+      ],
+      "taskIds": [
+        "DF-21.T01",
+        "DF-21.T02",
+        "DF-21.T03",
+        "DF-21.T04",
+        "DF-21.T05"
+      ],
+      "acceptanceIds": [
+        "DF-21.AC01",
+        "DF-21.AC02",
+        "DF-21.AC03",
+        "DF-21.AC04",
+        "DF-21.AC05",
+        "DF-21.AC06",
+        "DF-21.AC07",
+        "DF-21.AC08",
+        "DF-21.AC09",
+        "DF-21.AC10"
+      ],
+      "ownedPaths": [
+        "packages/ingest/src/word-desktop/",
+        "packages/ingest/src/excel-desktop/",
+        "packages/contracts/schemas/office-source-manifest.schema.json",
+        "scripts/windows/OfficeOperations/Extract-Word.ps1 (to implement)",
+        "scripts/windows/OfficeOperations/Extract-Excel.ps1 (to implement)",
+        "tests/ingest/word/",
+        "tests/ingest/excel/",
+        "examples/office-intake/ (synthetic fixtures only)"
+      ]
+    },
+    {
+      "id": "DF-S01",
+      "path": "structures/01-transformation-bridge.md",
+      "title": "Transformation bridge composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S01.R01",
+        "DF-S01.R02",
+        "DF-S01.R03",
+        "DF-S01.R04",
+        "DF-S01.R05",
+        "DF-S01.R06",
+        "DF-S01.R07"
+      ],
+      "taskIds": [
+        "DF-S01.T01",
+        "DF-S01.T02",
+        "DF-S01.T03",
+        "DF-S01.T04",
+        "DF-S01.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S01.AC01",
+        "DF-S01.AC02",
+        "DF-S01.AC03",
+        "DF-S01.AC04",
+        "DF-S01.AC05",
+        "DF-S01.AC06",
+        "DF-S01.AC07",
+        "DF-S01.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/transformation-bridge/",
+        "tests/structures/transformation-bridge/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S02",
+      "path": "structures/02-hub-and-spoke.md",
+      "title": "Hub-and-spoke ecosystem composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S02.R01",
+        "DF-S02.R02",
+        "DF-S02.R03",
+        "DF-S02.R04",
+        "DF-S02.R05",
+        "DF-S02.R06"
+      ],
+      "taskIds": [
+        "DF-S02.T01",
+        "DF-S02.T02",
+        "DF-S02.T03",
+        "DF-S02.T04",
+        "DF-S02.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S02.AC01",
+        "DF-S02.AC02",
+        "DF-S02.AC03",
+        "DF-S02.AC04",
+        "DF-S02.AC05",
+        "DF-S02.AC06",
+        "DF-S02.AC07",
+        "DF-S02.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/hub-spoke/",
+        "tests/structures/hub-spoke/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S03",
+      "path": "structures/03-architecture-layers.md",
+      "title": "Layered technical architecture composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S03.R01",
+        "DF-S03.R02",
+        "DF-S03.R03",
+        "DF-S03.R04",
+        "DF-S03.R05",
+        "DF-S03.R06"
+      ],
+      "taskIds": [
+        "DF-S03.T01",
+        "DF-S03.T02",
+        "DF-S03.T03",
+        "DF-S03.T04",
+        "DF-S03.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S03.AC01",
+        "DF-S03.AC02",
+        "DF-S03.AC03",
+        "DF-S03.AC04",
+        "DF-S03.AC05",
+        "DF-S03.AC06",
+        "DF-S03.AC07",
+        "DF-S03.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/architecture-layers/",
+        "tests/structures/architecture-layers/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S04",
+      "path": "structures/04-comparison-and-scorecard.md",
+      "title": "Comparison matrix and decision scorecard",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S04.R01",
+        "DF-S04.R02",
+        "DF-S04.R03",
+        "DF-S04.R04",
+        "DF-S04.R05",
+        "DF-S04.R06"
+      ],
+      "taskIds": [
+        "DF-S04.T01",
+        "DF-S04.T02",
+        "DF-S04.T03",
+        "DF-S04.T04",
+        "DF-S04.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S04.AC01",
+        "DF-S04.AC02",
+        "DF-S04.AC03",
+        "DF-S04.AC04",
+        "DF-S04.AC05",
+        "DF-S04.AC06",
+        "DF-S04.AC07",
+        "DF-S04.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/comparison-matrix/",
+        "tests/structures/comparison-matrix/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S05",
+      "path": "structures/05-roadmap-and-swimlane.md",
+      "title": "Roadmap, phases and swimlanes",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S05.R01",
+        "DF-S05.R02",
+        "DF-S05.R03",
+        "DF-S05.R04",
+        "DF-S05.R05",
+        "DF-S05.R06"
+      ],
+      "taskIds": [
+        "DF-S05.T01",
+        "DF-S05.T02",
+        "DF-S05.T03",
+        "DF-S05.T04",
+        "DF-S05.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S05.AC01",
+        "DF-S05.AC02",
+        "DF-S05.AC03",
+        "DF-S05.AC04",
+        "DF-S05.AC05",
+        "DF-S05.AC06",
+        "DF-S05.AC07",
+        "DF-S05.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/roadmap-swimlane/",
+        "tests/structures/roadmap-swimlane/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S06",
+      "path": "structures/06-evidence-dashboard.md",
+      "title": "Evidence dashboard and KPI composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08",
+        "DF-09"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S06.R01",
+        "DF-S06.R02",
+        "DF-S06.R03",
+        "DF-S06.R04",
+        "DF-S06.R05",
+        "DF-S06.R06",
+        "DF-S06.R07"
+      ],
+      "taskIds": [
+        "DF-S06.T01",
+        "DF-S06.T02",
+        "DF-S06.T03",
+        "DF-S06.T04",
+        "DF-S06.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S06.AC01",
+        "DF-S06.AC02",
+        "DF-S06.AC03",
+        "DF-S06.AC04",
+        "DF-S06.AC05",
+        "DF-S06.AC06",
+        "DF-S06.AC07",
+        "DF-S06.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/evidence-dashboard/",
+        "tests/structures/evidence-dashboard/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S07",
+      "path": "structures/07-conceptual-and-measured-funnel.md",
+      "title": "Conceptual and measured funnel composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S07.R01",
+        "DF-S07.R02",
+        "DF-S07.R03",
+        "DF-S07.R04",
+        "DF-S07.R05",
+        "DF-S07.R06",
+        "DF-S07.R07"
+      ],
+      "taskIds": [
+        "DF-S07.T01",
+        "DF-S07.T02",
+        "DF-S07.T03",
+        "DF-S07.T04",
+        "DF-S07.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S07.AC01",
+        "DF-S07.AC02",
+        "DF-S07.AC03",
+        "DF-S07.AC04",
+        "DF-S07.AC05",
+        "DF-S07.AC06",
+        "DF-S07.AC07",
+        "DF-S07.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/funnel/",
+        "tests/structures/funnel/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-S08",
+      "path": "structures/08-editorial-hero.md",
+      "title": "Editorial hero and high-impact thesis composition",
+      "sourcePrs": [
+        "PR-03"
+      ],
+      "dependsOn": [
+        "DF-06",
+        "DF-07",
+        "DF-08"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-S08.R01",
+        "DF-S08.R02",
+        "DF-S08.R03",
+        "DF-S08.R04",
+        "DF-S08.R05",
+        "DF-S08.R06",
+        "DF-S08.R07"
+      ],
+      "taskIds": [
+        "DF-S08.T01",
+        "DF-S08.T02",
+        "DF-S08.T03",
+        "DF-S08.T04",
+        "DF-S08.T05"
+      ],
+      "acceptanceIds": [
+        "DF-S08.AC01",
+        "DF-S08.AC02",
+        "DF-S08.AC03",
+        "DF-S08.AC04",
+        "DF-S08.AC05",
+        "DF-S08.AC06",
+        "DF-S08.AC07",
+        "DF-S08.AC08"
+      ],
+      "ownedPaths": [
+        "packs/core/editorial-hero/",
+        "tests/structures/editorial-hero/"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-X1",
+      "path": "experiments/01-pptkit-backend.md",
+      "title": "PPTKit scene adapter and promotion experiment",
+      "sourcePrs": [
+        "PR-X1"
+      ],
+      "dependsOn": [
+        "DF-07",
+        "DF-08",
+        "DF-09",
+        "DF-11",
+        "DF-20"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X1.R01",
+        "DF-X1.R02",
+        "DF-X1.R03",
+        "DF-X1.R04",
+        "DF-X1.R05",
+        "DF-X1.R06",
+        "DF-X1.R07"
+      ],
+      "taskIds": [
+        "DF-X1.T01",
+        "DF-X1.T02",
+        "DF-X1.T03",
+        "DF-X1.T04",
+        "DF-X1.T05"
+      ],
+      "acceptanceIds": [
+        "DF-X1.AC01",
+        "DF-X1.AC02",
+        "DF-X1.AC03",
+        "DF-X1.AC04",
+        "DF-X1.AC05",
+        "DF-X1.AC06",
+        "DF-X1.AC07"
+      ],
+      "ownedPaths": [
+        "packages/adapters/pptkit/",
+        "tests/experiments/pptkit/",
+        "docs/experiments/pptkit/",
+        "config/experiments/pptkit.json"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-X2",
+      "path": "experiments/02-presenton-service-and-editor.md",
+      "title": "Presenton service, generation and editor experiment",
+      "sourcePrs": [
+        "PR-X2"
+      ],
+      "dependsOn": [
+        "DF-00",
+        "DF-02",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X2.R01",
+        "DF-X2.R02",
+        "DF-X2.R03",
+        "DF-X2.R04",
+        "DF-X2.R05",
+        "DF-X2.R06",
+        "DF-X2.R07",
+        "DF-X2.R08"
+      ],
+      "taskIds": [
+        "DF-X2.T01",
+        "DF-X2.T02",
+        "DF-X2.T03",
+        "DF-X2.T04",
+        "DF-X2.T05",
+        "DF-X2.T06"
+      ],
+      "acceptanceIds": [
+        "DF-X2.AC01",
+        "DF-X2.AC02",
+        "DF-X2.AC03",
+        "DF-X2.AC04",
+        "DF-X2.AC05",
+        "DF-X2.AC06",
+        "DF-X2.AC07",
+        "DF-X2.AC08"
+      ],
+      "ownedPaths": [
+        "packages/adapters/presenton/",
+        "tests/experiments/presenton/",
+        "docs/experiments/presenton/",
+        "config/experiments/presenton.json",
+        "scripts/start-presenton-lab.py (existing helper; preserve behavior)"
+      ],
+      "platformRevision": "windows-office-1"
+    },
+    {
+      "id": "DF-X3",
+      "path": "experiments/03-isolated-research-critic.md",
+      "title": "Isolated research critic and visual ideation experiment",
+      "sourcePrs": [
+        "PR-X3"
+      ],
+      "dependsOn": [
+        "DF-11",
+        "DF-17"
+      ],
+      "implementationStatus": "planned",
+      "requirementIds": [
+        "DF-X3.R01",
+        "DF-X3.R02",
+        "DF-X3.R03",
+        "DF-X3.R04",
+        "DF-X3.R05",
+        "DF-X3.R06",
+        "DF-X3.R07"
+      ],
+      "taskIds": [
+        "DF-X3.T01",
+        "DF-X3.T02",
+        "DF-X3.T03",
+        "DF-X3.T04",
+        "DF-X3.T05"
+      ],
+      "acceptanceIds": [
+        "DF-X3.AC01",
+        "DF-X3.AC02",
+        "DF-X3.AC03",
+        "DF-X3.AC04",
+        "DF-X3.AC05",
+        "DF-X3.AC06",
+        "DF-X3.AC07"
+      ],
+      "ownedPaths": [
+        "packages/adapters/research-critic/",
+        "tests/experiments/research-critic/",
+        "docs/experiments/research-critic/",
+        "config/experiments/research-critic.json"
+      ],
+      "platformRevision": "windows-office-1"
+    }
+  ],
+  "specCountExpected": 33,
+  "updatedAt": "2026-09-15",
+  "platformRevision": "windows-office-1",
+  "primaryPlatform": "windows-native-office",
+  "revisionScope": "documentation-only-windows-update",
+  "originalSpecIds": [
+    "DF-00",
+    "DF-01",
+    "DF-02",
+    "DF-03",
+    "DF-04",
+    "DF-05",
+    "DF-06",
+    "DF-07",
+    "DF-08",
+    "DF-09",
+    "DF-10",
+    "DF-11",
+    "DF-12",
+    "DF-13",
+    "DF-14",
+    "DF-15",
+    "DF-16",
+    "DF-17",
+    "DF-18",
+    "DF-19",
+    "DF-X1",
+    "DF-X2",
+    "DF-X3",
+    "DF-S01",
+    "DF-S02",
+    "DF-S03",
+    "DF-S04",
+    "DF-S05",
+    "DF-S06",
+    "DF-S07",
+    "DF-S08"
+  ],
+  "originalItemIds": {
+    "DF-00": {
+      "requirementIds": [
+        "DF-00.R01",
+        "DF-00.R02",
+        "DF-00.R03",
+        "DF-00.R04",
+        "DF-00.R05"
+      ],
+      "taskIds": [
+        "DF-00.T01",
+        "DF-00.T02",
+        "DF-00.T03",
+        "DF-00.T04"
+      ],
+      "acceptanceIds": [
+        "DF-00.AC01",
+        "DF-00.AC02",
+        "DF-00.AC03",
+        "DF-00.AC04",
+        "DF-00.AC05"
+      ]
+    },
+    "DF-01": {
+      "requirementIds": [
+        "DF-01.R01",
+        "DF-01.R02",
+        "DF-01.R03",
+        "DF-01.R04",
+        "DF-01.R05"
+      ],
+      "taskIds": [
+        "DF-01.T01",
+        "DF-01.T02",
+        "DF-01.T03",
+        "DF-01.T04"
+      ],
+      "acceptanceIds": [
+        "DF-01.AC01",
+        "DF-01.AC02",
+        "DF-01.AC03",
+        "DF-01.AC04",
+        "DF-01.AC05",
+        "DF-01.AC06"
+      ]
+    },
+    "DF-02": {
+      "requirementIds": [
+        "DF-02.R01",
+        "DF-02.R02",
+        "DF-02.R03",
+        "DF-02.R04",
+        "DF-02.R05",
+        "DF-02.R06"
+      ],
+      "taskIds": [
+        "DF-02.T01",
+        "DF-02.T02",
+        "DF-02.T03",
+        "DF-02.T04"
+      ],
+      "acceptanceIds": [
+        "DF-02.AC01",
+        "DF-02.AC02",
+        "DF-02.AC03",
+        "DF-02.AC04",
+        "DF-02.AC05",
+        "DF-02.AC06"
+      ]
+    },
+    "DF-03": {
+      "requirementIds": [
+        "DF-03.R01",
+        "DF-03.R02",
+        "DF-03.R03",
+        "DF-03.R04",
+        "DF-03.R05",
+        "DF-03.R06"
+      ],
+      "taskIds": [
+        "DF-03.T01",
+        "DF-03.T02",
+        "DF-03.T03",
+        "DF-03.T04",
+        "DF-03.T05"
+      ],
+      "acceptanceIds": [
+        "DF-03.AC01",
+        "DF-03.AC02",
+        "DF-03.AC03",
+        "DF-03.AC04",
+        "DF-03.AC05",
+        "DF-03.AC06"
+      ]
+    },
+    "DF-04": {
+      "requirementIds": [
+        "DF-04.R01",
+        "DF-04.R02",
+        "DF-04.R03",
+        "DF-04.R04",
+        "DF-04.R05",
+        "DF-04.R06"
+      ],
+      "taskIds": [
+        "DF-04.T01",
+        "DF-04.T02",
+        "DF-04.T03",
+        "DF-04.T04"
+      ],
+      "acceptanceIds": [
+        "DF-04.AC01",
+        "DF-04.AC02",
+        "DF-04.AC03",
+        "DF-04.AC04",
+        "DF-04.AC05",
+        "DF-04.AC06"
+      ]
+    },
+    "DF-05": {
+      "requirementIds": [
+        "DF-05.R01",
+        "DF-05.R02",
+        "DF-05.R03",
+        "DF-05.R04",
+        "DF-05.R05",
+        "DF-05.R06"
+      ],
+      "taskIds": [
+        "DF-05.T01",
+        "DF-05.T02",
+        "DF-05.T03",
+        "DF-05.T04"
+      ],
+      "acceptanceIds": [
+        "DF-05.AC01",
+        "DF-05.AC02",
+        "DF-05.AC03",
+        "DF-05.AC04",
+        "DF-05.AC05"
+      ]
+    },
+    "DF-06": {
+      "requirementIds": [
+        "DF-06.R01",
+        "DF-06.R02",
+        "DF-06.R03",
+        "DF-06.R04",
+        "DF-06.R05",
+        "DF-06.R06"
+      ],
+      "taskIds": [
+        "DF-06.T01",
+        "DF-06.T02",
+        "DF-06.T03",
+        "DF-06.T04",
+        "DF-06.T05"
+      ],
+      "acceptanceIds": [
+        "DF-06.AC01",
+        "DF-06.AC02",
+        "DF-06.AC03",
+        "DF-06.AC04",
+        "DF-06.AC05",
+        "DF-06.AC06"
+      ]
+    },
+    "DF-07": {
+      "requirementIds": [
+        "DF-07.R01",
+        "DF-07.R02",
+        "DF-07.R03",
+        "DF-07.R04",
+        "DF-07.R05",
+        "DF-07.R06"
+      ],
+      "taskIds": [
+        "DF-07.T01",
+        "DF-07.T02",
+        "DF-07.T03",
+        "DF-07.T04",
+        "DF-07.T05"
+      ],
+      "acceptanceIds": [
+        "DF-07.AC01",
+        "DF-07.AC02",
+        "DF-07.AC03",
+        "DF-07.AC04",
+        "DF-07.AC05",
+        "DF-07.AC06",
+        "DF-07.AC07"
+      ]
+    },
+    "DF-08": {
+      "requirementIds": [
+        "DF-08.R01",
+        "DF-08.R02",
+        "DF-08.R03",
+        "DF-08.R04",
+        "DF-08.R05",
+        "DF-08.R06"
+      ],
+      "taskIds": [
+        "DF-08.T01",
+        "DF-08.T02",
+        "DF-08.T03",
+        "DF-08.T04",
+        "DF-08.T05"
+      ],
+      "acceptanceIds": [
+        "DF-08.AC01",
+        "DF-08.AC02",
+        "DF-08.AC03",
+        "DF-08.AC04",
+        "DF-08.AC05",
+        "DF-08.AC06"
+      ]
+    },
+    "DF-09": {
+      "requirementIds": [
+        "DF-09.R01",
+        "DF-09.R02",
+        "DF-09.R03",
+        "DF-09.R04",
+        "DF-09.R05",
+        "DF-09.R06"
+      ],
+      "taskIds": [
+        "DF-09.T01",
+        "DF-09.T02",
+        "DF-09.T03",
+        "DF-09.T04",
+        "DF-09.T05"
+      ],
+      "acceptanceIds": [
+        "DF-09.AC01",
+        "DF-09.AC02",
+        "DF-09.AC03",
+        "DF-09.AC04",
+        "DF-09.AC05",
+        "DF-09.AC06",
+        "DF-09.AC07"
+      ]
+    },
+    "DF-10": {
+      "requirementIds": [
+        "DF-10.R01",
+        "DF-10.R02",
+        "DF-10.R03",
+        "DF-10.R04",
+        "DF-10.R05",
+        "DF-10.R06"
+      ],
+      "taskIds": [
+        "DF-10.T01",
+        "DF-10.T02",
+        "DF-10.T03",
+        "DF-10.T04"
+      ],
+      "acceptanceIds": [
+        "DF-10.AC01",
+        "DF-10.AC02",
+        "DF-10.AC03",
+        "DF-10.AC04",
+        "DF-10.AC05",
+        "DF-10.AC06"
+      ]
+    },
+    "DF-11": {
+      "requirementIds": [
+        "DF-11.R01",
+        "DF-11.R02",
+        "DF-11.R03",
+        "DF-11.R04",
+        "DF-11.R05",
+        "DF-11.R06",
+        "DF-11.R07"
+      ],
+      "taskIds": [
+        "DF-11.T01",
+        "DF-11.T02",
+        "DF-11.T03",
+        "DF-11.T04",
+        "DF-11.T05"
+      ],
+      "acceptanceIds": [
+        "DF-11.AC01",
+        "DF-11.AC02",
+        "DF-11.AC03",
+        "DF-11.AC04",
+        "DF-11.AC05",
+        "DF-11.AC06",
+        "DF-11.AC07"
+      ]
+    },
+    "DF-12": {
+      "requirementIds": [
+        "DF-12.R01",
+        "DF-12.R02",
+        "DF-12.R03",
+        "DF-12.R04",
+        "DF-12.R05",
+        "DF-12.R06"
+      ],
+      "taskIds": [
+        "DF-12.T01",
+        "DF-12.T02",
+        "DF-12.T03",
+        "DF-12.T04"
+      ],
+      "acceptanceIds": [
+        "DF-12.AC01",
+        "DF-12.AC02",
+        "DF-12.AC03",
+        "DF-12.AC04",
+        "DF-12.AC05",
+        "DF-12.AC06"
+      ]
+    },
+    "DF-13": {
+      "requirementIds": [
+        "DF-13.R01",
+        "DF-13.R02",
+        "DF-13.R03",
+        "DF-13.R04",
+        "DF-13.R05",
+        "DF-13.R06"
+      ],
+      "taskIds": [
+        "DF-13.T01",
+        "DF-13.T02",
+        "DF-13.T03",
+        "DF-13.T04",
+        "DF-13.T05"
+      ],
+      "acceptanceIds": [
+        "DF-13.AC01",
+        "DF-13.AC02",
+        "DF-13.AC03",
+        "DF-13.AC04",
+        "DF-13.AC05",
+        "DF-13.AC06"
+      ]
+    },
+    "DF-14": {
+      "requirementIds": [
+        "DF-14.R01",
+        "DF-14.R02",
+        "DF-14.R03",
+        "DF-14.R04",
+        "DF-14.R05",
+        "DF-14.R06",
+        "DF-14.R07"
+      ],
+      "taskIds": [
+        "DF-14.T01",
+        "DF-14.T02",
+        "DF-14.T03",
+        "DF-14.T04",
+        "DF-14.T05"
+      ],
+      "acceptanceIds": [
+        "DF-14.AC01",
+        "DF-14.AC02",
+        "DF-14.AC03",
+        "DF-14.AC04",
+        "DF-14.AC05",
+        "DF-14.AC06"
+      ]
+    },
+    "DF-15": {
+      "requirementIds": [
+        "DF-15.R01",
+        "DF-15.R02",
+        "DF-15.R03",
+        "DF-15.R04",
+        "DF-15.R05",
+        "DF-15.R06"
+      ],
+      "taskIds": [
+        "DF-15.T01",
+        "DF-15.T02",
+        "DF-15.T03",
+        "DF-15.T04",
+        "DF-15.T05"
+      ],
+      "acceptanceIds": [
+        "DF-15.AC01",
+        "DF-15.AC02",
+        "DF-15.AC03",
+        "DF-15.AC04",
+        "DF-15.AC05",
+        "DF-15.AC06"
+      ]
+    },
+    "DF-16": {
+      "requirementIds": [
+        "DF-16.R01",
+        "DF-16.R02",
+        "DF-16.R03",
+        "DF-16.R04",
+        "DF-16.R05",
+        "DF-16.R06"
+      ],
+      "taskIds": [
+        "DF-16.T01",
+        "DF-16.T02",
+        "DF-16.T03",
+        "DF-16.T04",
+        "DF-16.T05"
+      ],
+      "acceptanceIds": [
+        "DF-16.AC01",
+        "DF-16.AC02",
+        "DF-16.AC03",
+        "DF-16.AC04",
+        "DF-16.AC05",
+        "DF-16.AC06"
+      ]
+    },
+    "DF-17": {
+      "requirementIds": [
+        "DF-17.R01",
+        "DF-17.R02",
+        "DF-17.R03",
+        "DF-17.R04",
+        "DF-17.R05",
+        "DF-17.R06",
+        "DF-17.R07"
+      ],
+      "taskIds": [
+        "DF-17.T01",
+        "DF-17.T02",
+        "DF-17.T03",
+        "DF-17.T04",
+        "DF-17.T05"
+      ],
+      "acceptanceIds": [
+        "DF-17.AC01",
+        "DF-17.AC02",
+        "DF-17.AC03",
+        "DF-17.AC04",
+        "DF-17.AC05",
+        "DF-17.AC06",
+        "DF-17.AC07"
+      ]
+    },
+    "DF-18": {
+      "requirementIds": [
+        "DF-18.R01",
+        "DF-18.R02",
+        "DF-18.R03",
+        "DF-18.R04",
+        "DF-18.R05",
+        "DF-18.R06"
+      ],
+      "taskIds": [
+        "DF-18.T01",
+        "DF-18.T02",
+        "DF-18.T03",
+        "DF-18.T04",
+        "DF-18.T05"
+      ],
+      "acceptanceIds": [
+        "DF-18.AC01",
+        "DF-18.AC02",
+        "DF-18.AC03",
+        "DF-18.AC04",
+        "DF-18.AC05",
+        "DF-18.AC06"
+      ]
+    },
+    "DF-19": {
+      "requirementIds": [
+        "DF-19.R01",
+        "DF-19.R02",
+        "DF-19.R03",
+        "DF-19.R04",
+        "DF-19.R05",
+        "DF-19.R06",
         "DF-19.R07"
       ],
       "taskIds": [
@@ -885,30 +2177,9 @@
         "DF-19.AC04",
         "DF-19.AC05",
         "DF-19.AC06"
-      ],
-      "ownedPaths": [
-        ".github/workflows/ci.yml (new)",
-        "scripts/run-benchmarks.mjs (new)",
-        "tests/benchmarks/",
-        "docs/benchmarks/",
-        "docs/pilots/",
-        "docs/RELEASE_CHECKLIST.md"
       ]
     },
-    {
-      "id": "DF-X1",
-      "path": "experiments/01-pptkit-backend.md",
-      "title": "PPTKit scene adapter and promotion experiment",
-      "sourcePrs": [
-        "PR-X1"
-      ],
-      "dependsOn": [
-        "DF-07",
-        "DF-08",
-        "DF-09",
-        "DF-11"
-      ],
-      "implementationStatus": "planned",
+    "DF-X1": {
       "requirementIds": [
         "DF-X1.R01",
         "DF-X1.R02",
@@ -928,27 +2199,9 @@
         "DF-X1.AC03",
         "DF-X1.AC04",
         "DF-X1.AC05"
-      ],
-      "ownedPaths": [
-        "packages/adapters/pptkit/",
-        "tests/experiments/pptkit/",
-        "docs/experiments/pptkit/",
-        "config/experiments/pptkit.json"
       ]
     },
-    {
-      "id": "DF-X2",
-      "path": "experiments/02-presenton-service-and-editor.md",
-      "title": "Presenton service, generation and editor experiment",
-      "sourcePrs": [
-        "PR-X2"
-      ],
-      "dependsOn": [
-        "DF-00",
-        "DF-02",
-        "DF-17"
-      ],
-      "implementationStatus": "planned",
+    "DF-X2": {
       "requirementIds": [
         "DF-X2.R01",
         "DF-X2.R02",
@@ -971,27 +2224,9 @@
         "DF-X2.AC04",
         "DF-X2.AC05",
         "DF-X2.AC06"
-      ],
-      "ownedPaths": [
-        "packages/adapters/presenton/",
-        "tests/experiments/presenton/",
-        "docs/experiments/presenton/",
-        "config/experiments/presenton.json",
-        "scripts/start-presenton-lab.py (existing helper; preserve behavior)"
       ]
     },
-    {
-      "id": "DF-X3",
-      "path": "experiments/03-isolated-research-critic.md",
-      "title": "Isolated research critic and visual ideation experiment",
-      "sourcePrs": [
-        "PR-X3"
-      ],
-      "dependsOn": [
-        "DF-11",
-        "DF-17"
-      ],
-      "implementationStatus": "planned",
+    "DF-X3": {
       "requirementIds": [
         "DF-X3.R01",
         "DF-X3.R02",
@@ -1012,27 +2247,9 @@
         "DF-X3.AC03",
         "DF-X3.AC04",
         "DF-X3.AC05"
-      ],
-      "ownedPaths": [
-        "packages/adapters/research-critic/",
-        "tests/experiments/research-critic/",
-        "docs/experiments/research-critic/",
-        "config/experiments/research-critic.json"
       ]
     },
-    {
-      "id": "DF-S01",
-      "path": "structures/01-transformation-bridge.md",
-      "title": "Transformation bridge composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08"
-      ],
-      "implementationStatus": "planned",
+    "DF-S01": {
       "requirementIds": [
         "DF-S01.R01",
         "DF-S01.R02",
@@ -1054,26 +2271,9 @@
         "DF-S01.AC04",
         "DF-S01.AC05",
         "DF-S01.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/transformation-bridge/",
-        "tests/structures/transformation-bridge/"
       ]
     },
-    {
-      "id": "DF-S02",
-      "path": "structures/02-hub-and-spoke.md",
-      "title": "Hub-and-spoke ecosystem composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08",
-        "DF-09"
-      ],
-      "implementationStatus": "planned",
+    "DF-S02": {
       "requirementIds": [
         "DF-S02.R01",
         "DF-S02.R02",
@@ -1094,25 +2294,9 @@
         "DF-S02.AC04",
         "DF-S02.AC05",
         "DF-S02.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/hub-spoke/",
-        "tests/structures/hub-spoke/"
       ]
     },
-    {
-      "id": "DF-S03",
-      "path": "structures/03-architecture-layers.md",
-      "title": "Layered technical architecture composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08"
-      ],
-      "implementationStatus": "planned",
+    "DF-S03": {
       "requirementIds": [
         "DF-S03.R01",
         "DF-S03.R02",
@@ -1133,26 +2317,9 @@
         "DF-S03.AC04",
         "DF-S03.AC05",
         "DF-S03.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/architecture-layers/",
-        "tests/structures/architecture-layers/"
       ]
     },
-    {
-      "id": "DF-S04",
-      "path": "structures/04-comparison-and-scorecard.md",
-      "title": "Comparison matrix and decision scorecard",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08",
-        "DF-09"
-      ],
-      "implementationStatus": "planned",
+    "DF-S04": {
       "requirementIds": [
         "DF-S04.R01",
         "DF-S04.R02",
@@ -1173,25 +2340,9 @@
         "DF-S04.AC04",
         "DF-S04.AC05",
         "DF-S04.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/comparison-matrix/",
-        "tests/structures/comparison-matrix/"
       ]
     },
-    {
-      "id": "DF-S05",
-      "path": "structures/05-roadmap-and-swimlane.md",
-      "title": "Roadmap, phases and swimlanes",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08"
-      ],
-      "implementationStatus": "planned",
+    "DF-S05": {
       "requirementIds": [
         "DF-S05.R01",
         "DF-S05.R02",
@@ -1212,26 +2363,9 @@
         "DF-S05.AC04",
         "DF-S05.AC05",
         "DF-S05.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/roadmap-swimlane/",
-        "tests/structures/roadmap-swimlane/"
       ]
     },
-    {
-      "id": "DF-S06",
-      "path": "structures/06-evidence-dashboard.md",
-      "title": "Evidence dashboard and KPI composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08",
-        "DF-09"
-      ],
-      "implementationStatus": "planned",
+    "DF-S06": {
       "requirementIds": [
         "DF-S06.R01",
         "DF-S06.R02",
@@ -1253,25 +2387,9 @@
         "DF-S06.AC04",
         "DF-S06.AC05",
         "DF-S06.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/evidence-dashboard/",
-        "tests/structures/evidence-dashboard/"
       ]
     },
-    {
-      "id": "DF-S07",
-      "path": "structures/07-conceptual-and-measured-funnel.md",
-      "title": "Conceptual and measured funnel composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08"
-      ],
-      "implementationStatus": "planned",
+    "DF-S07": {
       "requirementIds": [
         "DF-S07.R01",
         "DF-S07.R02",
@@ -1293,25 +2411,9 @@
         "DF-S07.AC04",
         "DF-S07.AC05",
         "DF-S07.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/funnel/",
-        "tests/structures/funnel/"
       ]
     },
-    {
-      "id": "DF-S08",
-      "path": "structures/08-editorial-hero.md",
-      "title": "Editorial hero and high-impact thesis composition",
-      "sourcePrs": [
-        "PR-03"
-      ],
-      "dependsOn": [
-        "DF-06",
-        "DF-07",
-        "DF-08"
-      ],
-      "implementationStatus": "planned",
+    "DF-S08": {
       "requirementIds": [
         "DF-S08.R01",
         "DF-S08.R02",
@@ -1333,11 +2435,23 @@
         "DF-S08.AC04",
         "DF-S08.AC05",
         "DF-S08.AC06"
-      ],
-      "ownedPaths": [
-        "packs/core/editorial-hero/",
-        "tests/structures/editorial-hero/"
       ]
     }
-  ]
+  },
+  "historicalSnapshots": [
+    {
+      "path": "references/archive/pre-windows/ARCHITECTURE.md",
+      "sha256": "36135014bfaad8395d4672f13f957dd04e39dfe98af1a7e2ace4abd31d223139"
+    },
+    {
+      "path": "references/archive/pre-windows/DEVELOPMENT_PLAN.md",
+      "sha256": "1042ab64c9277fce38bc70b5629354794265722e1b318fce3fd60eff5ace21a0"
+    }
+  ],
+  "activeSourceDigests": {
+    "ARCHITECTURE.md": "1a1c2f2e4783cc00c93b147cdb0e54ad0a201323cf2dcbd33692a9c341c2ead7",
+    "DEVELOPMENT_PLAN.md": "8ab3b3959f1a76bc36304f6b96eebdb62c4ca9d234be72f8e34904078a1de51f"
+  },
+  "windowsExecutionClaim": false,
+  "nativeOfficeExecutionClaim": false
 }

@@ -1,18 +1,23 @@
 ---
 spec_id: DF-14
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-07"]
-depends_on: ["DF-03", "DF-04", "DF-05", "DF-08", "DF-10", "DF-11", "DF-12"]
+depends_on: ["DF-03", "DF-04", "DF-05", "DF-08", "DF-10", "DF-11", "DF-12", "DF-20"]
 ---
 
 # DF-14 — Presentation director, CLI and thin agent skill
 
 **Goal:** Provide one user-facing workflow from brief to approved story, branded composition and export without asking non-designers for coordinates.
 
-**Baseline mapping:** PR-07. **Dependencies:** [DF-03](03-brand-capture-and-resolution.md), [DF-04](04-voice-terminology-and-claim-integrity.md), [DF-05](05-impeccable-design-intent-adapter.md), [DF-08](08-reference-pptx-writer.md), [DF-10](10-svg-preview-gallery-and-motion.md), [DF-11](11-qa-receipts-and-release-gates.md), [DF-12](12-markdown-intake.md)
+**Baseline mapping:** PR-07. **Dependencies:** [DF-03](03-brand-capture-and-resolution.md), [DF-04](04-voice-terminology-and-claim-integrity.md), [DF-05](05-impeccable-design-intent-adapter.md), [DF-08](08-reference-pptx-writer.md), [DF-10](10-svg-preview-gallery-and-motion.md), [DF-11](11-qa-receipts-and-release-gates.md), [DF-12](12-markdown-intake.md), [DF-20](20-windows-native-office-worker.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -73,6 +78,14 @@ Use stable documented exit codes and structured results. Never require scripts t
 Remote model/search/image calls require explicit provider and sensitivity policy; no external call from an offline build command.
 
 
+### DF-14.R08 — Native Windows command routing
+
+Run the main CLI on Windows; route Office operations only to the DF-20 allowlist. Provide windows-office and office-free-draft profiles, explicit tool availability, argument-array invocation and safe Windows job paths.
+
+### DF-14.R09 — Foreground interaction ownership
+
+Surface busy/activation/security/dialog/session errors with an operator action; do not hide them in unattended retries or launch a service. Source/deck instructions never become PowerShell/VBA code.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-14.T01 — Implement local command shell.** Start with validate/build/qa against already-authored DeckSpec; add init/plan/gallery/review/export after their dependencies exist.
@@ -80,6 +93,8 @@ Remote model/search/image calls require explicit provider and sensitivity policy
 - [ ] **DF-14.T03 — Implement state transitions.** Require exact approval/revision receipts and invalidate dependent builds when proposals are applied.
 - [ ] **DF-14.T04 — Write the thin skill.** Explain available commands and load only the relevant spec/reference. Keep development and end-user modes explicitly separate.
 - [ ] **DF-14.T05 — Add scripted workflow test.** Use a deterministic fake proposal provider, not a live model, for CI.
+
+- [ ] **DF-14.T06 — Wire desktop commands.** Implement doctor, qa --render powerpoint and office probe routing after DF-20. Add optional Word/Excel ingest routing after DF-21; missing optional Word support does not block unrelated deck generation.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -107,18 +122,25 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-14.AC05 | Unverified release | Request approved export with a required NOT_RUN gate. | Exit 5; draft artifacts remain separate. |
 | DF-14.AC06 | Offline build | Build an approved DeckSpec while no provider is configured. | Build uses no model/network. |
 
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-14.AC07 | No Office in portable CI | Run a draft build with office-free-draft. | Draft reports native gates NOT_RUN; it does not impersonate windows-office approval. |
+| DF-14.AC08 | Unsafe command input | A user-derived filename includes shell metacharacters. | It is treated as one validated argument or rejected, never evaluated. |
+
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-14
+```powershell
+npm.cmd run test:spec -- DF-14
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -137,4 +159,4 @@ Implement DF-14 incrementally around existing contracts and commands. Use a dete
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§5, 10–11; Development plan §§5, 10, PR-07. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§5, 10–11; Development plan §§5, 10, PR-07. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

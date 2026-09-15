@@ -1,45 +1,55 @@
-# Specification-pack validation report
+# Windows specification revision validation report
 
-**Date:** 2026-09-15. **Scope:** documentation integrity, not application implementation.
+**Date:** 2026-09-15. **Revision:** windows-office-1. **Scope:** documentation integrity and preservation of the existing portable smoke tests, not Windows/Office implementation.
 
-## Executed checks
+## Executed documentation checks
 
 | Check | Result |
 |---|---|
-| 31 spec IDs and file paths unique/present | PASS |
-| Requirement/task/acceptance IDs present and unique | PASS |
-| All dependencies resolve and graph is acyclic | PASS |
-| Required sections present in every component spec | PASS |
-| Local Markdown file-link targets exist inside the pack | PASS |
-| Markdown code fences balanced | PASS |
-| Original architecture/development snapshots match supplied SHA-256 hashes | PASS |
-| All original PR-00–PR-08 and PR-X1–PR-X3 covered | PASS |
+| All 33 component files and IDs exist uniquely | PASS |
+| Every original component has Windows requirements, tasks and acceptance additions | PASS (31/31 changed) |
+| Original requirement/task/acceptance IDs preserved | PASS |
+| Windows platform links and manifest/frontmatter dependencies agree | PASS |
+| Dependency graph resolves without cycles | PASS |
+| All ten required sections appear in every spec | PASS |
+| Local Markdown file targets and code fences validate | PASS |
+| Two original architecture/development snapshots match original SHA-256 | PASS |
+| Two active Windows reference-copy digests match | PASS |
+| Original PR-00–PR-08 and PR-X1–PR-X3 remain covered | PASS |
+| Application source/configuration/package files unchanged | PASS (14 files byte-compared) |
 
-Totals: **183 requirements, 138 implementation tasks and 186 acceptance scenarios**. The scenarios are future test requirements; they were not executed as product tests.
+Totals: **33 specs, 256 requirements, 181 implementation tasks and 272 acceptance scenarios**. These acceptance scenarios are future product requirements, not executed application tests. [validation-results.json](validation-results.json) contains exact link/file counts and the current topological order.
 
-## Negative probes against the documentation validator
+## Negative documentation-validator probes
 
-Each probe used a disposable copy of the pack. All five deliberately invalid copies were rejected; the delivered originals were left unchanged.
+Each used a disposable copy; every deliberate defect was rejected. Delivered originals were not mutated by the probes.
 
-| Injected defect | Expected validator result | Observed | Probe result |
+| Injected defect | Expected | Observed | Probe result |
 |---|---|---|---|
-| unknown dependency | FAIL | FAIL | PASS |
-| dependency cycle | FAIL | FAIL | PASS |
-| broken local link | FAIL | FAIL | PASS |
-| missing acceptance ID | FAIL | FAIL | PASS |
-| modified source snapshot | FAIL | FAIL | PASS |
+| unknown-dependency | FAIL | FAIL | PASS |
+| dependency-cycle | FAIL | FAIL | PASS |
+| broken-link | FAIL | FAIL | PASS |
+| missing-acceptance-id | FAIL | FAIL | PASS |
+| changed-history | FAIL | FAIL | PASS |
+| missing-windows-coverage | FAIL | FAIL | PASS |
+| changed-active-copy | FAIL | FAIL | PASS |
+| missing-new-spec | FAIL | FAIL | PASS |
 
-## Not performed in this delivery
+## Existing portable baseline recheck
 
-No new application code, package installation, production-schema execution, native PPTX generation, company-brand capture, upstream test suite, beta service deployment or Microsoft PowerPoint edit/save verification. The historical smoke execution report remains in the source snapshot and is not presented as a new test run.
+The unchanged `tests/validate.test.mjs` was run with Node v22.16.0 on **Linux**, not Windows. **13 tests passed.** This checks only the existing synthetic input validator. No new PPTX generation, native rendering or new-spec application suite was executed in this revision.
 
-The validator checks local file targets, not external website availability or generated Markdown fragment-anchor semantics. Documentation/API correctness still needs implementation and contract review; a structurally valid spec is not proof that its feature works.
+The earlier six-slide/LibreOffice generation remains a [historical report](references/docs/LOCAL_TEST_REPORT.md), explicitly not a Windows result.
 
-## Reproduce
+## Checks not run
 
-```sh
-python3 docs/specs/tools/validate_specs.py
-python3 docs/specs/tools/validate_specs.py --json
+Windows installation and PowerShell execution; Microsoft PowerPoint rendering/open/edit/save; Excel/Word operations; new Office worker; template preservation; real company brand capture; upstream suites and Docker/beta integrations. All are **NOT_RUN** for this delivery. No new product feature is represented as implemented.
+
+## Reproduce documentation checks on Windows
+
+```powershell
+py -3 .\docs\specs\tools\validate_specs.py
+py -3 .\docs\specs\tools\validate_specs.py --json
 ```
 
-The specification archive adds only `docs/specs/` and does not modify existing application files.
+The validator checks local file links, not external URL availability or Markdown fragment anchors. It proves document consistency, not the correctness/security of a future implementation. The complete bundle includes the unchanged application baseline; the update ZIP contains only documentation/agent instructions and documentation validation files.

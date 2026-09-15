@@ -1,88 +1,78 @@
-# Implementation order and parallel work
+# Implementation order: Windows and native Office
 
-File numbers are navigation labels, **not a topological build order**. Security DF-17 intentionally comes before untrusted intake; optional experiments may begin as source acquisition earlier than their adapter-promotion gates.
+**Revision:** windows-office-1. Dependencies in [spec-manifest.json](spec-manifest.json) are the machine-readable task graph; the sequence below groups work into useful increments. A dependency means its required contract/slice is available, not that every optional feature must be finished first. Read [shared contracts](CONTRACTS.md) and [Office execution](WINDOWS_OFFICE.md) before parallel work.
 
-The hard dependency graph is in [spec-manifest.json](spec-manifest.json). Dependencies refer to usable contracts/features, not ceremonial completion of every optional stretch goal. A contract may be implemented in a small tested slice, but downstream work must declare which slice it consumes.
+## 1. First executable slice
 
-## 1. First vertical slice: reliable native output
-
-| Sequence | Specs / tasks | Deliverable |
+| Sequence | Work | Exit evidence |
 |---|---|---|
-| A1 | DF-00 | Preserve fixture, real dependency lock, baseline report and honest test dispatch |
-| A2 | DF-01 | Strict semantic/scene schemas, IDs, validation and explicit smoke migration |
-| A3 | DF-02 | Private job roots, registries, atomic revisions, immutable builds |
-| A4 | DF-06 | Pack manifest/registry and composition boundary; fixtures, not a huge catalog |
-| A5 | DF-07 | Measured point-based scene compilation and fit failures |
-| A6 | DF-08 | Scene-to-PPTX reference writer, native essentials and explicit capabilities |
+| 1 | [DF-00](core/00-baseline-and-workspace.md): native Windows baseline, portable launchers, reviewed lockfile, separate Windows-font fixture | Explicit Node/Python commands work; exact Windows/Office inventory; historical test results remain labeled |
+| 2 | [DF-01](core/01-semantic-contracts-and-migrations.md): production schemas, stable IDs, closed Office transport types | Invalid fields/references rejected; safe physical filenames distinct from semantic IDs |
+| 3 | [DF-02](core/02-job-store-evidence-and-assets.md): private jobs, immutable builds/probes, Windows path/lock rules | No overwrite of edited/open files; real confinement including junction/case/ADS tests |
+| 4 | Minimal [DF-17](core/17-sandbox-security-and-privacy.md) admission + [DF-20](core/20-windows-native-office-worker.md) attended worker | Safe doctor, read-only six-slide PowerPoint PNG/PDF export, unchanged-input hash and ownership cleanup |
+| 5 | [DF-06](core/06-structure-pack-sdk-and-registry.md), [DF-07](core/07-layout-text-and-scene-compiler.md), [DF-08](core/08-reference-pptx-writer.md) | Semantic content compiles to a measured scene and one native PPTX writer; native PowerPoint render available for comparison |
 
-Do not bundle A1–A6 into one unreviewable coding-agent assignment. The compiler/writer can first use synthetic test scenes; full composition packs are implemented next. No company approval is necessary to prove the demo path, but the demo must not be labeled company-branded.
+Steps 4 and 5 can overlap after their shared contracts are committed. Do not put COM in the compiler, or postpone all native validation until after building every visual pack. DF-20 mutation probes come after its read-only export/ownership slice, not in its first patch.
 
-## 2. First visual milestone: three showcase compositions
+## 2. Brand and the first three showcase slides
 
-As soon as A6 works, implement [bridge DF-S01](structures/01-transformation-bridge.md), [architecture DF-S03](structures/03-architecture-layers.md) and [hero DF-S08](structures/08-editorial-hero.md). In parallel, implement [preview/gallery DF-10](core/10-svg-preview-gallery-and-motion.md).
+[DF-03](core/03-brand-capture-and-resolution.md), [DF-04](core/04-voice-terminology-and-claim-integrity.md) and [DF-05](core/05-impeccable-design-intent-adapter.md) capture actual company authority and approved voice. Use synthetic inputs until the private brand pack is approved. The existing palette and Liberation Sans demo are not a Ferroque standard.
 
-This milestone must demonstrate large readable diagrams, deliberate typography, meaningful layout variety and native text—not just functioning OOXML. Produce both a scene preview and an actual-PPTX render. Side-by-side review uses identical content, not a more flattering simplified version.
+Build these before expanding the entire catalogue:
 
-### Brand work runs alongside this
-
-After A3, run [DF-03](core/03-brand-capture-and-resolution.md) → [DF-04](core/04-voice-terminology-and-claim-integrity.md) → [DF-05](core/05-impeccable-design-intent-adapter.md). Real company inputs stay private and require authority/approval. The three treatments can be exercised with the synthetic demo until approved material is supplied.
-
-A visually impressive demo is not yet a Ferroque-branded deliverable. The brand milestone is complete only when the actual brand owner approves the identity/treatment/voice pack.
-
-## 3. Data, remaining structures and QA
-
-After A6, implement [native data/edges DF-09](core/09-native-charts-tables-and-connectors.md), then [QA DF-11](core/11-qa-receipts-and-release-gates.md). Early core and visual work still has local tests; this adds reusable release gates, not the first testing in the project.
-
-Finish the remaining packs: hub/spoke, comparison, roadmap/swimlane, dashboard and funnel. Data packs depend on actual native chart/table/edge behavior. Each pack gets two purposeful variants and four density fixtures with semantic/native coverage.
-
-Aesthetic and editability acceptance are separate: a beautiful bitmap cannot pass a native-table requirement, and a technically valid but unreadable native deck cannot pass design review.
-
-## 4. Intake and orchestration
-
-After A3, security can proceed independently as [DF-17](core/17-sandbox-security-and-privacy.md). Then implement [Markdown DF-12](core/12-markdown-intake.md) → [PPTX extraction DF-13](core/13-pptx-content-extraction.md).
-
-[Director/CLI DF-14](core/14-director-cli-and-agent-skill.md) integrates the approved content/brand/design/QA operations when their contracts exist. Start with manual/agent-authored structured proposals and a deterministic fake planner in CI. Direct provider SDKs and autonomous background agents are not prerequisites.
-
-Do not ship arbitrary-file ingestion by invoking the existing trusted-smoke render helper on uploads. Hardened workers are an explicit dependency.
-
-## 5. Company template and review experience
-
-[Template backend DF-15](core/15-corporate-template-backend.md) and [review UI DF-16](core/16-review-ui-and-revision-ownership.md) are separate implementation tracks once their listed dependencies pass.
-
-Start with one approved template and a narrow compatibility profile. Start the UI as a read-only story/gallery/QA viewer, then add revision-checked proposals and approved export. Neither track is permission to build a general PowerPoint editor or lossless import/export roundtrip.
-
-## 6. Upstream reuse and experiments
-
-[Pack/donor integration DF-18](core/18-pack-distribution-and-upstream-donors.md) can start after job/registry/security foundations. Port one tested module at a time; do not wait until final release to capture provenance.
-
-| Track | Can begin early | Needs the full spec prerequisites for |
+| Showcase | Spec | Approval focus |
 |---|---|---|
-| PPTKit DF-X1 | Pinned source acquisition, upstream build/example reproduction | Scene adapter comparison and promotion |
-| Presenton DF-X2 | Existing print-only setup; safe source review | Running service with controlled data/egress and ownership testing |
-| Research critic DF-X3 | Paper/source review and security inventory | Executed critic over approved fixtures and measured comparative value |
+| Transformation bridge | [DF-S01](structures/01-transformation-bridge.md) | Strong directional composition with readable native labels and a correct static export |
+| Architecture layers | [DF-S03](structures/03-architecture-layers.md) | Technical relationships, large diagrams, native editable objects and no false implied connections |
+| Editorial hero | [DF-S08](structures/08-editorial-hero.md) | Brand typography, purposeful art and actual PowerPoint crop/font fidelity |
 
-No optional experiment blocks the reference backend. Promote only on the same frozen semantic/native/visual fixtures, not because beta software is new or visually impressive.
+[DF-10](core/10-svg-preview-gallery-and-motion.md) provides actual-content previews; [DF-11](core/11-qa-receipts-and-release-gates.md) binds final PowerPoint and human review to exact artifacts. Native render success alone does not approve design or factual content.
 
-## 7. Release milestone
+## 3. Data, remaining structures and complete acceptance
 
-[DF-19](core/19-ci-benchmarks-and-public-beta.md) assembles the full CI/benchmark/pilot release process. Basic test CI should already exist after the baseline/contracts work; DF-19 adds complete rendered/native/application evidence and public-beta packaging.
+[DF-09](core/09-native-charts-tables-and-connectors.md) and the later DF-20 probes establish real chart workbook edits in Excel, table/group edits and anchored connectors where supported. An exported line is not an anchored connector; probes may not repair it to fabricate support.
 
-Release gates include the eight visual structures, protected brand/voice behavior, safe intake, declared template support, review UX, public/private separation and three realistic pilot deck types. Actual PowerPoint review remains a separately recorded application/human gate.
+Then develop the remaining packs against the same brand/font profile: [hub/spoke](structures/02-hub-and-spoke.md), [comparison](structures/04-comparison-and-scorecard.md), [roadmap](structures/05-roadmap-and-swimlane.md), [dashboard](structures/06-evidence-dashboard.md) and [funnel](structures/07-conceptual-and-measured-funnel.md). Structure tasks can proceed in parallel after the pack/scene/writer contracts are stable. Share the same evidence and repair budget.
 
-## 8. Safe parallel ownership
+## 4. Intake, template assembly and review
 
-| Workstream | Owned area | Coordination point |
+[DF-12](core/12-markdown-intake.md) precedes [DF-13](core/13-pptx-content-extraction.md). Untrusted source parsing/admission runs before Office opens a file. Content extraction is not a lossless roundtrip guarantee.
+
+[DF-15](core/15-corporate-template-backend.md) now prioritizes the admitted **PowerPoint-native template backend**. Real masters/custom layouts/placeholders are inventoried and tested on a copy; native assembly/save becomes the selected final writer. Keep `pptx-automizer` as an explicitly tested portable comparison. Neither lane silently mixes package writers.
+
+[DF-14](core/14-director-cli-and-agent-skill.md) and [DF-16](core/16-review-ui-and-revision-ownership.md) expose the workflow to consultants. Their UI distinguishes fast SVG preview, native PowerPoint preview, PowerPoint-edited copies, and source-owned regeneration. There is no general automatic merge of arbitrary Office edits.
+
+[DF-21](core/21-word-excel-native-intake.md) is an **optional intake extension** after DF-12/17/20. Word/Excel being installed does not require this extension before the first branded deck, nor authorize Word report or Excel model generation.
+
+## 5. Distribution and experiment boundaries
+
+[DF-18](core/18-pack-distribution-and-upstream-donors.md) and [DF-19](core/19-ci-benchmarks-and-public-beta.md) prepare the public beta. Windows no-Office CI checks portable code; private attended acceptance supplies real Office receipts. No public pull request executes code in a logged-in company Office profile. Office build/font updates trigger affected calibration and acceptance; do not disable security updates to preserve a screenshot baseline.
+
+| Experiment | Timing and isolation | Promotion evidence |
 |---|---|---|
-| Contracts | `packages/contracts/` | One owner merges schema/public type changes |
-| Compiler | `packages/compiler/` | Stable LayoutDraft/Scene fields agreed before pack work |
-| Writer/native data | `packages/renderer-pptx/` | DF-08 owns adapter shell; DF-09 owns specialized handlers |
-| Brand/voice | `packages/brand/` | DF-03 owns resolver; DF-04 owns voice subdirectory |
-| Individual visual packs | One `packs/core/<id>/` per task | Registry additions and common harness changes reviewed centrally |
-| Preview and UI | `packages/preview/` versus `apps/review/` | No second document state; both consume shared jobs/contracts |
-| Experiments | One adapter/lab per engine | Never rewrite the reference path or global dependency pins |
+| [DF-X1 PPTKit](experiments/01-pptkit-backend.md) | After scene/reference/native data contracts; independent output directory | Same data/content, native Windows rendering and real editing behavior on exact version |
+| [DF-X2 Presenton](experiments/02-presenton-service-and-editor.md) | Early synthetic generation experiment under Docker Desktop/WSL or a separate service | Explicit local file transfer/admission, content diff, PowerPoint acceptance; no COM in container |
+| [DF-X3 research critic](experiments/03-isolated-research-critic.md) | After QA/privacy boundaries | Measured benefit from admitted images/text without any COM, shell or private-path access |
 
-Avoid two agents independently changing `package.json`, the schema validator, root TypeScript config, the pack registry or receipt state model. Use small contract-change PRs before parallel implementation that depends on them. Workers return patches/proposals; a coordinator handles shared integration.
+## 6. Added native Windows fixtures
 
-## 9. First coding-agent task
+These supplement, rather than replace, original F01–F14. Every fixture records scenario input hash, environment, checks and cleanup. A scenario is a requirement, not a claimed test result.
 
-Use [AGENT_WORKFLOW.md](AGENT_WORKFLOW.md). Begin with DF-00 unless its current-baseline acceptance evidence already exists in the actual checkout. Then implement DF-01 only. Do not infer completion from this spec pack or the historical audit report.
+| Fixture | Scenario | Required behavior | Main owner |
+|---|---|---|---|
+| W-F01 | Missing, blocked or unactivated desktop application | Clear prerequisite/interaction result; no green native gate | DF-00, DF-20 |
+| W-F02 | Normal signed-in operator versus SYSTEM/service/disconnected session | Only approved attended desktop accepted; no hidden launch retry | DF-20 |
+| W-F03 | User's unsaved deck/workbook already open; later ownership race | Refuse/pause without quitting, saving or killing user’s application | DF-20, DF-16 |
+| W-F04 | Modal dialog, hang and cleanup failure | Deadline, bounded recovery, operator-required cleanup; no taskkill-all | DF-20 |
+| W-F05 | Spaces, Unicode, case aliases, colon IDs, ADS and junction paths | Canonical private confinement and safe mapping; no traversal or overwrite | DF-01, DF-02, DF-17 |
+| W-F06 | Approved font absent, different Office build, display-scaling change | Record affected profile and invalidate relevant receipts; native text review | DF-03, DF-07, DF-20 |
+| W-F07 | Direct PNG/PDF export, hidden-slide and static-state mapping | Complete explicit slide mapping, fixed dimensions, unchanged source | DF-10, DF-20 |
+| W-F08 | Native chart value edited and reopened | Excel data, PowerPoint cache and visual match; original untouched | DF-09, DF-20 |
+| W-F09 | Native node moved; group/table edited | Claimed anchoring/group/cell behavior persists or fails explicitly | DF-09, DF-20 |
+| W-F10 | Approved template adding a slide and changing theme token | Real custom layout/placeholders survive; final saved artifact revalidated | DF-15 |
+| W-F11 | MOTW/Protected View, IRM/labels, macros, external links | Preserve provenance/protection, reject/require authorized action; no bypass | DF-17, DF-20 |
+| W-F12 | Word tracked changes; Excel dates/formulas/hidden data | Declared read-only interpretation, no refresh/recalc or incidental leakage | DF-21 |
+
+## 7. Handoff discipline
+
+Each change names one primary spec and a bounded slice. Run existing tests first, add that slice's tests, list actual commands and unrun checks, and retain all prior requirement IDs. Coordinate shared contracts in DF-01/CONTRACTS before parallel implementations. New native commands and scripts remain TO IMPLEMENT until code and application evidence are delivered.

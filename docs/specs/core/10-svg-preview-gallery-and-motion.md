@@ -1,6 +1,8 @@
 ---
 spec_id: DF-10
 status: proposed
+platform_revision: windows-office-1
+primary_platform: windows-native-office
 implementation_status: not_implemented_by_this_delivery
 source_prs: ["PR-03", "PR-07"]
 depends_on: ["DF-06", "DF-07"]
@@ -13,6 +15,9 @@ depends_on: ["DF-06", "DF-07"]
 **Baseline mapping:** PR-03, PR-07. **Dependencies:** [DF-06](06-structure-pack-sdk-and-registry.md), [DF-07](07-layout-text-and-scene-compiler.md)
 
 **Read first:** [shared contracts](../CONTRACTS.md), [command availability](../COMMANDS.md), and [implementation order](../IMPLEMENTATION_ORDER.md). This is an implementation specification, not a claim that the component exists. DF-00 extends an existing starter; all new behavior below remains planned.
+
+
+**Windows/Office revision:** [execution contract](../WINDOWS_OFFICE.md) and [PowerShell setup](../WINDOWS_SETUP.md) apply to this component. PowerPoint is the primary application-validation path; new worker features remain planned.
 
 ## 1. Scope and non-goals
 
@@ -69,12 +74,22 @@ All values and intended labels are visible in static mode. Freeze final state by
 Optional reveals respect a reduced-motion/static setting. No PPTX animation translation is promised; native output remains the final static composition or explicitly approved progressive slides.
 
 
+### DF-10.R07 — PowerPoint preview channel
+
+Support distinct scene-preview, powerpoint-export and optional libreoffice-export channels. Default final-artifact review uses native PNG/PDF from DF-20 with slide-ID/hash metadata; no Poppler is required for direct PowerPoint PNGs.
+
+### DF-10.R08 — Windows static and accessibility checks
+
+Preserve declared aspect ratio, canonical static content and image dimensions. Check native exports for SVG effects/font changes; desktop DPI and browser zoom do not alter semantic geometry or imply animation fidelity.
+
 ## 5. Implementation tasks
 
 - [ ] **DF-10.T01 — Project core scene kinds.** Render native text/shapes/edges/image placements and faithful chart/table previews; emit warnings where browser approximation differs.
 - [ ] **DF-10.T02 — Implement candidate gallery.** Show source content, variant name, content capacity and editability warnings beside each preview.
 - [ ] **DF-10.T03 — Implement static export.** Produce portable HTML/contact sheets with controlled assets and no network dependency.
 - [ ] **DF-10.T04 — Add optional motion.** Apply a bounded reveal layer to trusted scene elements; verify static state, screenshots and reduced-motion behavior.
+
+- [ ] **DF-10.T05 — Add native gallery provenance.** Show rendering application/build, source hash and warnings beside each contact sheet; test fixed-resolution native exports and blocked network/cloud-font cases.
 
 Implement in this order unless a listed dependency needs a documented change. Keep each commit testable. Do not interpret the whole spec as permission to implement unrelated roadmap items.
 
@@ -98,21 +113,28 @@ Every row is a test requirement, **not an executed result**. Implement determini
 | DF-10.AC02 | No network | Open gallery with network denied. | No missing essential assets or external requests. |
 | DF-10.AC03 | Hidden animation | Render static state for a reveal-based composition. | Every intended label/value is visible. |
 | DF-10.AC04 | Script injection | Use text containing script tags and an SVG with an event handler. | Text is escaped and unsafe SVG is rejected/sanitized according to policy. |
-| DF-10.AC05 | Different output types | Show scene preview and LibreOffice render together. | The UI identifies which is which; one does not mark the other verified. |
+| DF-10.AC05 | Different output types | Show scene preview and native PowerPoint render together; optionally add a labeled LibreOffice comparison. | The UI identifies which is which; one does not mark the other verified. |
 | DF-10.AC06 | Motion disabled | Disable motion and inspect the final frame. | Meaning and full content remain accessible. |
+
+### Windows-native acceptance additions
+
+| ID | Scenario | Given / action | Required result |
+|---|---|---|---|
+| DF-10.AC07 | Export parity labels | Scene SVG and native PowerPoint PNG differ. | Review labels the artifacts distinctly and keeps the native failure visible. |
+| DF-10.AC08 | Motion off | The source structure begins with hidden animated labels. | PowerPoint static export contains final labels/data rather than a blank frame. |
 
 ## 8. Verification commands and evidence
 
 **Available now in the original starter:**
-```sh
-npm test
+```powershell
+node --test .\tests\validate.test.mjs
 ```
 
-For changes that affect the original renderer, also run the existing `npm run check` and, when available, `npm run preview`. These validate the smoke baseline, not all requirements in this spec.
+For original-renderer changes, run `node scripts/build-smoke.mjs` then `py -3 scripts/inspect-pptx.py out/smoke/deck.pptx` on Windows. Legacy npm check/preview chains still use python3/LibreOffice until DF-00/DF-20 are implemented. Follow [Windows setup](../WINDOWS_SETUP.md); native render/edit receipts are separate from this unchanged smoke harness.
 
 **TO IMPLEMENT — after the spec-test dispatcher and this suite exist:**
-```sh
-npm run test:spec -- DF-10
+```powershell
+npm.cmd run test:spec -- DF-10
 ```
 
 Record the exact command, commit, runtime/dependency versions, fixture hashes and PASS/FAIL/WARN/NOT_RUN status. See [command lifecycle](../COMMANDS.md). A missing suite or missing Office application is not a passing result.
@@ -131,4 +153,4 @@ Implement DF-10 as a read-only scene/gallery renderer. Use original/permitted st
 
 ## 10. Source and decision traceability
 
-This spec decomposes Architecture §§8.2–8.4, 11; Development plan PR-03, PR-07. See the bundled [architecture baseline](../references/ARCHITECTURE.md) and [development-plan baseline](../references/DEVELOPMENT_PLAN.md). Those documents contain the original upstream source register and audit pins. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. No new upstream audit or application implementation is claimed by this spec pack.
+This spec decomposes Architecture §§8.2–8.4, 11; Development plan PR-03, PR-07. See the bundled [active architecture](../references/ARCHITECTURE.md) and [active development plan](../references/DEVELOPMENT_PLAN.md). Those documents retain upstream audit pins and incorporate the Windows platform decision; unchanged pre-Windows sources are in the references archive. Proposed APIs, capacity limits and new test cases here are project decisions, not claims about currently implemented upstream APIs. The Windows platform/API additions cite [official Microsoft sources](../WINDOWS_SOURCES.md); previous donor pins are retained without a new donor audit. Application/Office implementation and Windows execution are not claimed by this specification revision.

@@ -2,7 +2,9 @@
 
 The supplied `deckforge-audited-starter.zip` was inspected to distinguish existing files/commands from future contracts. No starter application source is changed by this specification pack.
 
-The copies of ARCHITECTURE.md and DEVELOPMENT_PLAN.md in this directory are byte-identical to the supplied originals. The local execution report is historical evidence from that delivery, not a new run.
+The table below records the original starter's file hashes. Application source/configuration/dependencies remain unchanged, but root Markdown, agent instructions and active planning copies have been revised for Windows. Exact original architecture/development-plan bytes are preserved in [the archive](archive/pre-windows/README.md), not in the active files beside this inventory. The local execution report is historical non-Windows evidence.
+
+Use [Windows setup](../WINDOWS_SETUP.md) and [command availability](../COMMANDS.md). The npm scripts shown below are an unchanged inventory, not Windows-native launch guarantees: use explicit `node` / `py -3` commands until DF-00 ports the launchers; native PowerPoint export belongs to planned DF-20.
 
 ## Existing npm scripts
 
@@ -16,7 +18,7 @@ The copies of ARCHITECTURE.md and DEVELOPMENT_PLAN.md in this directory are byte
 }
 ```
 
-## Existing paths and SHA-256
+## Original starter paths and SHA-256 (historical)
 
 | Path | SHA-256 |
 |---|---|
